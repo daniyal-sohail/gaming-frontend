@@ -1,7 +1,13 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import Navbar from "@/components/layout/Navbar";
-import Footer from "@/components/layout/Footer";
+import RouterManager from "@/components/layout/RouterManager";
+import { ToastProvider } from "@/context/ToastContext";
+import { AuthProvider } from "@/context/AuthContext";
+import { OnboardingProvider } from "@/context/OnboardingContext";
+import ProtectedRoute from "@/components/layout/ProtectedRoute";
+import { UserProvider } from "@/context/UserContext";
+import { ConsultantProvider } from "@/context/ConsultantContext";
+import { TeamSelectionProvider } from "@/context/TeamSelectionContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -30,9 +36,23 @@ export default function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <Navbar />
-        {children}
-        <Footer />
+        <AuthProvider>
+          <ToastProvider>
+            <UserProvider>
+              <OnboardingProvider>
+                <ConsultantProvider>
+                  <TeamSelectionProvider>
+                    <RouterManager>
+                      <ProtectedRoute>
+                        {children}
+                      </ProtectedRoute>
+                    </RouterManager>
+                  </TeamSelectionProvider>
+                </ConsultantProvider>
+              </OnboardingProvider>
+            </UserProvider>
+          </ToastProvider>
+        </AuthProvider>
       </body>
     </html>
   );

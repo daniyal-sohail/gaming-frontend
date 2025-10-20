@@ -1,36 +1,111 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Menu, X, ChevronDown } from "lucide-react"; // ✅ using lucide-react
+import { Menu, X, ChevronDown, User, Settings, LogOut } from "lucide-react"; // ✅ using lucide-react
 import Link from "next/link";
 import Image from "next/image";
+import { useAuth } from "@/context/AuthContext";
 
-const navigation = [
+// Base navigation items
+// const baseNavigation = [
+//     {
+//         name: "Why Us",
+//         href: "/why-us",
+//         dropdown: true,
+//         items: [
+//             { name: "Success Stories", href: "/success-stories" },
+//             { name: "How it Works", href: "/how-it-works" },
+//             { name: "Trust & Safety", href: "/trust-safety" },
+//             { name: "Reviews", href: "/reviews" },
+//         ],
+//     },
+//     { name: "Enterprise", href: "/enterprise" },
+// ];
+
+// Navigation items for consultants (show "Find Work")
+const consultantNavigation = [
+    { name: "Find Work", href: "/find-work" },
+    // ...baseNavigation,
+];
+
+// Navigation items for clients (show "Find Talent")
+const clientNavigation = [
+    { name: "Find Talent", href: "/consultants" },
+    { name: "My Teams", href: "/teams" },
+    // ...baseNavigation,
+];
+
+// Navigation items for unauthenticated users (show both)
+const guestNavigation = [
     { name: "Find Talent", href: "/find-talent" },
     { name: "Find Work", href: "/find-work" },
-    {
-        name: "Why Us",
-        href: "/why-us",
-        dropdown: true,
-        items: [
-            { name: "Success Stories", href: "/success-stories" },
-            { name: "How it Works", href: "/how-it-works" },
-            { name: "Trust & Safety", href: "/trust-safety" },
-            { name: "Reviews", href: "/reviews" },
-        ],
-    },
-    { name: "Enterprise", href: "/enterprise" },
+    // ...baseNavigation,
 ];
 
 export default function Navbar() {
     const [scrolled, setScrolled] = useState(false);
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+    const [userDropdownOpen, setUserDropdownOpen] = useState(false);
+    const { user, isAuthenticated, logout, loading, userType } = useAuth();
+
+    // Determine which navigation to show based on user type
+    const getNavigation = () => {
+        if (!isAuthenticated) {
+            return guestNavigation;
+        }
+
+        if (userType === 'consultant') {
+            return consultantNavigation;
+        } else if (userType === 'client') {
+            return clientNavigation;
+        }
+
+        // Default to guest navigation if user type is not recognized
+        return guestNavigation;
+    };
+
+    const navigation = getNavigation();
+
+    // Check if user exists in localStorage to prevent flash - do this synchronously
+    const [hasStoredUser, setHasStoredUser] = useState(() => {
+        if (typeof window !== 'undefined') {
+            return !!localStorage.getItem("user");
+        }
+        return false;
+    });
 
     useEffect(() => {
         const onScroll = () => setScrolled(window.scrollY > 12);
         window.addEventListener("scroll", onScroll);
         return () => window.removeEventListener("scroll", onScroll);
     }, []);
+
+    // Update hasStoredUser when user changes
+    useEffect(() => {
+        setHasStoredUser(!!user);
+    }, [user]);
+
+    // Close dropdowns when clicking outside
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (userDropdownOpen && !event.target.closest('[data-user-dropdown]')) {
+                setUserDropdownOpen(false);
+            }
+        };
+
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, [userDropdownOpen]);
+
+    const handleLogout = async () => {
+        try {
+            await logout();
+            setUserDropdownOpen(false);
+            setMobileMenuOpen(false);
+        } catch (error) {
+            console.error("Logout error:", error);
+        }
+    };
 
     return (
         <nav className="fixed inset-x-0 top-0 z-50">
@@ -107,23 +182,96 @@ export default function Navbar() {
                             )}
                         </div>
 
-                        {/* Auth Buttons - Right */}
+                        {/* Auth Buttons or User Profile - Right */}
                         <div className="hidden lg:flex items-center gap-3">
-                            {/* Login - transparent like other nav links */}
-                            <Link
-                                href="/login"
-                                className="px-4 py-2 rounded-lg text-white/85 hover:text-white hover:bg-white/5 transition"
-                            >
-                                Login
-                            </Link>
+                            {loading ? (
+                                /* Loading state - show skeleton for user profile */
+                                <div className="flex items-center gap-3 px-4 py-2">
+                                    <div className="h-8 w-8 rounded-full bg-white/10 animate-pulse"></div>
+                                    <div className="h-4 w-20 bg-white/10 animate-pulse rounded"></div>
+                                </div>
+                            ) : isAuthenticated ? (
+                                /* User Profile Dropdown */
+                                <div className="relative" data-user-dropdown>
+                                    <button
+                                        onClick={() => setUserDropdownOpen(!userDropdownOpen)}
+                                        className="flex items-center gap-3 px-4 py-2 rounded-lg text-white/85 hover:text-white hover:bg-white/5 transition"
+                                    >
+                                        {/* User Avatar */}
+                                        <div className="h-8 w-8 rounded-full bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center text-white font-semibold text-sm">
+                                            {user?.name ? user.name.charAt(0).toUpperCase() : 'U'}
+                                        </div>
+                                        {/* User Name */}
+                                        <span className="font-medium">{user?.name || 'User'}</span>
+                                        <ChevronDown className={`h-4 w-4 transition-transform ${userDropdownOpen ? 'rotate-180' : ''}`} />
+                                    </button>
 
-                            {/* Signup - primary button */}
-                            <Link
-                                href="/signup"
-                                className="px-4 py-2 rounded-lg bg-black/80 text-white font-medium hover:from-amber-600 hover:to-amber-700 hover:shadow-lg hover:shadow-amber-500/25 hover:-translate-y-0.5 transition-all duration-200 text-sm"
-                            >
-                                Sign Up
-                            </Link>
+                                    {/* User Dropdown Menu */}
+                                    {userDropdownOpen && (
+                                        <div className="absolute right-0 top-full mt-2 w-56 rounded-xl bg-black border border-white/20 shadow-xl overflow-hidden z-50">
+                                            {/* User Info Header */}
+                                            <div className="px-4 py-3 border-b border-white/10">
+                                                <div className="flex items-center gap-3">
+
+                                                    <div>
+                                                        <p className="font-medium text-white">{user?.name || 'User'}</p>
+                                                        <p className="text-sm text-white/60">{user?.email}</p>
+                                                        {userType && (
+                                                            <span className="inline-block px-2 py-1 text-xs font-medium bg-white/10 text-white/80 rounded-full mt-1">
+                                                                {userType === 'consultant' ? 'Consultant' : userType === 'client' ? 'Client' : userType}
+                                                            </span>
+                                                        )}
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            {/* Menu Items */}
+                                            <div className="py-2">
+                                                <Link
+                                                    href="/profile"
+                                                    className="flex items-center gap-3 px-4 py-3 text-white/85 hover:bg-white/5 hover:text-white transition"
+                                                    onClick={() => setUserDropdownOpen(false)}
+                                                >
+                                                    <User className="h-4 w-4" />
+                                                    <span>Profile</span>
+                                                </Link>
+                                                <Link
+                                                    href="/account"
+                                                    className="flex items-center gap-3 px-4 py-3 text-white/85 hover:bg-white/5 hover:text-white transition"
+                                                    onClick={() => setUserDropdownOpen(false)}
+                                                >
+                                                    <User className="h-4 w-4" />
+                                                    <span>Account</span>
+                                                </Link>
+
+                                                <button
+                                                    onClick={handleLogout}
+                                                    className="flex items-center gap-3 px-4 py-3 text-white/85 hover:bg-white/5 hover:text-white transition w-full text-left"
+                                                >
+                                                    <LogOut className="h-4 w-4" />
+                                                    <span>Logout</span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
+                            ) : (
+                                /* Login/Signup Buttons */
+                                <>
+                                    <Link
+                                        href="/signin"
+                                        className="px-4 py-2 rounded-lg text-white/85 hover:text-white hover:bg-white/5 transition"
+                                    >
+                                        Login
+                                    </Link>
+                                    <Link
+                                        href="/signup"
+                                        className="px-4 py-2 rounded-lg bg-black/80 text-white font-medium hover:from-amber-600 hover:to-amber-700 hover:shadow-lg hover:shadow-amber-500/25 hover:-translate-y-0.5 transition-all duration-200 text-sm"
+                                    >
+                                        Sign Up
+                                    </Link>
+                                </>
+                            )}
                         </div>
 
                         {/* Mobile Toggle */}
@@ -176,25 +324,87 @@ export default function Navbar() {
                                 )
                             )}
 
-                            {/* Mobile Auth Buttons */}
+                            {/* Mobile Auth Buttons or User Profile */}
                             <div className="mt-3 space-y-2 px-4">
-                                {/* Login - simple like other nav links */}
-                                <Link
-                                    href="/login"
-                                    onClick={() => setMobileMenuOpen(false)}
-                                    className="block px-4 py-2 rounded-lg text-white/85 hover:bg-white/5 hover:text-white transition"
-                                >
-                                    Login
-                                </Link>
+                                {loading ? (
+                                    /* Mobile Loading state - show skeleton for user profile */
+                                    <div className="px-4 py-3 border-b border-white/10 mb-2">
+                                        <div className="flex items-center gap-3">
+                                            <div className="h-10 w-10 rounded-full bg-white/10 animate-pulse"></div>
+                                            <div>
+                                                <div className="h-4 w-24 bg-white/10 animate-pulse rounded mb-2"></div>
+                                                <div className="h-3 w-32 bg-white/10 animate-pulse rounded"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                ) : isAuthenticated ? (
+                                    /* Mobile User Profile */
+                                    <>
+                                        {/* User Info Header */}
+                                        <div className="px-4 py-3 border-b border-white/10 mb-2">
+                                            <div className="flex items-center gap-3">
+                                                <div className="h-10 w-10 rounded-full bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center text-white font-semibold">
+                                                    {user?.name ? user.name.charAt(0).toUpperCase() : 'U'}
+                                                </div>
+                                                <div>
+                                                    <p className="font-medium text-white">{user?.name || 'User'}</p>
+                                                    <p className="text-sm text-white/60">{user?.email}</p>
+                                                    {userType && (
+                                                        <span className="inline-block px-2 py-1 text-xs font-medium bg-white/10 text-white/80 rounded-full mt-1">
+                                                            {userType === 'consultant' ? 'Consultant' : userType === 'client' ? 'Client' : userType}
+                                                        </span>
+                                                    )}
+                                                </div>
+                                            </div>
+                                        </div>
 
-                                {/* Signup - primary button */}
-                                <Link
-                                    href="/signup"
-                                    onClick={() => setMobileMenuOpen(false)}
-                                    className="block w-full px-4 py-3 rounded-lg bg-black/80 text-white font-medium text-center hover:from-amber-600 hover:to-amber-700 hover:shadow-lg hover:shadow-amber-500/25 transition-all duration-200"
-                                >
-                                    Sign Up
-                                </Link>
+                                        {/* User Menu Items */}
+                                        <Link
+                                            href="/profile"
+                                            onClick={() => setMobileMenuOpen(false)}
+                                            className="flex items-center gap-3 px-4 py-3 rounded-lg text-white/85 hover:bg-white/5 hover:text-white transition"
+                                        >
+                                            <User className="h-4 w-4" />
+                                            <span>Profile</span>
+                                        </Link>
+                                        <Link
+                                            href="/settings"
+                                            onClick={() => setMobileMenuOpen(false)}
+                                            className="flex items-center gap-3 px-4 py-3 rounded-lg text-white/85 hover:bg-white/5 hover:text-white transition"
+                                        >
+                                            <Settings className="h-4 w-4" />
+                                            <span>Settings</span>
+                                        </Link>
+                                        <button
+                                            onClick={() => {
+                                                handleLogout();
+                                                setMobileMenuOpen(false);
+                                            }}
+                                            className="flex items-center gap-3 px-4 py-3 rounded-lg text-white/85 hover:bg-white/5 hover:text-white transition w-full text-left"
+                                        >
+                                            <LogOut className="h-4 w-4" />
+                                            <span>Logout</span>
+                                        </button>
+                                    </>
+                                ) : (
+                                    /* Mobile Login/Signup Buttons */
+                                    <>
+                                        <Link
+                                            href="/signin"
+                                            onClick={() => setMobileMenuOpen(false)}
+                                            className="block px-4 py-2 rounded-lg text-white/85 hover:bg-white/5 hover:text-white transition"
+                                        >
+                                            Login
+                                        </Link>
+                                        <Link
+                                            href="/signup"
+                                            onClick={() => setMobileMenuOpen(false)}
+                                            className="block w-full px-4 py-3 rounded-lg bg-black/80 text-white font-medium text-center hover:from-amber-600 hover:to-amber-700 hover:shadow-lg hover:shadow-amber-500/25 transition-all duration-200"
+                                        >
+                                            Sign Up
+                                        </Link>
+                                    </>
+                                )}
                             </div>
                         </div>
                     </div>
