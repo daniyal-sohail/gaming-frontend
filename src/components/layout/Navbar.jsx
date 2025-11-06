@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Menu, X, ChevronDown, User, Settings, LogOut } from "lucide-react"; // ✅ using lucide-react
+import { Menu, X, ChevronDown, User, Settings, LogOut, Briefcase } from "lucide-react"; // ✅ using lucide-react
 import Link from "next/link";
 import Image from "next/image";
 import { useAuth } from "@/context/AuthContext";
@@ -22,9 +22,10 @@ import { useAuth } from "@/context/AuthContext";
 //     { name: "Enterprise", href: "/enterprise" },
 // ];
 
-// Navigation items for consultants (show "Find Work")
+// Navigation items for consultants (show "Find Work" and "My Works")
 const consultantNavigation = [
     { name: "Find Work", href: "/find-work" },
+    { name: "My Works", href: "/consultants/teams" },
     // ...baseNavigation,
 ];
 

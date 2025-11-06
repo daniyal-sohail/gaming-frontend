@@ -444,8 +444,8 @@ function ConsultantCard({ consultant, consultantTeams, onClick, onAddToTeam }) {
                     <button
                         onClick={onAddToTeam}
                         className={`px-4 py-2 rounded-lg transition-all flex items-center gap-1 ${isInTeam
-                                ? "bg-green-500/10 text-green-400 border border-green-500/20 cursor-default"
-                                : "bg-primary/10 text-primary hover:bg-primary hover:text-white"
+                            ? "bg-green-500/10 text-green-400 border border-green-500/20 cursor-default"
+                            : "bg-primary/10 text-primary hover:bg-primary hover:text-white"
                             }`}
                         title={isInTeam ? "Already in team" : "Add to Team"}
                     >

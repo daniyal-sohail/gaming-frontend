@@ -12,9 +12,14 @@ const ProfilePage = () => {
     const { userType } = useAuth();
     const { clientProfile, consultantProfile, loading, fetchProfile } = useOnboarding();
     const [isEditing, setIsEditing] = useState(false);
+    const [initialFetchDone, setInitialFetchDone] = useState(false);
 
     useEffect(() => {
-        fetchProfile();
+        const loadProfile = async () => {
+            await fetchProfile();
+            setInitialFetchDone(true);
+        };
+        loadProfile();
     }, []);
 
     const profile = userType === "client" ? clientProfile : consultantProfile;
@@ -25,9 +30,17 @@ const ProfilePage = () => {
         (userType === "consultant" && profile.headline)
     );
 
-    if (loading) {
+    const handleSuccess = async () => {
+        // Refetch the profile to ensure we have the latest data
+        await fetchProfile();
+        // Exit edit mode
+        setIsEditing(false);
+    };
+
+    // Show loading only on initial fetch
+    if (loading && !initialFetchDone) {
         return (
-            <div className="min-h-screen flex items-center justify-center">
+            <div className="min-h-screen flex items-center justify-center bg-background">
                 <Loader2 className="w-8 h-8 animate-spin text-primary" />
             </div>
         );
@@ -43,20 +56,14 @@ const ProfilePage = () => {
                             existingProfile={hasProfile ? profile : null}
                             isEditing={isEditing && hasProfile}
                             onCancel={() => setIsEditing(false)}
-                            onSuccess={() => {
-                                setIsEditing(false);
-                                fetchProfile();
-                            }}
+                            onSuccess={handleSuccess}
                         />
                     ) : (
                         <ConsultantProfileForm
                             existingProfile={hasProfile ? profile : null}
                             isEditing={isEditing && hasProfile}
                             onCancel={() => setIsEditing(false)}
-                            onSuccess={() => {
-                                setIsEditing(false);
-                                fetchProfile();
-                            }}
+                            onSuccess={handleSuccess}
                         />
                     )}
                 </div>
@@ -66,8 +73,8 @@ const ProfilePage = () => {
 
     // Show profile display
     return (
-        <div className="min-h-screen bg-background py-8 px-4 mt-32">
-            <div className="max-w-4xl mx-auto">
+        <div className="min-h-screen bg-background py-8 px-4">
+            <div className="max-w-4xl mx-auto mt-16">
                 <ProfileDisplay
                     profile={profile}
                     userType={userType}

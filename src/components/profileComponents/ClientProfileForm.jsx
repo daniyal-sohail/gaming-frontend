@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { useOnboarding } from "@/context/OnboardingContext";
 import { useToast } from "@/context/ToastContext";
-import { Building2, Globe, User, Mail, MapPin, DollarSign, Clock, Languages, X } from "lucide-react";
+import { Building2, Globe, User, Mail, MapPin, X, AlertCircle } from "lucide-react";
 
 const ClientProfileForm = ({ existingProfile, isEditing, onCancel, onSuccess }) => {
     const { completeClientProfile, updateClientProfile, loading } = useOnboarding();
@@ -23,6 +23,8 @@ const ClientProfileForm = ({ existingProfile, isEditing, onCancel, onSuccess }) 
             country: "",
         },
     });
+
+    const [validationErrors, setValidationErrors] = useState({});
 
     useEffect(() => {
         if (existingProfile) {
@@ -46,6 +48,13 @@ const ClientProfileForm = ({ existingProfile, isEditing, onCancel, onSuccess }) 
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData((prev) => ({ ...prev, [name]: value }));
+        if (validationErrors[name]) {
+            setValidationErrors((prev) => {
+                const newErrors = { ...prev };
+                delete newErrors[name];
+                return newErrors;
+            });
+        }
     };
 
     const handleAddressChange = (e) => {
@@ -59,8 +68,32 @@ const ClientProfileForm = ({ existingProfile, isEditing, onCancel, onSuccess }) 
         }));
     };
 
+    const validateForm = () => {
+        const errors = {};
+
+        if (formData.companyName && formData.companyName.length > 100) {
+            errors.companyName = "Company name cannot exceed 100 characters";
+        }
+
+        if (formData.companyWebsite && !/^https?:\/\/.+/.test(formData.companyWebsite)) {
+            errors.companyWebsite = "Please provide a valid website URL";
+        }
+
+        if (formData.billingContactEmail && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.billingContactEmail)) {
+            errors.billingContactEmail = "Please provide a valid email address";
+        }
+
+        setValidationErrors(errors);
+        return Object.keys(errors).length === 0;
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        if (!validateForm()) {
+            showError("Please fix the validation errors");
+            return;
+        }
 
         try {
             if (isEditing) {
@@ -115,9 +148,16 @@ const ClientProfileForm = ({ existingProfile, isEditing, onCancel, onSuccess }) 
                             name="companyName"
                             value={formData.companyName}
                             onChange={handleChange}
-                            className="w-full bg-[#1a1a1a] border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-primary transition-colors"
+                            className={`w-full bg-[#1a1a1a] border ${validationErrors.companyName ? 'border-red-500' : 'border-gray-700'
+                                } rounded-lg px-4 py-3 text-white focus:outline-none focus:border-primary transition-colors`}
                             placeholder="Enter your company name"
                         />
+                        {validationErrors.companyName && (
+                            <p className="mt-2 text-xs text-red-400 flex items-center gap-1">
+                                <AlertCircle className="w-3 h-3" />
+                                {validationErrors.companyName}
+                            </p>
+                        )}
                     </div>
 
                     <div>
@@ -130,9 +170,16 @@ const ClientProfileForm = ({ existingProfile, isEditing, onCancel, onSuccess }) 
                             name="companyWebsite"
                             value={formData.companyWebsite}
                             onChange={handleChange}
-                            className="w-full bg-[#1a1a1a] border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-primary transition-colors"
+                            className={`w-full bg-[#1a1a1a] border ${validationErrors.companyWebsite ? 'border-red-500' : 'border-gray-700'
+                                } rounded-lg px-4 py-3 text-white focus:outline-none focus:border-primary transition-colors`}
                             placeholder="https://example.com"
                         />
+                        {validationErrors.companyWebsite && (
+                            <p className="mt-2 text-xs text-red-400 flex items-center gap-1">
+                                <AlertCircle className="w-3 h-3" />
+                                {validationErrors.companyWebsite}
+                            </p>
+                        )}
                     </div>
                 </div>
 
@@ -168,9 +215,16 @@ const ClientProfileForm = ({ existingProfile, isEditing, onCancel, onSuccess }) 
                                 name="billingContactEmail"
                                 value={formData.billingContactEmail}
                                 onChange={handleChange}
-                                className="w-full bg-[#1a1a1a] border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-primary transition-colors"
+                                className={`w-full bg-[#1a1a1a] border ${validationErrors.billingContactEmail ? 'border-red-500' : 'border-gray-700'
+                                    } rounded-lg px-4 py-3 text-white focus:outline-none focus:border-primary transition-colors`}
                                 placeholder="billing@example.com"
                             />
+                            {validationErrors.billingContactEmail && (
+                                <p className="mt-2 text-xs text-red-400 flex items-center gap-1">
+                                    <AlertCircle className="w-3 h-3" />
+                                    {validationErrors.billingContactEmail}
+                                </p>
+                            )}
                         </div>
                     </div>
 
@@ -240,8 +294,6 @@ const ClientProfileForm = ({ existingProfile, isEditing, onCancel, onSuccess }) 
                     </div>
                 </div>
 
-
-
                 <div className="flex gap-4 pt-4">
                     {isEditing && (
                         <button
@@ -257,7 +309,7 @@ const ClientProfileForm = ({ existingProfile, isEditing, onCancel, onSuccess }) 
                         disabled={loading}
                         className="flex-1 px-6 py-3 bg-primary text-white rounded-lg hover:bg-[#e88540] transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed"
                     >
-                        {loading ? "Saving..." : isEditing ? "Save Changes" : "Complete Profile"}
+                        {loading ? "Saving..." : isEditing ? "Update Profile" : "Complete Profile"}
                     </button>
                 </div>
             </form>

@@ -14,16 +14,30 @@ export const useUser = () => {
 };
 
 export const UserProvider = ({ children }) => {
-    const { user: authUser, isAuthenticated } = useAuth();
+    const { isAuthenticated } = useAuth();
     const [profile, setProfile] = useState(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+    const [successMessage, setSuccessMessage] = useState(null);
+
+    // Helper to extract error message
+    const getErrorMessage = (err) => {
+        return err?.message || err?.data?.message || err?.error || "An error occurred";
+    };
 
     // Clear profile when user logs out
     useEffect(() => {
         if (!isAuthenticated) {
             setProfile(null);
             setError(null);
+            setSuccessMessage(null);
+        }
+    }, [isAuthenticated]);
+
+    // Auto-fetch profile on mount if authenticated
+    useEffect(() => {
+        if (isAuthenticated && !profile) {
+            fetchProfile();
         }
     }, [isAuthenticated]);
 
@@ -43,7 +57,7 @@ export const UserProvider = ({ children }) => {
 
             return response;
         } catch (err) {
-            const errorMessage = err.message || "Failed to fetch profile";
+            const errorMessage = getErrorMessage(err);
             setError(errorMessage);
             console.error("Profile fetch error:", err);
             throw err;
@@ -54,24 +68,30 @@ export const UserProvider = ({ children }) => {
 
     // Update user profile
     const updateProfile = async (profileData) => {
+        if (!isAuthenticated) throw new Error("User not authenticated");
+
         try {
             setError(null);
+            setSuccessMessage(null);
             setLoading(true);
 
             const response = await updateUserProfile(profileData);
 
-            // Backend returns { user, updates } in response.data
-            if (response.data.user) {
+            // Update local profile state
+            if (response.data?.user) {
                 setProfile(response.data.user);
             }
 
-            // Return full response including updates object for component use
+            // Set success message
+            setSuccessMessage(response.message || "Profile updated successfully");
+
+            // Return full response including updates object
             return {
                 ...response,
-                updates: response.data.updates // Expose updates (emailVerificationSent, passwordChanged, etc.)
+                updates: response.data?.updates
             };
         } catch (err) {
-            const errorMessage = err.message || "Failed to update profile";
+            const errorMessage = getErrorMessage(err);
             setError(errorMessage);
             console.error("Profile update error:", err);
             throw err;
@@ -84,12 +104,13 @@ export const UserProvider = ({ children }) => {
     const handleVerifyEmailChange = async (token) => {
         try {
             setError(null);
+            setSuccessMessage(null);
             setLoading(true);
 
             const response = await verifyEmailChange(token);
 
             // Update profile with new verified email
-            if (response.data.email) {
+            if (response.data?.email) {
                 setProfile(prev => prev ? {
                     ...prev,
                     email: response.data.email,
@@ -97,9 +118,10 @@ export const UserProvider = ({ children }) => {
                 } : null);
             }
 
+            setSuccessMessage(response.message || "Email verified successfully");
             return response;
         } catch (err) {
-            const errorMessage = err.message || "Failed to verify email change";
+            const errorMessage = getErrorMessage(err);
             setError(errorMessage);
             console.error("Email verification error:", err);
             throw err;
@@ -108,17 +130,21 @@ export const UserProvider = ({ children }) => {
         }
     };
 
-    // Clear error
-    const clearError = () => setError(null);
+    // Clear messages
+    const clearMessages = () => {
+        setError(null);
+        setSuccessMessage(null);
+    };
 
     const value = {
         profile,
         loading,
         error,
+        successMessage,
         fetchProfile,
         updateProfile,
         handleVerifyEmailChange,
-        clearError,
+        clearMessages,
     };
 
     return <UserContext.Provider value={value}>{children}</UserContext.Provider>;

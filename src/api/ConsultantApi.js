@@ -3,7 +3,7 @@ import API from "@/config/ApiConfig";
 // Get All Consultants with pagination
 export const getAllConsultants = async ({ page = 1, limit = 20, sort = "-createdAt" } = {}) => {
     try {
-        const response = await API.get("/client/consultants", {
+        const response = await API.get("/consultants", {
             params: { page, limit, sort }
         });
         return response.data;
@@ -40,7 +40,7 @@ export const searchConsultants = async (filters = {}, { page = 1, limit = 10, so
             params.maxHourlyRate = maxHourlyRate;
         }
 
-        const response = await API.get("/client/consultants/search", { params });
+        const response = await API.get("/consultants/search", { params });
         return response.data;
     } catch (error) {
         throw error.response?.data || error;
@@ -50,7 +50,7 @@ export const searchConsultants = async (filters = {}, { page = 1, limit = 10, so
 // Get Featured Consultants
 export const getFeaturedConsultants = async (limit = 10) => {
     try {
-        const response = await API.get("/client/consultants/featured", {
+        const response = await API.get("/consultants/featured", {
             params: { limit }
         });
         return response.data;
@@ -63,7 +63,7 @@ export const getFeaturedConsultants = async (limit = 10) => {
 export const getConsultantsBySkills = async (skills, limit = 20) => {
     try {
         const skillsParam = Array.isArray(skills) ? skills.join(',') : skills;
-        const response = await API.get("/client/consultants/skills", {
+        const response = await API.get("/consultants/skills", {
             params: { skills: skillsParam, limit }
         });
         return response.data;
@@ -75,7 +75,7 @@ export const getConsultantsBySkills = async (skills, limit = 20) => {
 // Get Consultants by Experience
 export const getConsultantsByExperience = async (minExperience, limit = 20) => {
     try {
-        const response = await API.get("/client/consultants/experience", {
+        const response = await API.get("/consultants/experience", {
             params: { minExperience, limit }
         });
         return response.data;
@@ -87,7 +87,7 @@ export const getConsultantsByExperience = async (minExperience, limit = 20) => {
 // Get Consultant Details
 export const getConsultantDetails = async (consultantId) => {
     try {
-        const response = await API.get(`/client/consultants/${consultantId}`);
+        const response = await API.get(`/consultants/${consultantId}`);
         return response.data;
     } catch (error) {
         throw error.response?.data || error;

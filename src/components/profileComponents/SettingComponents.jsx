@@ -2,29 +2,40 @@
 import { useEffect, useState } from "react";
 import { useUser } from "@/context/UserContext";
 import { useAuth } from "@/context/AuthContext";
-import { X, Mail, Phone, User, Calendar, Shield, Edit2, Check, AlertCircle } from "lucide-react";
+import { useToast } from "@/context/ToastContext";
+import {
+    X, Mail, User, Calendar, Shield, Edit2, Check,
+    AlertCircle, Lock, Eye, EyeOff, Globe, Key, Info
+} from "lucide-react";
 
 export default function Setting() {
-    const { profile, loading, error, fetchProfile, updateProfile } = useUser();
+    const { profile, loading, error, fetchProfile, updateProfile, clearMessages } = useUser();
     const { user: authUser } = useAuth();
+    const { success, error: showError } = useToast();
+
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [editSection, setEditSection] = useState(null);
     const [formData, setFormData] = useState({
         name: "",
         email: "",
-        bio: "",
     });
     const [passwordData, setPasswordData] = useState({
         currentPassword: "",
         newPassword: "",
         confirmPassword: "",
     });
+    const [showPasswords, setShowPasswords] = useState({
+        current: false,
+        new: false,
+        confirm: false,
+    });
     const [saveLoading, setSaveLoading] = useState(false);
-    const [saveError, setSaveError] = useState(null);
-    const [saveSuccess, setSaveSuccess] = useState(null);
+    const [validationErrors, setValidationErrors] = useState({});
 
     useEffect(() => {
-        fetchProfile();
+        if (!profile) {
+            fetchProfile();
+        }
     }, []);
 
     useEffect(() => {
@@ -32,10 +43,15 @@ export default function Setting() {
             setFormData({
                 name: profile.name || "",
                 email: profile.email || "",
-                bio: profile.bio || "",
             });
         }
     }, [profile]);
+
+    useEffect(() => {
+        return () => {
+            clearMessages();
+        };
+    }, []);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -43,6 +59,13 @@ export default function Setting() {
             ...prev,
             [name]: value,
         }));
+        if (validationErrors[name]) {
+            setValidationErrors((prev) => {
+                const newErrors = { ...prev };
+                delete newErrors[name];
+                return newErrors;
+            });
+        }
     };
 
     const handlePasswordChange = (e) => {
@@ -51,25 +74,38 @@ export default function Setting() {
             ...prev,
             [name]: value,
         }));
+        if (validationErrors[name]) {
+            setValidationErrors((prev) => {
+                const newErrors = { ...prev };
+                delete newErrors[name];
+                return newErrors;
+            });
+        }
+    };
+
+    const togglePasswordVisibility = (field) => {
+        setShowPasswords((prev) => ({
+            ...prev,
+            [field]: !prev[field],
+        }));
     };
 
     const openEditModal = (section) => {
         setEditSection(section);
         setIsEditModalOpen(true);
-        setSaveError(null);
-        setSaveSuccess(null);
+        setValidationErrors({});
+        clearMessages();
     };
 
     const closeEditModal = () => {
         setIsEditModalOpen(false);
         setEditSection(null);
-        setSaveError(null);
-        setSaveSuccess(null);
+        setValidationErrors({});
+        clearMessages();
         if (profile) {
             setFormData({
                 name: profile.name || "",
                 email: profile.email || "",
-                bio: profile.bio || "",
             });
         }
         setPasswordData({
@@ -77,32 +113,79 @@ export default function Setting() {
             newPassword: "",
             confirmPassword: "",
         });
+        setShowPasswords({
+            current: false,
+            new: false,
+            confirm: false,
+        });
+    };
+
+    const validateProfileForm = () => {
+        const errors = {};
+
+        if (!formData.name || formData.name.trim().length < 2) {
+            errors.name = "Name must be at least 2 characters";
+        } else if (formData.name.trim().length > 50) {
+            errors.name = "Name cannot exceed 50 characters";
+        }
+
+        if (formData.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+            errors.email = "Please provide a valid email address";
+        }
+
+        setValidationErrors(errors);
+        return Object.keys(errors).length === 0;
+    };
+
+    const validatePasswordForm = () => {
+        const errors = {};
+
+        if (!passwordData.currentPassword) {
+            errors.currentPassword = "Current password is required";
+        }
+
+        if (!passwordData.newPassword) {
+            errors.newPassword = "New password is required";
+        } else if (passwordData.newPassword.length < 6) {
+            errors.newPassword = "Password must be at least 6 characters";
+        } else if (passwordData.newPassword.length > 128) {
+            errors.newPassword = "Password cannot exceed 128 characters";
+        } else if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(passwordData.newPassword)) {
+            errors.newPassword = "Password must contain uppercase, lowercase, and number";
+        }
+
+        if (!passwordData.confirmPassword) {
+            errors.confirmPassword = "Please confirm your new password";
+        } else if (passwordData.newPassword !== passwordData.confirmPassword) {
+            errors.confirmPassword = "Passwords do not match";
+        }
+
+        setValidationErrors(errors);
+        return Object.keys(errors).length === 0;
     };
 
     const handleSaveProfile = async (e) => {
         e.preventDefault();
+
+        if (!validateProfileForm()) {
+            showError("Please fix the validation errors");
+            return;
+        }
+
         setSaveLoading(true);
-        setSaveError(null);
-        setSaveSuccess(null);
 
         try {
-            // Only send fields that have changed
             const changedFields = {};
 
-            if (formData.name !== profile?.name) {
-                changedFields.name = formData.name;
+            if (formData.name?.trim() !== profile?.name) {
+                changedFields.name = formData.name.trim();
             }
-            if (formData.email !== profile?.email) {
-                changedFields.email = formData.email;
-            }
-
-            if (formData.bio !== profile?.bio) {
-                changedFields.bio = formData.bio;
+            if (formData.email?.trim() !== profile?.email) {
+                changedFields.email = formData.email.trim();
             }
 
-            // If no fields changed, don't make the API call
             if (Object.keys(changedFields).length === 0) {
-                setSaveError("No changes detected");
+                showError("No changes detected");
                 setSaveLoading(false);
                 return;
             }
@@ -110,16 +193,16 @@ export default function Setting() {
             const response = await updateProfile(changedFields);
 
             if (response.updates?.emailVerificationSent) {
-                setSaveSuccess("Profile updated! Verification email sent to your new email address.");
+                success("Profile updated! Verification email sent to your new email address.", 7000);
             } else {
-                setSaveSuccess("Profile updated successfully!");
+                success("Profile updated successfully!");
             }
 
             setTimeout(() => {
                 closeEditModal();
-            }, 2000);
+            }, 1500);
         } catch (err) {
-            setSaveError(err.message || "Failed to update profile");
+            showError(err.message || "Failed to update profile");
         } finally {
             setSaveLoading(false);
         }
@@ -127,35 +210,27 @@ export default function Setting() {
 
     const handleSavePassword = async (e) => {
         e.preventDefault();
+
+        if (!validatePasswordForm()) {
+            showError("Please fix the validation errors");
+            return;
+        }
+
         setSaveLoading(true);
-        setSaveError(null);
-        setSaveSuccess(null);
-
-        if (passwordData.newPassword !== passwordData.confirmPassword) {
-            setSaveError("New passwords do not match");
-            setSaveLoading(false);
-            return;
-        }
-
-        if (passwordData.newPassword.length < 6) {
-            setSaveError("Password must be at least 6 characters");
-            setSaveLoading(false);
-            return;
-        }
 
         try {
-            const response = await updateProfile({
+            await updateProfile({
                 currentPassword: passwordData.currentPassword,
                 newPassword: passwordData.newPassword,
             });
 
-            setSaveSuccess("Password changed successfully!");
+            success("Password changed successfully!");
 
             setTimeout(() => {
                 closeEditModal();
-            }, 2000);
+            }, 1500);
         } catch (err) {
-            setSaveError(err.message || "Failed to change password");
+            showError(err.message || "Failed to change password");
         } finally {
             setSaveLoading(false);
         }
@@ -195,7 +270,12 @@ export default function Setting() {
                 {error && (
                     <div className="mb-6 p-4 bg-red-500/10 border border-red-500/20 rounded-xl flex items-start gap-3">
                         <AlertCircle className="w-5 h-5 text-red-400 mt-0.5 flex-shrink-0" />
-                        <p className="text-red-400 text-sm">{error}</p>
+                        <div className="flex-1">
+                            <p className="text-red-400 text-sm">{error}</p>
+                        </div>
+                        <button onClick={clearMessages} className="text-red-400/60 hover:text-red-400 transition-colors">
+                            <X className="w-4 h-4" />
+                        </button>
                     </div>
                 )}
 
@@ -223,12 +303,6 @@ export default function Setting() {
                                 )}
                             </div>
                         </div>
-
-                        {profile?.bio && (
-                            <div className="mt-4 p-4 bg-[#0d0d0d] rounded-xl border border-gray-800">
-                                <p className="text-gray-300 text-sm leading-relaxed">{profile.bio}</p>
-                            </div>
-                        )}
                     </div>
                 </div>
 
@@ -277,7 +351,7 @@ export default function Setting() {
                         </div>
                         <div className="p-6 space-y-4">
                             <InfoRow
-                                icon={<Shield className="w-5 h-5" />}
+                                icon={<Lock className="w-5 h-5" />}
                                 label="Password"
                                 value={profile?.oauthProvider === "local" ? "••••••••" : "OAuth Login"}
                             />
@@ -340,57 +414,39 @@ export default function Setting() {
             {isEditModalOpen && (
                 <div className="fixed inset-0 z-50 overflow-y-auto">
                     <div className="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
-                        {/* Backdrop */}
-                        <div
-                            className="fixed inset-0 transition-opacity bg-black/80 backdrop-blur-sm"
-                            onClick={closeEditModal}
-                        ></div>
+                        <div className="fixed inset-0 transition-opacity bg-black/80 backdrop-blur-sm" onClick={closeEditModal}></div>
 
-                        {/* Modal Panel */}
                         <div className="inline-block align-bottom bg-[#121212] rounded-2xl text-left overflow-hidden shadow-2xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full border border-gray-800 relative z-10">
-                            {/* Header */}
                             <div className="px-6 py-5 border-b border-gray-800 flex items-center justify-between bg-gradient-to-r from-gray-900 to-[#121212]">
                                 <h3 className="text-xl font-semibold text-white">
                                     {editSection === "profile" ? "Edit Profile" : "Change Password"}
                                 </h3>
-                                <button
-                                    onClick={closeEditModal}
-                                    className="w-8 h-8 rounded-lg hover:bg-gray-800 flex items-center justify-center transition-colors"
-                                >
+                                <button onClick={closeEditModal} className="w-8 h-8 rounded-lg hover:bg-gray-800 flex items-center justify-center transition-colors">
                                     <X className="w-5 h-5 text-gray-400" />
                                 </button>
                             </div>
 
-                            {/* Messages */}
-                            {saveSuccess && (
-                                <div className="mx-6 mt-4 p-4 bg-green-500/10 border border-green-500/20 rounded-xl flex items-start gap-3">
-                                    <Check className="w-5 h-5 text-green-400 mt-0.5 flex-shrink-0" />
-                                    <p className="text-green-400 text-sm">{saveSuccess}</p>
-                                </div>
-                            )}
-
-                            {saveError && (
-                                <div className="mx-6 mt-4 p-4 bg-red-500/10 border border-red-500/20 rounded-xl flex items-start gap-3">
-                                    <AlertCircle className="w-5 h-5 text-red-400 mt-0.5 flex-shrink-0" />
-                                    <p className="text-red-400 text-sm">{saveError}</p>
-                                </div>
-                            )}
-
-                            {/* Form Content */}
                             {editSection === "profile" ? (
                                 <form onSubmit={handleSaveProfile} className="p-6 space-y-5">
                                     <div>
                                         <label className="block text-sm font-medium text-gray-300 mb-2">
-                                            Full Name
+                                            Full Name <span className="text-red-400">*</span>
                                         </label>
                                         <input
                                             type="text"
                                             name="name"
                                             value={formData.name}
                                             onChange={handleInputChange}
-                                            className="w-full px-4 py-3 bg-[#0d0d0d] border border-gray-700 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
+                                            className={`w-full px-4 py-3 bg-[#0d0d0d] border ${validationErrors.name ? 'border-red-500' : 'border-gray-700'
+                                                } rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all`}
                                             placeholder="Enter your full name"
                                         />
+                                        {validationErrors.name && (
+                                            <p className="mt-2 text-xs text-red-400 flex items-center gap-1">
+                                                <AlertCircle className="w-3 h-3" />
+                                                {validationErrors.name}
+                                            </p>
+                                        )}
                                     </div>
 
                                     <div>
@@ -402,28 +458,21 @@ export default function Setting() {
                                             name="email"
                                             value={formData.email}
                                             onChange={handleInputChange}
-                                            className="w-full px-4 py-3 bg-[#0d0d0d] border border-gray-700 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
+                                            className={`w-full px-4 py-3 bg-[#0d0d0d] border ${validationErrors.email ? 'border-red-500' : 'border-gray-700'
+                                                } rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all`}
                                             placeholder="Enter your email"
                                         />
-                                        <p className="mt-2 text-xs text-gray-400">
-                                            Changing your email will require verification
-                                        </p>
-                                    </div>
-
-
-
-                                    <div>
-                                        <label className="block text-sm font-medium text-gray-300 mb-2">
-                                            Bio
-                                        </label>
-                                        <textarea
-                                            name="bio"
-                                            value={formData.bio}
-                                            onChange={handleInputChange}
-                                            rows={4}
-                                            className="w-full px-4 py-3 bg-[#0d0d0d] border border-gray-700 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all resize-none"
-                                            placeholder="Tell us about yourself"
-                                        />
+                                        {validationErrors.email ? (
+                                            <p className="mt-2 text-xs text-red-400 flex items-center gap-1">
+                                                <AlertCircle className="w-3 h-3" />
+                                                {validationErrors.email}
+                                            </p>
+                                        ) : (
+                                            <p className="mt-2 text-xs text-gray-400 flex items-center gap-1">
+                                                <Info className="w-3 h-3" />
+                                                Changing your email will require verification
+                                            </p>
+                                        )}
                                     </div>
 
                                     <div className="flex gap-3 pt-4">
@@ -448,47 +497,92 @@ export default function Setting() {
                                 <form onSubmit={handleSavePassword} className="p-6 space-y-5">
                                     <div>
                                         <label className="block text-sm font-medium text-gray-300 mb-2">
-                                            Current Password
+                                            Current Password <span className="text-red-400">*</span>
                                         </label>
-                                        <input
-                                            type="password"
-                                            name="currentPassword"
-                                            value={passwordData.currentPassword}
-                                            onChange={handlePasswordChange}
-                                            className="w-full px-4 py-3 bg-[#0d0d0d] border border-gray-700 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 transition-all"
-                                            placeholder="Enter current password"
-                                            required
-                                        />
+                                        <div className="relative">
+                                            <input
+                                                type={showPasswords.current ? "text" : "password"}
+                                                name="currentPassword"
+                                                value={passwordData.currentPassword}
+                                                onChange={handlePasswordChange}
+                                                className={`w-full px-4 py-3 pr-12 bg-[#0d0d0d] border ${validationErrors.currentPassword ? 'border-red-500' : 'border-gray-700'
+                                                    } rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 transition-all`}
+                                                placeholder="Enter current password"
+                                            />
+                                            <button
+                                                type="button"
+                                                onClick={() => togglePasswordVisibility('current')}
+                                                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white transition-colors"
+                                            >
+                                                {showPasswords.current ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                                            </button>
+                                        </div>
+                                        {validationErrors.currentPassword && (
+                                            <p className="mt-2 text-xs text-red-400 flex items-center gap-1">
+                                                <AlertCircle className="w-3 h-3" />
+                                                {validationErrors.currentPassword}
+                                            </p>
+                                        )}
                                     </div>
 
                                     <div>
                                         <label className="block text-sm font-medium text-gray-300 mb-2">
-                                            New Password
+                                            New Password <span className="text-red-400">*</span>
                                         </label>
-                                        <input
-                                            type="password"
-                                            name="newPassword"
-                                            value={passwordData.newPassword}
-                                            onChange={handlePasswordChange}
-                                            className="w-full px-4 py-3 bg-[#0d0d0d] border border-gray-700 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 transition-all"
-                                            placeholder="Enter new password"
-                                            required
-                                        />
+                                        <div className="relative">
+                                            <input
+                                                type={showPasswords.new ? "text" : "password"}
+                                                name="newPassword"
+                                                value={passwordData.newPassword}
+                                                onChange={handlePasswordChange}
+                                                className={`w-full px-4 py-3 pr-12 bg-[#0d0d0d] border ${validationErrors.newPassword ? 'border-red-500' : 'border-gray-700'
+                                                    } rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 transition-all`}
+                                                placeholder="Enter new password"
+                                            />
+                                            <button
+                                                type="button"
+                                                onClick={() => togglePasswordVisibility('new')}
+                                                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white transition-colors"
+                                            >
+                                                {showPasswords.new ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                                            </button>
+                                        </div>
+                                        {validationErrors.newPassword && (
+                                            <p className="mt-2 text-xs text-red-400 flex items-center gap-1">
+                                                <AlertCircle className="w-3 h-3" />
+                                                {validationErrors.newPassword}
+                                            </p>
+                                        )}
                                     </div>
 
                                     <div>
                                         <label className="block text-sm font-medium text-gray-300 mb-2">
-                                            Confirm New Password
+                                            Confirm New Password <span className="text-red-400">*</span>
                                         </label>
-                                        <input
-                                            type="password"
-                                            name="confirmPassword"
-                                            value={passwordData.confirmPassword}
-                                            onChange={handlePasswordChange}
-                                            className="w-full px-4 py-3 bg-[#0d0d0d] border border-gray-700 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 transition-all"
-                                            placeholder="Confirm new password"
-                                            required
-                                        />
+                                        <div className="relative">
+                                            <input
+                                                type={showPasswords.confirm ? "text" : "password"}
+                                                name="confirmPassword"
+                                                value={passwordData.confirmPassword}
+                                                onChange={handlePasswordChange}
+                                                className={`w-full px-4 py-3 pr-12 bg-[#0d0d0d] border ${validationErrors.confirmPassword ? 'border-red-500' : 'border-gray-700'
+                                                    } rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 transition-all`}
+                                                placeholder="Confirm new password"
+                                            />
+                                            <button
+                                                type="button"
+                                                onClick={() => togglePasswordVisibility('confirm')}
+                                                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white transition-colors"
+                                            >
+                                                {showPasswords.confirm ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                                            </button>
+                                        </div>
+                                        {validationErrors.confirmPassword && (
+                                            <p className="mt-2 text-xs text-red-400 flex items-center gap-1">
+                                                <AlertCircle className="w-3 h-3" />
+                                                {validationErrors.confirmPassword}
+                                            </p>
+                                        )}
                                     </div>
 
                                     <div className="flex gap-3 pt-4">
@@ -518,7 +612,6 @@ export default function Setting() {
     );
 }
 
-// Info Row Component
 function InfoRow({ icon, label, value }) {
     return (
         <div className="flex items-start gap-4 p-3 rounded-xl hover:bg-[#0d0d0d] transition-colors">

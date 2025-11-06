@@ -8,6 +8,7 @@ import ProtectedRoute from "@/components/layout/ProtectedRoute";
 import { UserProvider } from "@/context/UserContext";
 import { ConsultantProvider } from "@/context/ConsultantContext";
 import { TeamSelectionProvider } from "@/context/TeamSelectionContext";
+import { ConsultantTeamProvider } from "@/context/ConsultantTeamContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -42,11 +43,13 @@ export default function RootLayout({ children }) {
               <OnboardingProvider>
                 <ConsultantProvider>
                   <TeamSelectionProvider>
-                    <RouterManager>
-                      <ProtectedRoute>
-                        {children}
-                      </ProtectedRoute>
-                    </RouterManager>
+                    <ConsultantTeamProvider>
+                      <RouterManager>
+                        <ProtectedRoute>
+                          {children}
+                        </ProtectedRoute>
+                      </RouterManager>
+                    </ConsultantTeamProvider>
                   </TeamSelectionProvider>
                 </ConsultantProvider>
               </OnboardingProvider>

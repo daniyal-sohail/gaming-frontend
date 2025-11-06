@@ -28,9 +28,26 @@ export const OnboardingProvider = ({ children }) => {
     const [successMessage, setSuccessMessage] = useState(null);
 
     // Helper to extract error message
-    const getErrorMessage = (err, defaultMsg) => {
-        return err?.message || err?.data?.message || err?.error || defaultMsg;
+    const getErrorMessage = (err) => {
+        return err?.message || err?.data?.message || err?.error || "An error occurred";
     };
+
+    // Clear profiles when user logs out
+    useEffect(() => {
+        if (!isAuthenticated) {
+            setClientProfile(null);
+            setConsultantProfile(null);
+            setError(null);
+            setSuccessMessage(null);
+        }
+    }, [isAuthenticated]);
+
+    // Auto-fetch profile on mount if authenticated
+    useEffect(() => {
+        if (isAuthenticated && userType) {
+            fetchProfile();
+        }
+    }, [isAuthenticated, userType]);
 
     // ----------------- FETCH PROFILE -----------------
     const fetchProfile = async () => {
@@ -47,16 +64,16 @@ export const OnboardingProvider = ({ children }) => {
                 setConsultantProfile(response.data ?? response);
             }
         } catch (err) {
-            const message = getErrorMessage(err, "Failed to fetch profile");
-            setError(message);
+            // Don't set error for 404 - user might not have completed profile yet
+            if (err?.statusCode !== 404 && err?.status !== 404) {
+                const message = getErrorMessage(err);
+                setError(message);
+                console.error("Profile fetch error:", err);
+            }
         } finally {
             setLoading(false);
         }
     };
-
-    useEffect(() => {
-        fetchProfile();
-    }, [isAuthenticated, userType]);
 
     // ----------------- CLIENT -----------------
     const completeClientProfile = async (profileData) => {
@@ -72,8 +89,9 @@ export const OnboardingProvider = ({ children }) => {
             setSuccessMessage(response?.message || "Client profile saved successfully");
             return response;
         } catch (err) {
-            const message = getErrorMessage(err, "Failed to save client profile");
+            const message = getErrorMessage(err);
             setError(message);
+            console.error("Complete client profile error:", err);
             throw err;
         } finally {
             setLoading(false);
@@ -93,8 +111,9 @@ export const OnboardingProvider = ({ children }) => {
             setSuccessMessage(response?.message || "Client profile updated successfully");
             return response;
         } catch (err) {
-            const message = getErrorMessage(err, "Failed to update client profile");
+            const message = getErrorMessage(err);
             setError(message);
+            console.error("Update client profile error:", err);
             throw err;
         } finally {
             setLoading(false);
@@ -115,8 +134,9 @@ export const OnboardingProvider = ({ children }) => {
             setSuccessMessage(response?.message || "Consultant profile saved successfully");
             return response;
         } catch (err) {
-            const message = getErrorMessage(err, "Failed to save consultant profile");
+            const message = getErrorMessage(err);
             setError(message);
+            console.error("Complete consultant profile error:", err);
             throw err;
         } finally {
             setLoading(false);
@@ -136,8 +156,9 @@ export const OnboardingProvider = ({ children }) => {
             setSuccessMessage(response?.message || "Consultant profile updated successfully");
             return response;
         } catch (err) {
-            const message = getErrorMessage(err, "Failed to update consultant profile");
+            const message = getErrorMessage(err);
             setError(message);
+            console.error("Update consultant profile error:", err);
             throw err;
         } finally {
             setLoading(false);

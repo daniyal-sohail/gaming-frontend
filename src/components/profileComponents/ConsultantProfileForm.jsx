@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { useOnboarding } from "@/context/OnboardingContext";
 import { useToast } from "@/context/ToastContext";
-import { User, Briefcase, DollarSign, FileText, Upload, MapPin, Clock, Award, Link as LinkIcon, X } from "lucide-react";
+import { User, Briefcase, DollarSign, FileText, MapPin, Clock, Award, Link as LinkIcon, X, AlertCircle } from "lucide-react";
 
 const ConsultantProfileForm = ({ existingProfile, isEditing, onCancel, onSuccess }) => {
     const { completeConsultantProfile, updateConsultantProfile, loading } = useOnboarding();
@@ -14,7 +14,6 @@ const ConsultantProfileForm = ({ existingProfile, isEditing, onCancel, onSuccess
         bio: "",
         roles: "",
         skills: "",
-        badges: "",
         level: "LV1",
         baseRate: {
             currency: "USD",
@@ -26,6 +25,7 @@ const ConsultantProfileForm = ({ existingProfile, isEditing, onCancel, onSuccess
         availability: {
             timezone: "UTC",
             hoursPerWeek: 40,
+            hoursPerDay: 8,
             availableFrom: "",
             availableTo: "",
             remote: true,
@@ -34,6 +34,7 @@ const ConsultantProfileForm = ({ existingProfile, isEditing, onCancel, onSuccess
         portfolioLinks: "",
     });
 
+    const [validationErrors, setValidationErrors] = useState({});
 
     useEffect(() => {
         if (existingProfile) {
@@ -42,7 +43,6 @@ const ConsultantProfileForm = ({ existingProfile, isEditing, onCancel, onSuccess
                 bio: existingProfile.bio || "",
                 roles: Array.isArray(existingProfile.roles) ? existingProfile.roles.join(", ") : existingProfile.roles || "",
                 skills: Array.isArray(existingProfile.skills) ? existingProfile.skills.join(", ") : existingProfile.skills || "",
-                badges: Array.isArray(existingProfile.badges) ? existingProfile.badges.join(", ") : existingProfile.badges || "",
                 level: existingProfile.level || "LV1",
                 baseRate: {
                     currency: existingProfile.baseRate?.currency || "USD",
@@ -54,6 +54,7 @@ const ConsultantProfileForm = ({ existingProfile, isEditing, onCancel, onSuccess
                 availability: {
                     timezone: existingProfile.availability?.timezone || "UTC",
                     hoursPerWeek: existingProfile.availability?.hoursPerWeek || 40,
+                    hoursPerDay: existingProfile.availability?.hoursPerDay || 8,
                     availableFrom: existingProfile.availability?.availableFrom || "",
                     availableTo: existingProfile.availability?.availableTo || "",
                     remote: existingProfile.availability?.remote !== undefined ? existingProfile.availability.remote : true,
@@ -61,13 +62,19 @@ const ConsultantProfileForm = ({ existingProfile, isEditing, onCancel, onSuccess
                 locations: Array.isArray(existingProfile.locations) ? existingProfile.locations.join(", ") : existingProfile.locations || "",
                 portfolioLinks: Array.isArray(existingProfile.portfolioLinks) ? existingProfile.portfolioLinks.join(", ") : existingProfile.portfolioLinks || "",
             });
-
         }
     }, [existingProfile]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData((prev) => ({ ...prev, [name]: value }));
+        if (validationErrors[name]) {
+            setValidationErrors((prev) => {
+                const newErrors = { ...prev };
+                delete newErrors[name];
+                return newErrors;
+            });
+        }
     };
 
     const handleBaseRateChange = (e) => {
@@ -83,32 +90,100 @@ const ConsultantProfileForm = ({ existingProfile, isEditing, onCancel, onSuccess
 
     const handleAvailabilityChange = (e) => {
         const { name, value, type, checked } = e.target;
-        setFormData((prev) => ({
-            ...prev,
-            availability: {
+        setFormData((prev) => {
+            const newAvailability = {
                 ...prev.availability,
-                [name]: type === "checkbox" ? checked : (name === "hoursPerWeek" ? Number(value) : value),
-            },
-        }));
+                [name]: type === "checkbox" ? checked : (name === "hoursPerWeek" || name === "hoursPerDay" ? Number(value) || 0 : value),
+            };
+
+            // Auto-calculate hoursPerWeek when hoursPerDay changes
+            // Only auto-calculate if hoursPerWeek hasn't been manually set or is at default (40)
+            if (name === "hoursPerDay" && value) {
+                const newHoursPerDay = Number(value);
+                const currentHoursPerWeek = prev.availability.hoursPerWeek;
+                
+                // Auto-update hoursPerWeek if it's default (40) or matches calculated value from old hoursPerDay
+                // This allows manual override while providing helpful auto-calculation
+                if (currentHoursPerWeek === 40 || 
+                    currentHoursPerWeek === (prev.availability.hoursPerDay || 8) * 5 ||
+                    !currentHoursPerWeek) {
+                    newAvailability.hoursPerWeek = newHoursPerDay * 5;
+                }
+            }
+
+            return {
+                ...prev,
+                availability: newAvailability,
+            };
+        });
     };
 
+    const validateForm = () => {
+        const errors = {};
 
+        if (formData.headline && formData.headline.length > 200) {
+            errors.headline = "Headline cannot exceed 200 characters";
+        }
+
+        if (formData.bio && formData.bio.length > 2000) {
+            errors.bio = "Bio cannot exceed 2000 characters";
+        }
+
+        if (formData.experienceYears && (formData.experienceYears < 0 || formData.experienceYears > 50)) {
+            errors.experienceYears = "Experience must be between 0 and 50 years";
+        }
+
+        if (formData.availability.hoursPerDay && (formData.availability.hoursPerDay < 1 || formData.availability.hoursPerDay > 24)) {
+            errors.hoursPerDay = "Hours per day must be between 1 and 24";
+        }
+
+        if (formData.availability.hoursPerWeek && (formData.availability.hoursPerWeek < 1 || formData.availability.hoursPerWeek > 168)) {
+            errors.hoursPerWeek = "Hours per week must be between 1 and 168";
+        }
+
+        setValidationErrors(errors);
+        return Object.keys(errors).length === 0;
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
+        if (!validateForm()) {
+            showError("Please fix the validation errors");
+            return;
+        }
+
         try {
-            // Convert comma-separated strings to arrays
-            const submitData = {
-                ...formData,
-                roles: formData.roles.split(",").map(r => r.trim()).filter(Boolean),
-                skills: formData.skills.split(",").map(s => s.trim()).filter(Boolean),
-                badges: formData.badges ? formData.badges.split(",").map(b => b.trim()).filter(Boolean) : [],
-                locations: formData.locations.split(",").map(l => l.trim()).filter(Boolean),
-                portfolioLinks: formData.portfolioLinks ? formData.portfolioLinks.split(",").map(p => p.trim()).filter(Boolean) : [],
+            // Clean numeric values - convert 0 or empty to undefined for proper backend handling
+            const cleanedAvailability = {
+                ...formData.availability,
+                hoursPerDay: formData.availability.hoursPerDay && formData.availability.hoursPerDay > 0 
+                    ? formData.availability.hoursPerDay 
+                    : undefined,
+                hoursPerWeek: formData.availability.hoursPerWeek && formData.availability.hoursPerWeek > 0 
+                    ? formData.availability.hoursPerWeek 
+                    : undefined,
+                timezone: formData.availability.timezone || undefined,
+                remote: formData.availability.remote !== undefined ? formData.availability.remote : true,
+                availableFrom: formData.availability.availableFrom || undefined,
+                availableTo: formData.availability.availableTo || undefined,
             };
 
+            // Remove undefined values from availability object
+            Object.keys(cleanedAvailability).forEach(key => {
+                if (cleanedAvailability[key] === undefined) {
+                    delete cleanedAvailability[key];
+                }
+            });
 
+            const submitData = {
+                ...formData,
+                roles: formData.roles ? formData.roles.split(",").map(r => r.trim()).filter(Boolean) : [],
+                skills: formData.skills ? formData.skills.split(",").map(s => s.trim()).filter(Boolean) : [],
+                locations: formData.locations ? formData.locations.split(",").map(l => l.trim()).filter(Boolean) : [],
+                portfolioLinks: formData.portfolioLinks ? formData.portfolioLinks.split(",").map(p => p.trim()).filter(Boolean) : [],
+                availability: Object.keys(cleanedAvailability).length > 0 ? cleanedAvailability : undefined,
+            };
 
             if (isEditing) {
                 await updateConsultantProfile(submitData);
@@ -162,9 +237,16 @@ const ConsultantProfileForm = ({ existingProfile, isEditing, onCancel, onSuccess
                             name="headline"
                             value={formData.headline}
                             onChange={handleChange}
-                            className="w-full bg-[#1a1a1a] border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-primary transition-colors"
+                            className={`w-full bg-[#1a1a1a] border ${validationErrors.headline ? 'border-red-500' : 'border-gray-700'
+                                } rounded-lg px-4 py-3 text-white focus:outline-none focus:border-primary transition-colors`}
                             placeholder="e.g., Senior Strategy Consultant | MBA | 10+ Years Experience"
                         />
+                        {validationErrors.headline && (
+                            <p className="mt-2 text-xs text-red-400 flex items-center gap-1">
+                                <AlertCircle className="w-3 h-3" />
+                                {validationErrors.headline}
+                            </p>
+                        )}
                     </div>
 
                     <div>
@@ -177,9 +259,16 @@ const ConsultantProfileForm = ({ existingProfile, isEditing, onCancel, onSuccess
                             value={formData.bio}
                             onChange={handleChange}
                             rows={5}
-                            className="w-full bg-[#1a1a1a] border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-primary transition-colors resize-none"
+                            className={`w-full bg-[#1a1a1a] border ${validationErrors.bio ? 'border-red-500' : 'border-gray-700'
+                                } rounded-lg px-4 py-3 text-white focus:outline-none focus:border-primary transition-colors resize-none`}
                             placeholder="Tell us about your professional background, expertise, and what makes you unique..."
                         />
+                        {validationErrors.bio && (
+                            <p className="mt-2 text-xs text-red-400 flex items-center gap-1">
+                                <AlertCircle className="w-3 h-3" />
+                                {validationErrors.bio}
+                            </p>
+                        )}
                     </div>
                 </div>
 
@@ -243,21 +332,6 @@ const ConsultantProfileForm = ({ existingProfile, isEditing, onCancel, onSuccess
 
                     <div>
                         <label className="flex items-center gap-2 text-sm font-medium text-gray-300 mb-2">
-                            <Award className="w-4 h-4 text-primary" />
-                            Badges / Certifications (comma-separated)
-                        </label>
-                        <input
-                            type="text"
-                            name="badges"
-                            value={formData.badges}
-                            onChange={handleChange}
-                            className="w-full bg-[#1a1a1a] border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-primary transition-colors"
-                            placeholder="PMP, Six Sigma, MBA, CFA"
-                        />
-                    </div>
-
-                    <div>
-                        <label className="flex items-center gap-2 text-sm font-medium text-gray-300 mb-2">
                             <Clock className="w-4 h-4 text-primary" />
                             Years of Experience
                         </label>
@@ -267,9 +341,17 @@ const ConsultantProfileForm = ({ existingProfile, isEditing, onCancel, onSuccess
                             value={formData.experienceYears}
                             onChange={handleChange}
                             min="0"
-                            className="w-full bg-[#1a1a1a] border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-primary transition-colors"
+                            max="50"
+                            className={`w-full bg-[#1a1a1a] border ${validationErrors.experienceYears ? 'border-red-500' : 'border-gray-700'
+                                } rounded-lg px-4 py-3 text-white focus:outline-none focus:border-primary transition-colors`}
                             placeholder="5"
                         />
+                        {validationErrors.experienceYears && (
+                            <p className="mt-2 text-xs text-red-400 flex items-center gap-1">
+                                <AlertCircle className="w-3 h-3" />
+                                {validationErrors.experienceYears}
+                            </p>
+                        )}
                     </div>
                 </div>
 
@@ -385,9 +467,19 @@ const ConsultantProfileForm = ({ existingProfile, isEditing, onCancel, onSuccess
                                 onChange={handleAvailabilityChange}
                                 min="1"
                                 max="168"
-                                className="w-full bg-[#1a1a1a] border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-primary transition-colors"
+                                className={`w-full bg-[#1a1a1a] border ${validationErrors.hoursPerWeek ? 'border-red-500' : 'border-gray-700'
+                                    } rounded-lg px-4 py-3 text-white focus:outline-none focus:border-primary transition-colors`}
                                 placeholder="40"
                             />
+                            {validationErrors.hoursPerWeek && (
+                                <p className="mt-2 text-xs text-red-400 flex items-center gap-1">
+                                    <AlertCircle className="w-3 h-3" />
+                                    {validationErrors.hoursPerWeek}
+                                </p>
+                            )}
+                            <p className="mt-1 text-xs text-gray-500">
+                                You can override the auto-calculated value
+                            </p>
                         </div>
                     </div>
 
@@ -395,29 +487,28 @@ const ConsultantProfileForm = ({ existingProfile, isEditing, onCancel, onSuccess
                         <div>
                             <label className="flex items-center gap-2 text-sm font-medium text-gray-300 mb-2">
                                 <Clock className="w-4 h-4 text-primary" />
-                                Available From (Optional)
+                                Hours Per Day
                             </label>
                             <input
-                                type="date"
-                                name="availableFrom"
-                                value={formData.availability.availableFrom}
+                                type="number"
+                                name="hoursPerDay"
+                                value={formData.availability.hoursPerDay}
                                 onChange={handleAvailabilityChange}
-                                className="w-full bg-[#1a1a1a] border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-primary transition-colors"
+                                min="1"
+                                max="24"
+                                className={`w-full bg-[#1a1a1a] border ${validationErrors.hoursPerDay ? 'border-red-500' : 'border-gray-700'
+                                    } rounded-lg px-4 py-3 text-white focus:outline-none focus:border-primary transition-colors`}
+                                placeholder="8"
                             />
-                        </div>
-
-                        <div>
-                            <label className="flex items-center gap-2 text-sm font-medium text-gray-300 mb-2">
-                                <Clock className="w-4 h-4 text-primary" />
-                                Available To (Optional)
-                            </label>
-                            <input
-                                type="date"
-                                name="availableTo"
-                                value={formData.availability.availableTo}
-                                onChange={handleAvailabilityChange}
-                                className="w-full bg-[#1a1a1a] border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-primary transition-colors"
-                            />
+                            {validationErrors.hoursPerDay && (
+                                <p className="mt-2 text-xs text-red-400 flex items-center gap-1">
+                                    <AlertCircle className="w-3 h-3" />
+                                    {validationErrors.hoursPerDay}
+                                </p>
+                            )}
+                            <p className="mt-1 text-xs text-gray-500">
+                                Weekly hours will auto-calculate (hours/day × 5)
+                            </p>
                         </div>
                     </div>
 
@@ -471,8 +562,6 @@ const ConsultantProfileForm = ({ existingProfile, isEditing, onCancel, onSuccess
                             placeholder="https://portfolio.com, https://linkedin.com/in/yourname"
                         />
                     </div>
-
-
                 </div>
 
                 <div className="flex gap-4 pt-4">
@@ -488,7 +577,7 @@ const ConsultantProfileForm = ({ existingProfile, isEditing, onCancel, onSuccess
                     <button
                         type="submit"
                         disabled={loading}
-                        className="flex-1 px-6 py-3 bg-primary text-white rounded-lg hover:bg-[#e88540] transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="flex-1 px-6 py-3 bg-primary text-white rounded-lg hover:bg-[#e88540] transition-all hover:scale-105 active:scale-95 font-medium disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-primary/20"
                     >
                         {loading ? "Saving..." : isEditing ? "Save Changes" : "Complete Profile"}
                     </button>

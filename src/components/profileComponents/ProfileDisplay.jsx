@@ -15,7 +15,6 @@ import {
     Briefcase,
     Award,
     Link as LinkIcon,
-    Languages,
 } from "lucide-react";
 
 const ProfileDisplay = ({ profile, userType, onEdit }) => {
@@ -26,18 +25,20 @@ const ProfileDisplay = ({ profile, userType, onEdit }) => {
             {/* Header Card */}
             <div className="bg-[#0f0f0f] border border-gray-800 rounded-xl overflow-hidden">
                 <div className="bg-gradient-to-r from-primary/20 to-primary/5 p-8 border-b border-gray-800">
-                    <div className="flex items-start justify-between">
+                    <div className="flex flex-col sm:flex-row items-start justify-between gap-4">
                         <div className="flex-1">
-                            <h1 className="text-4xl font-bold text-white mb-2">
-                                {userType === "client" ? profile.companyName : profile.headline || "Consultant Profile"}
+                            <h1 className="text-3xl sm:text-4xl font-bold text-white mb-2">
+                                {userType === "client" ? profile.companyName || "Company Profile" : profile.headline || "Consultant Profile"}
                             </h1>
-                            {userType === "consultant" && profile.level && (
-                                <div className="flex items-center gap-2 mb-2">
-                                    <span className="px-3 py-1 bg-primary/20 border border-primary/30 text-primary rounded-full text-sm font-medium">
-                                        {profile.level}
-                                    </span>
-                                    {profile.experienceYears && (
-                                        <span className="text-gray-300">
+                            {userType === "consultant" && (
+                                <div className="flex flex-wrap items-center gap-2">
+                                    {profile.level && (
+                                        <span className="px-3 py-1 bg-primary/20 border border-primary/30 text-primary rounded-full text-sm font-medium">
+                                            {profile.level}
+                                        </span>
+                                    )}
+                                    {profile.experienceYears !== undefined && (
+                                        <span className="text-gray-300 text-sm">
                                             {profile.experienceYears} years experience
                                         </span>
                                     )}
@@ -46,7 +47,7 @@ const ProfileDisplay = ({ profile, userType, onEdit }) => {
                         </div>
                         <button
                             onClick={onEdit}
-                            className="flex items-center gap-2 px-5 py-2.5 bg-primary text-white rounded-lg hover:bg-[#e88540] transition-colors font-medium"
+                            className="flex items-center gap-2 px-5 py-2.5 bg-primary text-white rounded-lg hover:bg-[#e88540] transition-all hover:scale-105 active:scale-95 font-medium shadow-lg shadow-primary/20"
                         >
                             <Edit className="w-4 h-4" />
                             Edit Profile
@@ -75,8 +76,11 @@ const ClientProfileContent = ({ profile }) => {
     return (
         <>
             {/* Company Information */}
-            <div className="bg-[#0f0f0f] border border-gray-800 rounded-xl p-8">
-                <h2 className="text-xl font-bold text-white mb-6">Company Information</h2>
+            <div className="bg-[#0f0f0f] border border-gray-800 rounded-xl p-8 hover:border-gray-700 transition-colors">
+                <h2 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
+                    <Building2 className="w-5 h-5 text-primary" />
+                    Company Information
+                </h2>
                 <div className="grid md:grid-cols-2 gap-6">
                     {profile.companyName && (
                         <InfoItem
@@ -97,8 +101,11 @@ const ClientProfileContent = ({ profile }) => {
             </div>
 
             {/* Billing Information */}
-            <div className="bg-[#0f0f0f] border border-gray-800 rounded-xl p-8">
-                <h2 className="text-xl font-bold text-white mb-6">Billing Information</h2>
+            <div className="bg-[#0f0f0f] border border-gray-800 rounded-xl p-8 hover:border-gray-700 transition-colors">
+                <h2 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
+                    <Mail className="w-5 h-5 text-primary" />
+                    Billing Information
+                </h2>
                 <div className="space-y-6">
                     <div className="grid md:grid-cols-2 gap-6">
                         {profile.billingContactName && (
@@ -118,12 +125,12 @@ const ClientProfileContent = ({ profile }) => {
                         )}
                     </div>
                     {hasAddress && (
-                        <div>
-                            <div className="flex items-center gap-2 mb-2">
+                        <div className="p-4 bg-[#1a1a1a] rounded-lg border border-gray-800">
+                            <div className="flex items-center gap-2 mb-3">
                                 <MapPin className="w-4 h-4 text-primary" />
                                 <span className="text-sm text-gray-400 font-medium">Billing Address</span>
                             </div>
-                            <div className="text-white font-medium pl-6 space-y-1">
+                            <div className="text-white font-medium space-y-1">
                                 {profile.billingAddress.line1 && <p>{profile.billingAddress.line1}</p>}
                                 {profile.billingAddress.line2 && <p>{profile.billingAddress.line2}</p>}
                                 <p>
@@ -139,8 +146,6 @@ const ClientProfileContent = ({ profile }) => {
                     )}
                 </div>
             </div>
-
-
         </>
     );
 };
@@ -158,31 +163,34 @@ const ConsultantProfileContent = ({ profile }) => {
     return (
         <>
             {/* Professional Overview */}
-            <div className="bg-[#0f0f0f] border border-gray-800 rounded-xl p-8">
-                <h2 className="text-xl font-bold text-white mb-6">Professional Overview</h2>
+            <div className="bg-[#0f0f0f] border border-gray-800 rounded-xl p-8 hover:border-gray-700 transition-colors">
+                <h2 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
+                    <Briefcase className="w-5 h-5 text-primary" />
+                    Professional Overview
+                </h2>
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {baseRate.hourly && (
+                    {baseRate.hourly > 0 && (
                         <InfoItem
                             icon={DollarSign}
                             label="Hourly Rate"
                             value={`${baseRate.currency || 'USD'} ${baseRate.hourly}/hour`}
                         />
                     )}
-                    {baseRate.daily && (
+                    {baseRate.daily > 0 && (
                         <InfoItem
                             icon={DollarSign}
                             label="Daily Rate"
                             value={`${baseRate.currency || 'USD'} ${baseRate.daily}/day`}
                         />
                     )}
-                    {baseRate.weekly && (
+                    {baseRate.weekly > 0 && (
                         <InfoItem
                             icon={DollarSign}
                             label="Weekly Rate"
                             value={`${baseRate.currency || 'USD'} ${baseRate.weekly}/week`}
                         />
                     )}
-                    {profile.experienceYears !== undefined && (
+                    {profile.experienceYears !== undefined && profile.experienceYears > 0 && (
                         <InfoItem
                             icon={Clock}
                             label="Experience"
@@ -194,6 +202,13 @@ const ConsultantProfileContent = ({ profile }) => {
                             icon={Clock}
                             label="Hours Per Week"
                             value={`${availability.hoursPerWeek} hours`}
+                        />
+                    )}
+                    {availability.hoursPerDay && (
+                        <InfoItem
+                            icon={Clock}
+                            label="Hours Per Day"
+                            value={`${availability.hoursPerDay} hours`}
                         />
                     )}
                     {availability.timezone && (
@@ -222,8 +237,11 @@ const ConsultantProfileContent = ({ profile }) => {
 
             {/* Bio */}
             {profile.bio && (
-                <div className="bg-[#0f0f0f] border border-gray-800 rounded-xl p-8">
-                    <h2 className="text-xl font-bold text-white mb-4">Professional Bio</h2>
+                <div className="bg-[#0f0f0f] border border-gray-800 rounded-xl p-8 hover:border-gray-700 transition-colors">
+                    <h2 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
+                        <FileText className="w-5 h-5 text-primary" />
+                        Professional Bio
+                    </h2>
                     <p className="text-gray-300 leading-relaxed whitespace-pre-line">
                         {profile.bio}
                     </p>
@@ -232,7 +250,7 @@ const ConsultantProfileContent = ({ profile }) => {
 
             {/* Roles */}
             {roles.length > 0 && (
-                <div className="bg-[#0f0f0f] border border-gray-800 rounded-xl p-8">
+                <div className="bg-[#0f0f0f] border border-gray-800 rounded-xl p-8 hover:border-gray-700 transition-colors">
                     <h2 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
                         <Briefcase className="w-5 h-5 text-primary" />
                         Roles
@@ -241,7 +259,7 @@ const ConsultantProfileContent = ({ profile }) => {
                         {roles.map((role, index) => (
                             <span
                                 key={index}
-                                className="px-4 py-2 bg-primary/10 border border-primary/30 text-primary rounded-lg text-sm font-medium"
+                                className="px-4 py-2 bg-primary/10 border border-primary/30 text-primary rounded-lg text-sm font-medium hover:bg-primary/20 transition-colors"
                             >
                                 {role}
                             </span>
@@ -252,7 +270,7 @@ const ConsultantProfileContent = ({ profile }) => {
 
             {/* Skills */}
             {skills.length > 0 && (
-                <div className="bg-[#0f0f0f] border border-gray-800 rounded-xl p-8">
+                <div className="bg-[#0f0f0f] border border-gray-800 rounded-xl p-8 hover:border-gray-700 transition-colors">
                     <h2 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
                         <FileText className="w-5 h-5 text-primary" />
                         Skills & Expertise
@@ -272,7 +290,7 @@ const ConsultantProfileContent = ({ profile }) => {
 
             {/* Badges & Certifications */}
             {badges.length > 0 && (
-                <div className="bg-[#0f0f0f] border border-gray-800 rounded-xl p-8">
+                <div className="bg-[#0f0f0f] border border-gray-800 rounded-xl p-8 hover:border-gray-700 transition-colors">
                     <h2 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
                         <Award className="w-5 h-5 text-primary" />
                         Certifications & Badges
@@ -281,7 +299,7 @@ const ConsultantProfileContent = ({ profile }) => {
                         {badges.map((badge, index) => (
                             <span
                                 key={index}
-                                className="px-4 py-2 bg-emerald-950/30 border border-emerald-800/50 text-emerald-400 rounded-lg text-sm font-medium"
+                                className="px-4 py-2 bg-emerald-950/30 border border-emerald-800/50 text-emerald-400 rounded-lg text-sm font-medium hover:bg-emerald-950/50 transition-colors"
                             >
                                 {badge}
                             </span>
@@ -292,7 +310,7 @@ const ConsultantProfileContent = ({ profile }) => {
 
             {/* Locations */}
             {locations.length > 0 && (
-                <div className="bg-[#0f0f0f] border border-gray-800 rounded-xl p-8">
+                <div className="bg-[#0f0f0f] border border-gray-800 rounded-xl p-8 hover:border-gray-700 transition-colors">
                     <h2 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
                         <MapPin className="w-5 h-5 text-primary" />
                         Available Locations
@@ -301,7 +319,7 @@ const ConsultantProfileContent = ({ profile }) => {
                         {locations.map((location, index) => (
                             <span
                                 key={index}
-                                className="px-4 py-2 bg-blue-950/30 border border-blue-800/50 text-blue-400 rounded-lg text-sm font-medium"
+                                className="px-4 py-2 bg-blue-950/30 border border-blue-800/50 text-blue-400 rounded-lg text-sm font-medium hover:bg-blue-950/50 transition-colors"
                             >
                                 {location}
                             </span>
@@ -312,7 +330,7 @@ const ConsultantProfileContent = ({ profile }) => {
 
             {/* Portfolio Links */}
             {portfolioLinks.length > 0 && (
-                <div className="bg-[#0f0f0f] border border-gray-800 rounded-xl p-8">
+                <div className="bg-[#0f0f0f] border border-gray-800 rounded-xl p-8 hover:border-gray-700 transition-colors">
                     <h2 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
                         <LinkIcon className="w-5 h-5 text-primary" />
                         Portfolio & Links
@@ -324,9 +342,9 @@ const ConsultantProfileContent = ({ profile }) => {
                                 href={link}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="flex items-center gap-2 text-primary hover:text-[#e88540] transition-colors"
+                                className="flex items-center gap-2 text-primary hover:text-[#e88540] transition-colors break-all"
                             >
-                                <LinkIcon className="w-4 h-4" />
+                                <LinkIcon className="w-4 h-4 flex-shrink-0" />
                                 {link}
                             </a>
                         ))}
@@ -336,7 +354,7 @@ const ConsultantProfileContent = ({ profile }) => {
 
             {/* CV/Resume */}
             {profile.cv && (
-                <div className="bg-[#0f0f0f] border border-gray-800 rounded-xl p-8">
+                <div className="bg-[#0f0f0f] border border-gray-800 rounded-xl p-8 hover:border-gray-700 transition-colors">
                     <h2 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
                         <FileText className="w-5 h-5 text-primary" />
                         CV / Resume
@@ -345,7 +363,7 @@ const ConsultantProfileContent = ({ profile }) => {
                         href={profile.cv}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-2 px-5 py-3 bg-primary text-white rounded-lg hover:bg-[#e88540] transition-colors font-medium"
+                        className="inline-flex items-center gap-2 px-5 py-3 bg-primary text-white rounded-lg hover:bg-[#e88540] transition-all hover:scale-105 active:scale-95 font-medium shadow-lg shadow-primary/20"
                     >
                         <Download className="w-5 h-5" />
                         Download CV
@@ -380,7 +398,7 @@ const InfoItem = ({ icon: Icon, label, value, isLink, isEmail }) => {
                     {value}
                 </a>
             ) : (
-                <p className="text-white font-medium">{value}</p>
+                <p className="text-white font-medium">{value || "Not provided"}</p>
             )}
         </div>
     );
