@@ -6,7 +6,7 @@ import { Loader2 } from "lucide-react";
 import Link from "next/link";
 
 // List of public routes that don't require authentication
-const PUBLIC_ROUTES = ["/", "/why-choose", "/signin", "/signup", "/about", "/contact"];
+const PUBLIC_ROUTES = ["/", "/why-choose", "/signin", "/signup", "/about", "/contact", "/forum"];
 
 const ProtectedRoute = ({ children }) => {
     const { isAuthenticated, isLoading } = useAuth();

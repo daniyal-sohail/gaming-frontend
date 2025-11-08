@@ -39,21 +39,6 @@ export default function MyTeams() {
         });
     };
 
-    const getStatusBadge = (status) => {
-        const statusConfig = {
-            active: { color: "bg-green-500/10 text-green-400 border-green-500/20", label: "Active" },
-            pending: { color: "bg-yellow-500/10 text-yellow-400 border-yellow-500/20", label: "Pending" },
-            completed: { color: "bg-blue-500/10 text-blue-400 border-blue-500/20", label: "Completed" },
-            cancelled: { color: "bg-red-500/10 text-red-400 border-red-500/20", label: "Cancelled" },
-        };
-        const config = statusConfig[status?.toLowerCase()] || statusConfig.pending;
-        return (
-            <span className={`px-3 py-1 rounded-full text-xs font-medium border ${config.color}`}>
-                {config.label}
-            </span>
-        );
-    };
-
     if (loading) {
         return (
             <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center">
@@ -107,7 +92,6 @@ export default function MyTeams() {
                                 onView={() => router.push(`/consultants/teams/${assignment.teamId}`)}
                                 formatCurrency={formatCurrency}
                                 formatDate={formatDate}
-                                getStatusBadge={getStatusBadge}
                             />
                         ))}
                     </div>
@@ -117,13 +101,12 @@ export default function MyTeams() {
     );
 }
 
-function TeamAssignmentCard({ assignment, onView, formatCurrency, formatDate, getStatusBadge }) {
+function TeamAssignmentCard({ assignment, onView, formatCurrency, formatDate }) {
     const {
         teamId,
         teamName,
         teamDescription,
         client,
-        status,
         billingPeriod,
         projectDuration,
         role,
@@ -144,12 +127,9 @@ function TeamAssignmentCard({ assignment, onView, formatCurrency, formatDate, ge
             <div className="p-6">
                 {/* Header */}
                 <div className="mb-4">
-                    <div className="flex items-start justify-between mb-2">
-                        <h3 className="text-xl font-bold text-white mb-1 group-hover:text-primary transition-colors flex-1">
-                            {teamName}
-                        </h3>
-                        {getStatusBadge(status)}
-                    </div>
+                    <h3 className="text-xl font-bold text-white mb-2 group-hover:text-primary transition-colors">
+                        {teamName}
+                    </h3>
                     {teamDescription && (
                         <p className="text-sm text-gray-400 line-clamp-2">
                             {teamDescription}

@@ -128,16 +128,6 @@ export default function MyTeamDetail() {
                                     </p>
                                 )}
                             </div>
-                            <div className="flex items-center gap-3">
-                                <span className={`px-4 py-2 rounded-full text-sm font-medium border ${currentTeam.status === "active"
-                                    ? "bg-green-500/10 text-green-400 border-green-500/20"
-                                    : currentTeam.status === "completed"
-                                        ? "bg-blue-500/10 text-blue-400 border-blue-500/20"
-                                        : "bg-yellow-500/10 text-yellow-400 border-yellow-500/20"
-                                    }`}>
-                                    {currentTeam.status || "Pending"}
-                                </span>
-                            </div>
                         </div>
                     </div>
                 </div>

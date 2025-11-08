@@ -9,6 +9,7 @@ import { UserProvider } from "@/context/UserContext";
 import { ConsultantProvider } from "@/context/ConsultantContext";
 import { TeamSelectionProvider } from "@/context/TeamSelectionContext";
 import { ConsultantTeamProvider } from "@/context/ConsultantTeamContext";
+import { ForumProvider } from "@/context/ForumContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -44,11 +45,13 @@ export default function RootLayout({ children }) {
                 <ConsultantProvider>
                   <TeamSelectionProvider>
                     <ConsultantTeamProvider>
-                      <RouterManager>
-                        <ProtectedRoute>
-                          {children}
-                        </ProtectedRoute>
-                      </RouterManager>
+                      <ForumProvider>
+                        <RouterManager>
+                          <ProtectedRoute>
+                            {children}
+                          </ProtectedRoute>
+                        </RouterManager>
+                      </ForumProvider>
                     </ConsultantTeamProvider>
                   </TeamSelectionProvider>
                 </ConsultantProvider>

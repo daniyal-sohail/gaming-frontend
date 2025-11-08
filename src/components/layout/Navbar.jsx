@@ -26,6 +26,7 @@ import { useAuth } from "@/context/AuthContext";
 const consultantNavigation = [
     { name: "Find Work", href: "/find-work" },
     { name: "My Works", href: "/consultants/teams" },
+    { name: "Forum", href: "/forum" },
     // ...baseNavigation,
 ];
 
@@ -33,6 +34,7 @@ const consultantNavigation = [
 const clientNavigation = [
     { name: "Find Talent", href: "/consultants" },
     { name: "My Teams", href: "/teams" },
+    { name: "Forum", href: "/forum" },
     // ...baseNavigation,
 ];
 
@@ -40,6 +42,7 @@ const clientNavigation = [
 const guestNavigation = [
     { name: "Find Talent", href: "/find-talent" },
     { name: "Find Work", href: "/find-work" },
+    { name: "Forum", href: "/forum" },
     // ...baseNavigation,
 ];
 
