@@ -2,9 +2,9 @@ import React from 'react';
 
 const Banner = () => {
     return (
-        <section className="bg-black py-20">
+        <section className="bg-white py-20">
             <div className="max-w-6xl mx-auto px-4">
-                <div className="relative bg-gradient-to-r from-amber-500 to-orange-500 rounded-2xl p-8 md:p-12 text-center overflow-hidden">
+                <div className="relative bg-gradient-to-r from-cyan-500 to-cyan-600 rounded-2xl p-8 md:p-12 text-center overflow-hidden">
                     {/* Subtle overlay */}
                     <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-black/10 rounded-2xl"></div>
 

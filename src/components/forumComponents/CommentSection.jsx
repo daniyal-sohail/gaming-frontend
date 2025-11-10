@@ -6,7 +6,7 @@ import { useAuth } from "@/context/AuthContext";
 import { useToast } from "@/context/ToastContext";
 import VotingButtons from "./VotingButtons";
 
-export default function CommentSection({ threadId, isLocked }) {
+export default function CommentSection({ threadId, isLocked, compact = false }) {
     const { user, isAuthenticated } = useAuth();
     const { success, error: showError } = useToast();
     const {
@@ -105,11 +105,85 @@ export default function CommentSection({ threadId, isLocked }) {
         }
     };
 
+    if (compact) {
+        return (
+            <div>
+                {/* Comment Form */}
+                {isAuthenticated && !isLocked && (
+                    <form onSubmit={handleSubmitComment} className="mb-4">
+                        <textarea
+                            value={newComment}
+                            onChange={(e) => setNewComment(e.target.value)}
+                            placeholder="Write a comment..."
+                            rows={3}
+                            className="w-full bg-white border border-gray-300 rounded-lg px-3 py-2 text-black placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 transition-colors mb-2 resize-none text-sm"
+                        />
+                        <div className="flex justify-end">
+                            <button
+                                type="submit"
+                                disabled={submitting || !newComment.trim()}
+                                className="px-4 py-1.5 bg-cyan-500 text-white rounded-full hover:bg-cyan-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 text-sm font-medium"
+                            >
+                                {submitting ? (
+                                    <>
+                                        <Loader2 className="w-3 h-3 animate-spin" />
+                                        Posting...
+                                    </>
+                                ) : (
+                                    "Post"
+                                )}
+                            </button>
+                        </div>
+                    </form>
+                )}
+
+                {isLocked && (
+                    <div className="mb-4 p-2 bg-yellow-500/10 border border-yellow-500/20 rounded-lg">
+                        <p className="text-yellow-600 text-xs">This thread is locked. No new comments can be added.</p>
+                    </div>
+                )}
+
+                {/* Comments List */}
+                {loading && comments.length === 0 ? (
+                    <div className="flex items-center justify-center py-4">
+                        <Loader2 className="w-4 h-4 animate-spin text-cyan-500" />
+                    </div>
+                ) : comments.length === 0 ? (
+                    <div className="text-center py-4 text-gray-500 text-sm">
+                        <MessageSquare className="w-8 h-8 mx-auto mb-2 opacity-50" />
+                        <p>No comments yet. Be the first to comment!</p>
+                    </div>
+                ) : (
+                    <div className="space-y-3">
+                        {comments.map((comment) => (
+                            <CommentItem
+                                key={comment._id}
+                                comment={comment}
+                                formatTimeAgo={formatTimeAgo}
+                                isEditing={editingId === comment._id}
+                                editContent={editContent}
+                                setEditContent={setEditContent}
+                                onStartEdit={() => handleStartEdit(comment)}
+                                onCancelEdit={handleCancelEdit}
+                                onSaveEdit={() => handleSaveEdit(comment._id)}
+                                onDelete={() => handleDelete(comment._id)}
+                                canEdit={isAuthor(comment.authorId?._id)}
+                                canDelete={isAuthor(comment.authorId?._id)}
+                                submitting={submitting}
+                                compact
+                            />
+                        ))}
+                    </div>
+                )}
+            </div>
+        );
+    }
+
     return (
-        <div className="bg-[#121212] border border-gray-800 rounded-2xl overflow-hidden">
+        <div className="bg-white border border-black/10 rounded-2xl overflow-hidden">
             <div className="p-6">
-                <h2 className="text-2xl font-bold text-white mb-6 flex items-center gap-2">
-                    <MessageSquare className="w-6 h-6 text-primary" />
+                <h2 className="text-2xl font-bold text-black mb-6 flex items-center gap-2">
+                    <MessageSquare className="w-6 h-6 text-cyan-500" />
                     Comments ({comments.length})
                 </h2>
 
@@ -121,13 +195,13 @@ export default function CommentSection({ threadId, isLocked }) {
                             onChange={(e) => setNewComment(e.target.value)}
                             placeholder="Write a comment..."
                             rows={4}
-                            className="w-full bg-[#0d0d0d] border border-gray-800 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-primary transition-colors mb-3 resize-none"
+                            className="w-full bg-white border border-black/20 rounded-lg px-4 py-3 text-black placeholder-gray-500 focus:outline-none focus:border-cyan-500 transition-colors mb-3 resize-none"
                         />
                         <div className="flex justify-end">
                             <button
                                 type="submit"
                                 disabled={submitting || !newComment.trim()}
-                                className="px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                                className="px-6 py-2 bg-cyan-500 text-white rounded-lg hover:bg-cyan-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
                             >
                                 {submitting ? (
                                     <>
@@ -144,17 +218,17 @@ export default function CommentSection({ threadId, isLocked }) {
 
                 {isLocked && (
                     <div className="mb-6 p-4 bg-yellow-500/10 border border-yellow-500/20 rounded-lg">
-                        <p className="text-yellow-400 text-sm">This thread is locked. No new comments can be added.</p>
+                        <p className="text-yellow-600 text-sm">This thread is locked. No new comments can be added.</p>
                     </div>
                 )}
 
                 {/* Comments List */}
                 {loading && comments.length === 0 ? (
                     <div className="flex items-center justify-center py-8">
-                        <Loader2 className="w-6 h-6 animate-spin text-primary" />
+                        <Loader2 className="w-6 h-6 animate-spin text-cyan-500" />
                     </div>
                 ) : comments.length === 0 ? (
-                    <div className="text-center py-8 text-gray-400">
+                    <div className="text-center py-8 text-gray-600">
                         <MessageSquare className="w-12 h-12 mx-auto mb-2 opacity-50" />
                         <p>No comments yet. Be the first to comment!</p>
                     </div>
@@ -197,27 +271,37 @@ function CommentItem({
     canEdit,
     canDelete,
     submitting,
+    compact = false,
 }) {
+    const getInitials = (name) => {
+        if (!name) return "A";
+        return name
+            .split(" ")
+            .map((n) => n[0])
+            .join("")
+            .toUpperCase()
+            .slice(0, 2);
+    };
     if (isEditing) {
         return (
-            <div className="p-4 bg-[#0d0d0d] border border-gray-800 rounded-xl">
+            <div className={`${compact ? "p-2" : "p-4"} bg-gray-50 border border-gray-200 rounded-lg`}>
                 <textarea
                     value={editContent}
                     onChange={(e) => setEditContent(e.target.value)}
-                    rows={4}
-                    className="w-full bg-[#121212] border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-primary transition-colors mb-3 resize-none"
+                    rows={compact ? 3 : 4}
+                    className="w-full bg-white border border-gray-300 rounded-lg px-3 py-2 text-black focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 transition-colors mb-2 resize-none text-sm"
                 />
                 <div className="flex gap-2 justify-end">
                     <button
                         onClick={onCancelEdit}
-                        className="px-4 py-2 bg-[#121212] border border-gray-800 text-white rounded-lg hover:border-gray-700 transition-colors"
+                        className="px-3 py-1.5 bg-gray-100 text-black rounded-full hover:bg-gray-200 transition-colors text-sm"
                     >
                         Cancel
                     </button>
                     <button
                         onClick={onSaveEdit}
                         disabled={submitting || !editContent.trim()}
-                        className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors disabled:opacity-50"
+                        className="px-3 py-1.5 bg-cyan-500 text-white rounded-full hover:bg-cyan-600 transition-colors disabled:opacity-50 text-sm font-medium"
                     >
                         Save
                     </button>
@@ -226,8 +310,68 @@ function CommentItem({
         );
     }
 
+    if (compact) {
+        return (
+            <div className="flex gap-3 py-2 border-b border-gray-100 last:border-0">
+                {/* Avatar */}
+                <div className="flex-shrink-0">
+                    <div className="h-8 w-8 rounded-full bg-gradient-to-br from-cyan-400 to-cyan-600 flex items-center justify-center text-white font-semibold text-xs">
+                        {getInitials(comment.authorId?.name)}
+                    </div>
+                </div>
+
+                {/* Content */}
+                <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 mb-1">
+                        <span className="font-semibold text-black text-sm">
+                            {comment.authorId?.name || "Anonymous"}
+                        </span>
+                        {comment.authorId?.karma !== undefined && (
+                            <span className="text-gray-500 text-xs">
+                                · {comment.authorId.karma} karma
+                            </span>
+                        )}
+                        <span className="text-gray-500 text-xs">
+                            · {formatTimeAgo(comment.createdAt)}
+                        </span>
+                        {(canEdit || canDelete) && (
+                            <div className="flex items-center gap-1 ml-auto">
+                                {canEdit && (
+                                    <button
+                                        onClick={onStartEdit}
+                                        className="p-1 text-gray-400 hover:text-gray-600 transition-colors"
+                                    >
+                                        <Edit className="w-3 h-3" />
+                                    </button>
+                                )}
+                                {canDelete && (
+                                    <button
+                                        onClick={onDelete}
+                                        className="p-1 text-gray-400 hover:text-red-500 transition-colors"
+                                    >
+                                        <Trash2 className="w-3 h-3" />
+                                    </button>
+                                )}
+                            </div>
+                        )}
+                    </div>
+                    <p className="text-gray-700 text-sm leading-relaxed mb-2">
+                        {comment.content}
+                    </p>
+                    <VotingButtons
+                        targetId={comment._id}
+                        targetType="comment"
+                        votes={comment.votes}
+                        authorId={comment.authorId?._id}
+                        compact
+                    />
+                </div>
+            </div>
+        );
+    }
+
     return (
-        <div className="p-4 bg-[#0d0d0d] border border-gray-800 rounded-xl">
+        <div className="p-4 bg-black/5 border border-black/10 rounded-xl">
             <div className="flex items-start gap-4">
                 {/* Voting */}
                 <VotingButtons
@@ -241,12 +385,12 @@ function CommentItem({
                 {/* Content */}
                 <div className="flex-1 min-w-0">
                     <div className="flex items-start justify-between mb-2">
-                        <div className="flex items-center gap-3 text-sm text-gray-400">
+                        <div className="flex items-center gap-3 text-sm text-gray-600">
                             <div className="flex items-center gap-1">
                                 <User className="w-4 h-4" />
-                                <span className="text-white">{comment.authorId?.name || "Anonymous"}</span>
+                                <span className="text-black">{comment.authorId?.name || "Anonymous"}</span>
                                 {comment.authorId?.karma !== undefined && (
-                                    <span className="text-primary">({comment.authorId.karma} karma)</span>
+                                    <span className="text-cyan-500">({comment.authorId.karma} karma)</span>
                                 )}
                             </div>
                             <div className="flex items-center gap-1">
@@ -261,7 +405,7 @@ function CommentItem({
                                 {canEdit && (
                                     <button
                                         onClick={onStartEdit}
-                                        className="p-1.5 text-gray-400 hover:text-white transition-colors"
+                                        className="p-1.5 text-gray-600 hover:text-black transition-colors"
                                     >
                                         <Edit className="w-4 h-4" />
                                     </button>
@@ -269,7 +413,7 @@ function CommentItem({
                                 {canDelete && (
                                     <button
                                         onClick={onDelete}
-                                        className="p-1.5 text-red-400 hover:text-red-300 transition-colors"
+                                        className="p-1.5 text-red-500 hover:text-red-600 transition-colors"
                                     >
                                         <Trash2 className="w-4 h-4" />
                                     </button>
@@ -278,7 +422,7 @@ function CommentItem({
                         )}
                     </div>
 
-                    <p className="text-gray-300 whitespace-pre-wrap leading-relaxed">
+                    <p className="text-gray-700 whitespace-pre-wrap leading-relaxed">
                         {comment.content}
                     </p>
                 </div>

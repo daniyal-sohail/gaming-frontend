@@ -40,8 +40,8 @@ const ProfilePage = () => {
     // Show loading only on initial fetch
     if (loading && !initialFetchDone) {
         return (
-            <div className="min-h-screen flex items-center justify-center bg-background">
-                <Loader2 className="w-8 h-8 animate-spin text-primary" />
+            <div className="min-h-screen flex items-center justify-center bg-white">
+                <Loader2 className="w-8 h-8 animate-spin text-cyan-500" />
             </div>
         );
     }
@@ -49,8 +49,8 @@ const ProfilePage = () => {
     // Show form if no profile exists or user is editing
     if (!hasProfile || isEditing) {
         return (
-            <div className="min-h-screen bg-background py-8 px-4">
-                <div className="max-w-4xl mx-auto">
+            <div className="min-h-screen bg-white  mt-24">
+                <div className="max-w-6xl mx-auto">
                     {userType === "client" ? (
                         <ClientProfileForm
                             existingProfile={hasProfile ? profile : null}
@@ -73,8 +73,8 @@ const ProfilePage = () => {
 
     // Show profile display
     return (
-        <div className="min-h-screen bg-background py-8 px-4">
-            <div className="max-w-4xl mx-auto mt-16">
+        <div className="min-h-screen bg-white  mt-24">
+            <div className="max-w-6xl mx-auto">
                 <ProfileDisplay
                     profile={profile}
                     userType={userType}

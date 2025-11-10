@@ -38,13 +38,13 @@ export default function VotingButtons({ targetId, targetType, votes, authorId, c
                     disabled={isOwnContent}
                     className={`p-1.5 rounded transition-all ${
                         userVote?.type === "upvote"
-                            ? "bg-green-500/20 text-green-400"
-                            : "text-gray-400 hover:text-green-400 hover:bg-green-500/10"
+                        ? "bg-green-500/20 text-green-500"
+                        : "text-gray-600 hover:text-green-500 hover:bg-green-500/10"
                     } ${isOwnContent ? "opacity-50 cursor-not-allowed" : ""}`}
                 >
                     <ArrowUp className="w-4 h-4" />
                 </button>
-                <span className={`text-sm font-bold min-w-[2rem] text-center ${netVotes >= 0 ? "text-green-400" : "text-red-400"}`}>
+                <span className={`text-sm font-bold min-w-[2rem] text-center ${netVotes >= 0 ? "text-green-500" : "text-red-500"}`}>
                     {netVotes}
                 </span>
                 <button
@@ -52,8 +52,8 @@ export default function VotingButtons({ targetId, targetType, votes, authorId, c
                     disabled={isOwnContent}
                     className={`p-1.5 rounded transition-all ${
                         userVote?.type === "downvote"
-                            ? "bg-red-500/20 text-red-400"
-                            : "text-gray-400 hover:text-red-400 hover:bg-red-500/10"
+                        ? "bg-red-500/20 text-red-500"
+                        : "text-gray-600 hover:text-red-500 hover:bg-red-500/10"
                     } ${isOwnContent ? "opacity-50 cursor-not-allowed" : ""}`}
                 >
                     <ArrowDown className="w-4 h-4" />
@@ -69,13 +69,13 @@ export default function VotingButtons({ targetId, targetType, votes, authorId, c
                 disabled={isOwnContent}
                 className={`p-2 rounded-lg transition-all ${
                     userVote?.type === "upvote"
-                        ? "bg-green-500/20 text-green-400"
-                        : "bg-[#0d0d0d] text-gray-400 hover:text-green-400 hover:bg-green-500/10"
+                        ? "bg-green-500/20 text-green-500"
+                        : "bg-black/5 text-gray-600 hover:text-green-500 hover:bg-green-500/10"
                 } ${isOwnContent ? "opacity-50 cursor-not-allowed" : ""}`}
             >
                 <ArrowUp className="w-5 h-5" />
             </button>
-            <span className={`text-sm font-bold ${netVotes >= 0 ? "text-green-400" : "text-red-400"}`}>
+            <span className={`text-sm font-bold ${netVotes >= 0 ? "text-green-500" : "text-red-500"}`}>
                 {netVotes}
             </span>
             <button
@@ -83,8 +83,8 @@ export default function VotingButtons({ targetId, targetType, votes, authorId, c
                 disabled={isOwnContent}
                 className={`p-2 rounded-lg transition-all ${
                     userVote?.type === "downvote"
-                        ? "bg-red-500/20 text-red-400"
-                        : "bg-[#0d0d0d] text-gray-400 hover:text-red-400 hover:bg-red-500/10"
+                        ? "bg-red-500/20 text-red-500"
+                        : "bg-black/5 text-gray-600 hover:text-red-500 hover:bg-red-500/10"
                 } ${isOwnContent ? "opacity-50 cursor-not-allowed" : ""}`}
             >
                 <ArrowDown className="w-5 h-5" />

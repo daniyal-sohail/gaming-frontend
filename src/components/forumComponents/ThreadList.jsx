@@ -19,6 +19,7 @@ import {
 import { useForum } from "@/context/ForumContext";
 import { useAuth } from "@/context/AuthContext";
 import { useToast } from "@/context/ToastContext";
+import CommentSection from "./CommentSection";
 
 export default function ThreadList() {
     const router = useRouter();
@@ -32,11 +33,13 @@ export default function ThreadList() {
         error,
         fetchThreads,
         setThreadsFilters,
+        fetchThreadById,
     } = useForum();
 
     const [searchTerm, setSearchTerm] = useState("");
     const [selectedTags, setSelectedTags] = useState([]);
     const [tagInput, setTagInput] = useState("");
+    const [expandedThreadId, setExpandedThreadId] = useState(null);
 
     useEffect(() => {
         fetchThreads();
@@ -82,42 +85,41 @@ export default function ThreadList() {
     const regularThreads = filteredThreads.filter((t) => !t.isPinned);
 
     return (
-        <div className="min-h-screen bg-[#0a0a0a] py-8 px-4 sm:px-6 lg:px-8 mt-24">
-            <div className="max-w-6xl mx-auto">
+        <div className="min-h-screen bg-gray-50 py-4 mt-24">
+            <div className="max-w-5xl mx-auto">
                 {/* Header */}
-                <div className="mb-8">
-                    <div className="flex items-center justify-between mb-4">
-                        <div>
-                            <h1 className="text-4xl font-bold text-white mb-2">Forum</h1>
-                            <p className="text-gray-400">Discuss, share, and learn from the community</p>
-                        </div>
+                <div className="sticky top-24 z-10 bg-white border-b border-gray-200 px-4 py-3 mb-4">
+                    <div className="flex items-center justify-between">
+                        <h1 className="text-xl font-bold text-black">Forum</h1>
                         {isAuthenticated && (
                             <button
                                 onClick={() => router.push("/forum/create")}
-                                className="px-6 py-3 bg-primary text-white rounded-xl hover:bg-primary/90 transition-all hover:scale-105 font-medium flex items-center gap-2"
+                                className="px-4 py-2 bg-cyan-500 text-white rounded-full hover:bg-cyan-600 transition-all font-medium flex items-center gap-2 text-sm"
                             >
-                                <Plus className="w-5 h-5" />
-                                Create Thread
+                                <Plus className="w-4 h-4" />
+                                New Thread
                             </button>
                         )}
                     </div>
+                </div>
 
-                    {/* Search and Filters */}
-                    <div className="flex flex-col md:flex-row gap-4 mb-6">
-                        <div className="flex-1 relative">
-                            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
-                            <input
-                                type="text"
-                                placeholder="Search threads..."
-                                value={searchTerm}
-                                onChange={(e) => setSearchTerm(e.target.value)}
-                                className="w-full pl-10 pr-4 py-3 bg-[#121212] border border-gray-800 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-primary transition-colors"
-                            />
-                        </div>
+                {/* Search and Filters */}
+                <div className="px-4 mb-4 space-y-2">
+                    <div className="relative">
+                        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-500" />
+                        <input
+                            type="text"
+                            placeholder="Search threads..."
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                            className="w-full pl-10 pr-4 py-2 bg-gray-100 border-0 rounded-full text-black placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:bg-white transition-colors text-sm"
+                        />
+                    </div>
+                    <div className="flex gap-2">
                         <select
                             value={threadsFilters.sortBy || "newest"}
                             onChange={(e) => handleFilterChange("sortBy", e.target.value)}
-                            className="px-4 py-3 bg-[#121212] border border-gray-800 rounded-xl text-white focus:outline-none focus:border-primary transition-colors"
+                            className="flex-1 px-3 py-2 bg-gray-100 border-0 rounded-full text-black focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:bg-white transition-colors text-sm"
                         >
                             <option value="newest">Newest</option>
                             <option value="popular">Most Popular</option>
@@ -126,7 +128,7 @@ export default function ThreadList() {
                         <select
                             value={threadsFilters.status || ""}
                             onChange={(e) => handleFilterChange("status", e.target.value || null)}
-                            className="px-4 py-3 bg-[#121212] border border-gray-800 rounded-xl text-white focus:outline-none focus:border-primary transition-colors"
+                            className="flex-1 px-3 py-2 bg-gray-100 border-0 rounded-full text-black focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:bg-white transition-colors text-sm"
                         >
                             <option value="">All Status</option>
                             <option value="open">Open</option>
@@ -137,80 +139,114 @@ export default function ThreadList() {
 
                 {/* Error Message */}
                 {error && (
-                    <div className="mb-6 p-4 bg-red-500/10 border border-red-500/20 rounded-xl flex items-start gap-3">
-                        <AlertCircle className="w-5 h-5 text-red-400 flex-shrink-0 mt-0.5" />
+                    <div className="mx-4 mb-4 p-4 bg-red-500/10 border border-red-500/20 rounded-lg flex items-start gap-3">
+                        <AlertCircle className="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" />
                         <div>
-                            <p className="text-red-400 font-medium">Error Loading Threads</p>
-                            <p className="text-red-400/80 text-sm">{error}</p>
+                            <p className="text-red-500 font-medium text-sm">Error Loading Threads</p>
+                            <p className="text-red-600/80 text-xs">{error}</p>
                         </div>
                     </div>
                 )}
 
                 {/* Loading State */}
                 {loading && threads.length === 0 && (
-                    <div className="flex items-center justify-center py-16">
-                        <Loader2 className="w-8 h-8 animate-spin text-primary" />
+                    <div className="bg-white border border-gray-200 rounded-lg">
+                        <div className="flex items-center justify-center py-16">
+                            <Loader2 className="w-6 h-6 animate-spin text-cyan-500" />
+                        </div>
                     </div>
                 )}
 
                 {/* Empty State */}
                 {!loading && threads.length === 0 && (
-                    <div className="text-center py-16">
-                        <MessageSquare className="w-20 h-20 text-gray-600 mx-auto mb-4" />
-                        <h3 className="text-2xl font-bold text-white mb-2">No Threads Yet</h3>
-                        <p className="text-gray-400 mb-6">Be the first to start a discussion!</p>
-                        {isAuthenticated && (
-                            <button
-                                onClick={() => router.push("/forum/create")}
-                                className="px-6 py-3 bg-primary text-white rounded-xl hover:bg-primary/90 transition-all"
-                            >
-                                Create First Thread
-                            </button>
-                        )}
+                    <div className="bg-white border border-gray-200 rounded-lg">
+                        <div className="text-center py-16 px-4">
+                            <MessageSquare className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+                            <h3 className="text-lg font-bold text-black mb-2">No Threads Yet</h3>
+                            <p className="text-gray-600 mb-6 text-sm">Be the first to start a discussion!</p>
+                            {isAuthenticated && (
+                                <button
+                                    onClick={() => router.push("/forum/create")}
+                                    className="px-6 py-2 bg-cyan-500 text-white rounded-full hover:bg-cyan-600 transition-all text-sm font-medium"
+                                >
+                                    Create First Thread
+                                </button>
+                            )}
+                        </div>
                     </div>
                 )}
 
                 {/* Threads List */}
                 {threads.length > 0 && (
-                    <div className="space-y-4">
+                    <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
                         {/* Pinned Threads */}
                         {pinnedThreads.length > 0 && (
-                            <div className="space-y-4 mb-8">
+                            <div className="border-b border-gray-200">
                                 {pinnedThreads.map((thread) => (
-                                    <ThreadCard key={thread._id} thread={thread} formatTimeAgo={formatTimeAgo} />
+                                    <ThreadCard
+                                        key={thread._id}
+                                        thread={thread}
+                                        formatTimeAgo={formatTimeAgo}
+                                        isExpanded={expandedThreadId === thread._id}
+                                        onExpand={() => {
+                                            if (expandedThreadId === thread._id) {
+                                                setExpandedThreadId(null);
+                                            } else {
+                                                setExpandedThreadId(thread._id);
+                                                fetchThreadById(thread._id);
+                                            }
+                                        }}
+                                        onViewFull={() => router.push(`/forum/thread/${thread._id}`)}
+                                    />
                                 ))}
                             </div>
                         )}
 
                         {/* Regular Threads */}
                         {regularThreads.length > 0 && (
-                            <div className="space-y-4">
+                            <div>
                                 {regularThreads.map((thread) => (
-                                    <ThreadCard key={thread._id} thread={thread} formatTimeAgo={formatTimeAgo} />
+                                    <ThreadCard
+                                        key={thread._id}
+                                        thread={thread}
+                                        formatTimeAgo={formatTimeAgo}
+                                        isExpanded={expandedThreadId === thread._id}
+                                        onExpand={() => {
+                                            if (expandedThreadId === thread._id) {
+                                                setExpandedThreadId(null);
+                                            } else {
+                                                setExpandedThreadId(thread._id);
+                                                fetchThreadById(thread._id);
+                                            }
+                                        }}
+                                        onViewFull={() => router.push(`/forum/thread/${thread._id}`)}
+                                    />
                                 ))}
                             </div>
                         )}
 
                         {/* Pagination */}
                         {threadsPagination.totalPages > 1 && (
-                            <div className="flex items-center justify-center gap-2 mt-8">
-                                <button
-                                    onClick={() => handlePageChange(threadsPagination.page - 1)}
-                                    disabled={threadsPagination.page === 1}
-                                    className="px-4 py-2 bg-[#121212] border border-gray-800 rounded-lg text-white disabled:opacity-50 disabled:cursor-not-allowed hover:border-primary transition-colors"
-                                >
-                                    Previous
-                                </button>
-                                <span className="text-gray-400">
-                                    Page {threadsPagination.page} of {threadsPagination.totalPages}
-                                </span>
-                                <button
-                                    onClick={() => handlePageChange(threadsPagination.page + 1)}
-                                    disabled={threadsPagination.page >= threadsPagination.totalPages}
-                                    className="px-4 py-2 bg-[#121212] border border-gray-800 rounded-lg text-white disabled:opacity-50 disabled:cursor-not-allowed hover:border-primary transition-colors"
-                                >
-                                    Next
-                                </button>
+                            <div className="px-4 py-4 border-t border-gray-200 bg-white">
+                                <div className="flex items-center justify-center gap-4">
+                                    <button
+                                        onClick={() => handlePageChange(threadsPagination.page - 1)}
+                                        disabled={threadsPagination.page === 1}
+                                        className="px-4 py-2 bg-gray-100 rounded-full text-black disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-200 transition-colors text-sm font-medium"
+                                    >
+                                        Previous
+                                    </button>
+                                    <span className="text-gray-600 text-sm">
+                                        Page {threadsPagination.page} of {threadsPagination.totalPages}
+                                    </span>
+                                    <button
+                                        onClick={() => handlePageChange(threadsPagination.page + 1)}
+                                        disabled={threadsPagination.page >= threadsPagination.totalPages}
+                                        className="px-4 py-2 bg-gray-100 rounded-full text-black disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-200 transition-colors text-sm font-medium"
+                                    >
+                                        Next
+                                    </button>
+                                </div>
                             </div>
                         )}
                     </div>
@@ -220,16 +256,16 @@ export default function ThreadList() {
     );
 }
 
-function ThreadCard({ thread, formatTimeAgo }) {
-    const router = useRouter();
+function ThreadCard({ thread, formatTimeAgo, isExpanded, onExpand, onViewFull }) {
     const { user } = useAuth();
     const { getUserVote, vote } = useForum();
-    const { success, error: showError } = useToast();
+    const { error: showError } = useToast();
 
     const userVote = getUserVote(thread._id);
     const netVotes = thread.netVotes || (thread.votes?.upvotes || 0) - (thread.votes?.downvotes || 0);
 
-    const handleVote = async (voteType) => {
+    const handleVote = async (voteType, e) => {
+        e.stopPropagation();
         if (!user) {
             showError("Please login to vote");
             return;
@@ -246,76 +282,73 @@ function ThreadCard({ thread, formatTimeAgo }) {
         }
     };
 
+    const getInitials = (name) => {
+        if (!name) return "A";
+        return name
+            .split(" ")
+            .map((n) => n[0])
+            .join("")
+            .toUpperCase()
+            .slice(0, 2);
+    };
+
+    const authorName = thread.authorId?.name || "Anonymous";
+    const authorInitials = getInitials(authorName);
+
     return (
-        <div
-            className="bg-[#121212] border border-gray-800 rounded-2xl overflow-hidden hover:border-primary/50 transition-all cursor-pointer group"
-            onClick={() => router.push(`/forum/thread/${thread._id}`)}
-        >
-            <div className="p-6">
-                <div className="flex items-start gap-4">
-                    {/* Voting Section */}
-                    <div className="flex flex-col items-center gap-1">
-                        <button
-                            onClick={(e) => {
-                                e.stopPropagation();
-                                handleVote("upvote");
-                            }}
-                            disabled={thread.authorId?._id === user?._id}
-                            className={`p-2 rounded-lg transition-all ${
-                                userVote?.type === "upvote"
-                                    ? "bg-green-500/20 text-green-400"
-                                    : "bg-[#0d0d0d] text-gray-400 hover:text-green-400 hover:bg-green-500/10"
-                            } ${thread.authorId?._id === user?._id ? "opacity-50 cursor-not-allowed" : ""}`}
-                        >
-                            <ArrowUp className="w-5 h-5" />
-                        </button>
-                        <span className={`text-sm font-bold ${netVotes >= 0 ? "text-green-400" : "text-red-400"}`}>
-                            {netVotes}
-                        </span>
-                        <button
-                            onClick={(e) => {
-                                e.stopPropagation();
-                                handleVote("downvote");
-                            }}
-                            disabled={thread.authorId?._id === user?._id}
-                            className={`p-2 rounded-lg transition-all ${
-                                userVote?.type === "downvote"
-                                    ? "bg-red-500/20 text-red-400"
-                                    : "bg-[#0d0d0d] text-gray-400 hover:text-red-400 hover:bg-red-500/10"
-                            } ${thread.authorId?._id === user?._id ? "opacity-50 cursor-not-allowed" : ""}`}
-                        >
-                            <ArrowDown className="w-5 h-5" />
-                        </button>
+        <article className="border-b border-gray-200">
+            <div
+                className="px-4 py-3 hover:bg-gray-50 transition-colors cursor-pointer"
+                onClick={onExpand}
+            >
+                <div className="flex gap-3">
+                    {/* Avatar */}
+                    <div className="flex-shrink-0">
+                        <div className="h-12 w-12 rounded-full bg-gradient-to-br from-cyan-400 to-cyan-600 flex items-center justify-center text-white font-semibold text-sm">
+                            {authorInitials}
+                        </div>
                     </div>
 
-                    {/* Content Section */}
+                    {/* Content */}
                     <div className="flex-1 min-w-0">
-                        <div className="flex items-start justify-between gap-4 mb-2">
-                            <div className="flex-1">
-                                <div className="flex items-center gap-2 mb-2">
-                                    {thread.isPinned && (
-                                        <Pin className="w-4 h-4 text-primary" />
-                                    )}
-                                    {thread.status === "locked" && (
-                                        <Lock className="w-4 h-4 text-yellow-400" />
-                                    )}
-                                    <h3 className="text-xl font-bold text-white group-hover:text-primary transition-colors">
-                                        {thread.title}
-                                    </h3>
-                                </div>
-                                <p className="text-gray-400 text-sm line-clamp-2 mb-3">
-                                    {thread.content}
-                                </p>
-                            </div>
+                        {/* Header */}
+                        <div className="flex items-center gap-2 mb-1">
+                            <span className="font-bold text-black hover:underline">
+                                {authorName}
+                            </span>
+                            {thread.authorId?.karma !== undefined && (
+                                <span className="text-gray-500 text-sm">
+                                    · {thread.authorId.karma} karma
+                                </span>
+                            )}
+                            <span className="text-gray-500 text-sm">
+                                · {formatTimeAgo(thread.createdAt)}
+                            </span>
+                            {thread.isPinned && (
+                                <Pin className="w-4 h-4 text-cyan-500 flex-shrink-0" />
+                            )}
+                            {thread.status === "locked" && (
+                                <Lock className="w-4 h-4 text-yellow-500 flex-shrink-0" />
+                            )}
                         </div>
+
+                        {/* Title */}
+                        <h3 className="text-base font-semibold text-black mb-1">
+                            {thread.title}
+                        </h3>
+
+                        {/* Content */}
+                        <p className="text-gray-700 text-sm mb-2 leading-relaxed">
+                            {thread.content}
+                        </p>
 
                         {/* Tags */}
                         {thread.tags && thread.tags.length > 0 && (
-                            <div className="flex flex-wrap gap-2 mb-3">
+                            <div className="flex flex-wrap gap-1 mb-3">
                                 {thread.tags.map((tag, idx) => (
                                     <span
                                         key={idx}
-                                        className="px-3 py-1 bg-primary/10 text-primary text-xs rounded-lg border border-primary/20"
+                                        className="px-2 py-0.5 bg-cyan-500/10 text-cyan-600 text-xs rounded-full"
                                     >
                                         #{tag}
                                     </span>
@@ -323,28 +356,82 @@ function ThreadCard({ thread, formatTimeAgo }) {
                             </div>
                         )}
 
-                        {/* Meta Info */}
-                        <div className="flex items-center gap-4 text-sm text-gray-400">
-                            <div className="flex items-center gap-1">
-                                <User className="w-4 h-4" />
-                                <span className="text-white">{thread.authorId?.name || "Anonymous"}</span>
-                                {thread.authorId?.karma !== undefined && (
-                                    <span className="text-primary">({thread.authorId.karma} karma)</span>
-                                )}
-                            </div>
-                            <div className="flex items-center gap-1">
-                                <MessageSquare className="w-4 h-4" />
-                                <span>{thread.commentCount || 0} comments</span>
-                            </div>
-                            <div className="flex items-center gap-1">
-                                <Calendar className="w-4 h-4" />
-                                <span>{formatTimeAgo(thread.createdAt)}</span>
-                            </div>
+                        {/* Actions */}
+                        <div className="flex items-center gap-8 mt-3 text-gray-500">
+                            {/* Comment */}
+                            <button
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    onExpand();
+                                }}
+                                className="flex items-center gap-2 hover:text-cyan-500 transition-colors group"
+                            >
+                                <div className={`p-2 rounded-full transition-colors ${isExpanded ? "bg-cyan-500/20 text-cyan-500" : "group-hover:bg-cyan-500/10"
+                                    }`}>
+                                    <MessageSquare className="w-4 h-4" />
+                                </div>
+                                <span className="text-sm">{thread.commentCount || 0}</span>
+                            </button>
+
+                            {/* Upvote */}
+                            <button
+                                onClick={(e) => handleVote("upvote", e)}
+                                disabled={thread.authorId?._id === user?._id}
+                                className={`flex items-center gap-2 transition-colors group ${userVote?.type === "upvote"
+                                    ? "text-green-500"
+                                    : "hover:text-green-500"
+                                    } ${thread.authorId?._id === user?._id ? "opacity-50 cursor-not-allowed" : ""}`}
+                            >
+                                <div className={`p-2 rounded-full transition-colors ${userVote?.type === "upvote"
+                                    ? "bg-green-500/20"
+                                    : "group-hover:bg-green-500/10"
+                                    }`}>
+                                    <ArrowUp className="w-4 h-4" />
+                                </div>
+                                <span className={`text-sm ${netVotes >= 0 ? "text-green-500" : "text-gray-500"}`}>
+                                    {netVotes > 0 ? `+${netVotes}` : netVotes}
+                                </span>
+                            </button>
+
+                            {/* Downvote */}
+                            <button
+                                onClick={(e) => handleVote("downvote", e)}
+                                disabled={thread.authorId?._id === user?._id}
+                                className={`flex items-center gap-2 transition-colors group ${userVote?.type === "downvote"
+                                    ? "text-red-500"
+                                    : "hover:text-red-500"
+                                    } ${thread.authorId?._id === user?._id ? "opacity-50 cursor-not-allowed" : ""}`}
+                            >
+                                <div className={`p-2 rounded-full transition-colors ${userVote?.type === "downvote"
+                                    ? "bg-red-500/20"
+                                    : "group-hover:bg-red-500/10"
+                                    }`}>
+                                    <ArrowDown className="w-4 h-4" />
+                                </div>
+                            </button>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+
+            {/* Expanded Comments Section */}
+            {isExpanded && (
+                <div className="border-t border-gray-200 bg-gray-50" onClick={(e) => e.stopPropagation()}>
+                    <div className="px-4 py-3">
+                        <div className="flex items-center justify-between mb-3">
+                            <h4 className="text-sm font-semibold text-gray-700">Comments</h4>
+                            <button
+                                onClick={onViewFull}
+                                className="text-xs text-cyan-500 hover:text-cyan-600 hover:underline"
+                            >
+                                View full thread →
+                            </button>
+                        </div>
+                        <CommentSection threadId={thread._id} isLocked={thread.status === "locked"} compact />
+                    </div>
+                </div>
+            )}
+        </article>
     );
 }
 

@@ -3,9 +3,11 @@ import React from 'react'
 
 export default function ForumPage() {
     return (
-        <main className="min-h-screen antialiased bg-grid-white/[0.02]">
-            <ThreadList />
-        </main>
+        <div className="min-h-screen bg-white  mt-24">
+            <div className="max-w-6xl mx-auto">
+                <ThreadList />
+            </div>
+        </div>
     )
 }
 

@@ -9,9 +9,9 @@ export default function Heading({ headOne, headTwo, headThree, align = "center" 
             {/* Large Heading */}
             <h1
                 data-aos="fade-up"
-                className={`my-1 max-w-3xl ${isCenter ? 'mx-auto' : ''} text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl ${isCenter ? 'text-center' : 'text-left'} text-white font-semibold`}
+                className={`my-1 max-w-3xl ${isCenter ? 'mx-auto' : ''} text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl ${isCenter ? 'text-center' : 'text-left'} text-black font-semibold`}
             >
-                {headOne} <span className="bg-gradient-to-r from-amber-400 via-orange-500 to-amber-600 bg-clip-text text-transparent">{headTwo}</span> {headThree}
+                {headOne} <span className="bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 bg-clip-text text-transparent">{headTwo}</span> {headThree}
             </h1>
 
 

@@ -211,26 +211,26 @@ export default function TeamDetail() {
     if (error || localError) {
         console.log("❌ Showing error:", error || localError);
         return (
-            <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center px-4">
+            <div className="min-h-screen bg-white flex items-center justify-center px-4">
                 <div className="text-center max-w-md">
                     <div className="w-20 h-20 bg-red-500/10 rounded-full flex items-center justify-center mx-auto mb-4">
                         <X className="w-10 h-10 text-red-400" />
                     </div>
-                    <h2 className="text-2xl font-bold text-white mb-2">Error Loading Team</h2>
-                    <p className="text-gray-400 mb-6">{error || localError}</p>
+                    <h2 className="text-2xl font-bold text-black mb-2">Error Loading Team</h2>
+                    <p className="text-gray-600 mb-6">{error || localError}</p>
                     <div className="space-y-3">
                         <button
                             onClick={() => {
                                 setLocalError(null);
                                 loadTeam();
                             }}
-                            className="px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary/90 w-full"
+                            className="px-6 py-3 bg-cyan-500 text-white rounded-lg hover:bg-cyan-600 w-full"
                         >
                             Try Again
                         </button>
                         <button
                             onClick={() => router.push("/teams")}
-                            className="px-6 py-3 bg-gray-800 text-white rounded-lg hover:bg-gray-700 w-full"
+                            className="px-6 py-3 bg-black/10 text-black rounded-lg hover:bg-black/20 w-full"
                         >
                             Back to Teams
                         </button>
@@ -244,16 +244,16 @@ export default function TeamDetail() {
     if (!loading && !currentTeam) {
         console.log("❓ Team not found");
         return (
-            <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center px-4">
+            <div className="min-h-screen bg-white flex items-center justify-center px-4">
                 <div className="text-center max-w-md">
-                    <div className="w-20 h-20 bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <div className="w-20 h-20 bg-black/10 rounded-full flex items-center justify-center mx-auto mb-4">
                         <Users className="w-10 h-10 text-gray-600" />
                     </div>
-                    <h2 className="text-2xl font-bold text-white mb-2">Team Not Found</h2>
-                    <p className="text-gray-400 mb-6">The team you're looking for doesn't exist or you don't have access to it.</p>
+                    <h2 className="text-2xl font-bold text-black mb-2">Team Not Found</h2>
+                    <p className="text-gray-600 mb-6">The team you're looking for doesn't exist or you don't have access to it.</p>
                     <button
                         onClick={() => router.push("/teams")}
-                        className="px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary/90"
+                        className="px-6 py-3 bg-cyan-500 text-white rounded-lg hover:bg-cyan-600"
                     >
                         Back to Teams
                     </button>
@@ -273,17 +273,17 @@ export default function TeamDetail() {
     const canAddMembers = members.length < 3;
 
     return (
-        <div className="min-h-screen bg-[#0a0a0a] py-8 px-4 sm:px-6 lg:px-8 mt-24">
+        <div className="min-h-screen bg-white py-8 px-4 sm:px-6 lg:px-8 mt-24">
             <div className="max-w-7xl mx-auto">
                 <button
                     onClick={() => router.push("/teams")}
-                    className="mb-6 flex items-center gap-2 text-gray-400 hover:text-white transition-colors"
+                    className="mb-6 flex items-center gap-2 text-gray-600 hover:text-black transition-colors"
                 >
                     <ArrowLeft className="w-5 h-5" />
                     Back to Teams
                 </button>
 
-                <div className="bg-gradient-to-br from-[#1a1a1a] to-[#121212] border border-gray-800 rounded-2xl p-8 mb-6">
+                <div className="bg-gradient-to-br from-white to-white border border-black/10 rounded-2xl p-8 mb-6">
                     <div className="flex items-start justify-between mb-6">
                         <div className="flex-1">
                             {editMode ? (
@@ -291,20 +291,20 @@ export default function TeamDetail() {
                                     type="text"
                                     value={teamData.name}
                                     onChange={(e) => setTeamData(prev => ({ ...prev, name: e.target.value }))}
-                                    className="text-4xl font-bold text-white bg-[#0d0d0d] border border-gray-700 rounded-xl px-4 py-2 w-full mb-4 focus:outline-none focus:border-primary"
+                                    className="text-4xl font-bold text-black bg-white border border-black/20 rounded-xl px-4 py-2 w-full mb-4 focus:outline-none focus:border-cyan-500"
                                 />
                             ) : (
-                                <h1 className="text-4xl font-bold text-white mb-2">{currentTeam.name}</h1>
+                                <h1 className="text-4xl font-bold text-black mb-2">{currentTeam.name}</h1>
                             )}
                             {editMode ? (
                                 <textarea
                                     value={teamData.description}
                                     onChange={(e) => setTeamData(prev => ({ ...prev, description: e.target.value }))}
-                                    className="text-gray-300 bg-[#0d0d0d] border border-gray-700 rounded-xl px-4 py-2 w-full resize-none focus:outline-none focus:border-primary"
+                                    className="text-gray-700 bg-white border border-black/20 rounded-xl px-4 py-2 w-full resize-none focus:outline-none focus:border-cyan-500"
                                     rows={2}
                                 />
                             ) : (
-                                <p className="text-gray-400">{currentTeam.description || "No description"}</p>
+                                <p className="text-gray-600">{currentTeam.description || "No description"}</p>
                             )}
                         </div>
                         <div className="flex items-center gap-2 ml-4">
@@ -328,14 +328,14 @@ export default function TeamDetail() {
                                                 });
                                             }
                                         }}
-                                        className="px-4 py-2 bg-gray-800 text-white rounded-lg hover:bg-gray-700 transition-colors"
+                                        className="px-4 py-2 bg-black/10 text-black rounded-lg hover:bg-black/20 transition-colors"
                                     >
                                         Cancel
                                     </button>
                                     <button
                                         onClick={handleSaveTeam}
                                         disabled={loading}
-                                        className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors flex items-center gap-2 disabled:opacity-50"
+                                        className="px-4 py-2 bg-cyan-500 text-white rounded-lg hover:bg-cyan-600 transition-colors flex items-center gap-2 disabled:opacity-50"
                                     >
                                         <Save className="w-4 h-4" />
                                         Save
@@ -392,7 +392,7 @@ export default function TeamDetail() {
                                 canAddMembers && (
                                     <button
                                         onClick={() => setShowAddMember(true)}
-                                        className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors flex items-center gap-2 text-sm"
+                                        className="px-4 py-2 bg-cyan-500 text-white rounded-lg hover:bg-cyan-600 transition-colors flex items-center gap-2 text-sm"
                                     >
                                         <Plus className="w-4 h-4" />
                                         Add Member
@@ -402,8 +402,8 @@ export default function TeamDetail() {
                         >
                             {!canAddMembers && (
                                 <div className="mb-4 p-3 bg-yellow-500/10 border border-yellow-500/20 rounded-lg flex items-start gap-2">
-                                    <AlertCircle className="w-4 h-4 text-yellow-400 flex-shrink-0 mt-0.5" />
-                                    <p className="text-yellow-400 text-sm">
+                                    <AlertCircle className="w-4 h-4 text-yellow-500 flex-shrink-0 mt-0.5" />
+                                    <p className="text-yellow-600 text-sm">
                                         Team is full (3/3 members). Remove a member to add new ones.
                                     </p>
                                 </div>
@@ -412,11 +412,11 @@ export default function TeamDetail() {
                             {members.length === 0 ? (
                                 <div className="text-center py-12">
                                     <Users className="w-16 h-16 text-gray-600 mx-auto mb-4" />
-                                    <h3 className="text-lg font-semibold text-white mb-2">No members yet</h3>
-                                    <p className="text-gray-400 mb-4">Add consultants to your team</p>
+                                    <h3 className="text-lg font-semibold text-black mb-2">No members yet</h3>
+                                    <p className="text-gray-600 mb-4">Add consultants to your team</p>
                                     <button
                                         onClick={() => setShowAddMember(true)}
-                                        className="px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary/90 inline-flex items-center gap-2"
+                                        className="px-6 py-3 bg-cyan-500 text-white rounded-lg hover:bg-cyan-600 inline-flex items-center gap-2"
                                     >
                                         <Plus className="w-5 h-5" />
                                         Add First Member
@@ -440,13 +440,13 @@ export default function TeamDetail() {
                             <Section title="Project Settings" icon={<Settings className="w-5 h-5" />}>
                                 <div className="space-y-4">
                                     <div>
-                                        <label className="block text-sm font-medium text-gray-300 mb-2">
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">
                                             Billing Period
                                         </label>
                                         <select
                                             value={teamData.billingPeriod}
                                             onChange={(e) => setTeamData(prev => ({ ...prev, billingPeriod: e.target.value }))}
-                                            className="w-full px-4 py-2 bg-[#0d0d0d] border border-gray-700 rounded-lg text-white focus:outline-none focus:border-primary"
+                                            className="w-full px-4 py-2 bg-white border border-black/20 rounded-lg text-black focus:outline-none focus:border-cyan-500"
                                         >
                                             <option value="hourly">Hourly</option>
                                             <option value="daily">Daily</option>
@@ -456,7 +456,7 @@ export default function TeamDetail() {
 
                                     {teamData.billingPeriod === "hourly" && (
                                         <div>
-                                            <label className="block text-sm font-medium text-gray-300 mb-2">
+                                            <label className="block text-sm font-medium text-gray-700 mb-2">
                                                 Estimated Hours
                                             </label>
                                             <input
@@ -467,7 +467,7 @@ export default function TeamDetail() {
                                                     ...prev,
                                                     projectDuration: { ...prev.projectDuration, estimatedHours: e.target.value }
                                                 }))}
-                                                className="w-full px-4 py-2 bg-[#0d0d0d] border border-gray-700 rounded-lg text-white focus:outline-none focus:border-primary"
+                                                className="w-full px-4 py-2 bg-white border border-black/20 rounded-lg text-black focus:outline-none focus:border-cyan-500"
                                                 placeholder="e.g., 160"
                                             />
                                         </div>
@@ -475,7 +475,7 @@ export default function TeamDetail() {
 
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                         <div>
-                                            <label className="block text-sm font-medium text-gray-300 mb-2">
+                                            <label className="block text-sm font-medium text-gray-700 mb-2">
                                                 Start Date
                                             </label>
                                             <input
@@ -485,11 +485,11 @@ export default function TeamDetail() {
                                                     ...prev,
                                                     projectDuration: { ...prev.projectDuration, startDate: e.target.value }
                                                 }))}
-                                                className="w-full px-4 py-2 bg-[#0d0d0d] border border-gray-700 rounded-lg text-white focus:outline-none focus:border-primary"
+                                                className="w-full px-4 py-2 bg-white border border-black/20 rounded-lg text-black focus:outline-none focus:border-cyan-500"
                                             />
                                         </div>
                                         <div>
-                                            <label className="block text-sm font-medium text-gray-300 mb-2">
+                                            <label className="block text-sm font-medium text-gray-700 mb-2">
                                                 End Date
                                             </label>
                                             <input
@@ -499,7 +499,7 @@ export default function TeamDetail() {
                                                     ...prev,
                                                     projectDuration: { ...prev.projectDuration, endDate: e.target.value }
                                                 }))}
-                                                className="w-full px-4 py-2 bg-[#0d0d0d] border border-gray-700 rounded-lg text-white focus:outline-none focus:border-primary"
+                                                className="w-full px-4 py-2 bg-white border border-black/20 rounded-lg text-black focus:outline-none focus:border-cyan-500"
                                             />
                                         </div>
                                     </div>
@@ -544,13 +544,13 @@ export default function TeamDetail() {
 
 function Section({ title, icon, action, children }) {
     return (
-        <div className="bg-[#121212] border border-gray-800 rounded-2xl overflow-hidden">
-            <div className="px-6 py-4 border-b border-gray-800 flex items-center justify-between bg-gradient-to-r from-gray-900 to-[#121212]">
+        <div className="bg-white border border-black/10 rounded-2xl overflow-hidden">
+            <div className="px-6 py-4 border-b border-black/10 flex items-center justify-between bg-gradient-to-r from-white to-white">
                 <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center text-primary">
+                    <div className="w-8 h-8 bg-cyan-500/10 rounded-lg flex items-center justify-center text-cyan-500">
                         {icon}
                     </div>
-                    <h2 className="text-lg font-semibold text-white">{title}</h2>
+                    <h2 className="text-lg font-semibold text-black">{title}</h2>
                 </div>
                 {action}
             </div>
@@ -561,22 +561,22 @@ function Section({ title, icon, action, children }) {
 
 function StatCard({ icon, label, value, color = "primary", loading = false }) {
     const colorClasses = {
-        primary: "text-primary bg-primary/10",
-        green: "text-green-400 bg-green-500/10",
-        blue: "text-blue-400 bg-blue-500/10",
-        purple: "text-purple-400 bg-purple-500/10"
+        primary: "text-cyan-500 bg-cyan-500/10",
+        green: "text-green-500 bg-green-500/10",
+        blue: "text-blue-500 bg-blue-500/10",
+        purple: "text-purple-500 bg-purple-500/10"
     };
 
     return (
-        <div className="p-4 bg-[#0d0d0d] rounded-xl border border-gray-800">
+        <div className="p-4 bg-black/5 rounded-xl border border-black/10">
             <div className={`w-10 h-10 rounded-lg flex items-center justify-center mb-3 ${colorClasses[color]}`}>
                 {icon}
             </div>
-            <p className="text-xs text-gray-400 mb-1">{label}</p>
+            <p className="text-xs text-gray-600 mb-1">{label}</p>
             {loading ? (
-                <div className="h-7 bg-gray-800 rounded animate-pulse w-20"></div>
+                <div className="h-7 bg-black/10 rounded animate-pulse w-20"></div>
             ) : (
-                <p className="text-lg font-bold text-white capitalize">{value}</p>
+                <p className="text-lg font-bold text-black capitalize">{value}</p>
             )}
         </div>
     );
@@ -591,17 +591,17 @@ function MemberCard({ member, onEdit, onRemove }) {
     };
 
     return (
-        <div className="p-4 bg-[#0d0d0d] rounded-xl border border-gray-800 hover:border-primary/50 transition-all">
+        <div className="p-4 bg-black/5 rounded-xl border border-black/10 hover:border-cyan-500/50 transition-all">
             <div className="flex items-start gap-4">
-                <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-primary to-purple-600 flex items-center justify-center text-lg font-bold text-white flex-shrink-0">
+                <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-cyan-500 to-cyan-600 flex items-center justify-center text-lg font-bold text-white flex-shrink-0">
                     {getInitials(consultant.user?.name)}
                 </div>
                 <div className="flex-1 min-w-0">
-                    <h4 className="text-white font-semibold mb-1">
+                    <h4 className="text-black font-semibold mb-1">
                         {consultant.user?.name || "Anonymous"}
                     </h4>
-                    <p className="text-sm text-gray-400 mb-2">{member.role || consultant.title || "Consultant"}</p>
-                    <div className="flex flex-wrap gap-3 text-xs text-gray-400">
+                    <p className="text-sm text-gray-600 mb-2">{member.role || consultant.title || "Consultant"}</p>
+                    <div className="flex flex-wrap gap-3 text-xs text-gray-600">
                         {consultant.baseRate?.hourly && (
                             <span className="flex items-center gap-1">
                                 <DollarSign className="w-3 h-3" />
@@ -619,7 +619,7 @@ function MemberCard({ member, onEdit, onRemove }) {
                 <div className="flex items-center gap-2">
                     <button
                         onClick={onEdit}
-                        className="p-2 bg-gray-800 text-gray-400 rounded-lg hover:bg-gray-700 hover:text-white transition-colors"
+                        className="p-2 bg-black/10 text-gray-600 rounded-lg hover:bg-black/20 hover:text-black transition-colors"
                     >
                         <Edit2 className="w-4 h-4" />
                     </button>
@@ -652,7 +652,7 @@ function PricingCard({ pricing, taxPercent, discountPercent, onTaxChange, onDisc
                                 step="0.1"
                                 value={taxPercent}
                                 onChange={(e) => onTaxChange(e.target.value)}
-                                className="w-full px-4 py-2 bg-[#0d0d0d] border border-gray-700 rounded-lg text-white focus:outline-none focus:border-primary"
+                                className="w-full px-4 py-2 bg-white border border-black/20 rounded-lg text-black focus:outline-none focus:border-cyan-500"
                             />
                         </div>
                         <div>
@@ -666,17 +666,17 @@ function PricingCard({ pricing, taxPercent, discountPercent, onTaxChange, onDisc
                                 step="0.1"
                                 value={discountPercent}
                                 onChange={(e) => onDiscountChange(e.target.value)}
-                                className="w-full px-4 py-2 bg-[#0d0d0d] border border-gray-700 rounded-lg text-white focus:outline-none focus:border-primary"
+                                className="w-full px-4 py-2 bg-white border border-black/20 rounded-lg text-black focus:outline-none focus:border-cyan-500"
                             />
                         </div>
-                        <div className="border-t border-gray-800 pt-4"></div>
+                        <div className="border-t border-black/10 pt-4"></div>
                     </>
                 )}
 
                 {loading ? (
                     <div className="space-y-3">
                         {[1, 2, 3, 4].map((i) => (
-                            <div key={i} className="h-6 bg-gray-800 rounded animate-pulse"></div>
+                            <div key={i} className="h-6 bg-black/10 rounded animate-pulse"></div>
                         ))}
                     </div>
                 ) : (
@@ -688,7 +688,7 @@ function PricingCard({ pricing, taxPercent, discountPercent, onTaxChange, onDisc
                         {pricing?.tax > 0 && (
                             <PriceRow label="Tax" value={pricing.tax} />
                         )}
-                        <div className="border-t border-gray-700 pt-3 mt-3">
+                        <div className="border-t border-black/10 pt-3 mt-3">
                             <PriceRow
                                 label="Total"
                                 value={pricing?.total || 0}
@@ -700,8 +700,8 @@ function PricingCard({ pricing, taxPercent, discountPercent, onTaxChange, onDisc
                 )}
 
                 {!editMode && pricing && !loading && (
-                    <div className="mt-4 p-3 bg-primary/5 border border-primary/20 rounded-lg">
-                        <p className="text-xs text-gray-400 text-center">
+                    <div className="mt-4 p-3 bg-cyan-500/5 border border-cyan-500/20 rounded-lg">
+                        <p className="text-xs text-gray-600 text-center">
                             Pricing updates automatically based on team changes
                         </p>
                     </div>
@@ -714,10 +714,10 @@ function PricingCard({ pricing, taxPercent, discountPercent, onTaxChange, onDisc
 function PriceRow({ label, value, isDiscount, isTotal, currency = "USD" }) {
     return (
         <div className="flex items-center justify-between">
-            <span className={`${isTotal ? "font-semibold text-white" : "text-gray-400"}`}>
+            <span className={`${isTotal ? "font-semibold text-black" : "text-gray-600"}`}>
                 {label}
             </span>
-            <span className={`font-mono ${isTotal ? "text-xl font-bold text-primary" : isDiscount ? "text-red-400" : "text-white"}`}>
+            <span className={`font-mono ${isTotal ? "text-xl font-bold text-cyan-500" : isDiscount ? "text-red-500" : "text-black"}`}>
                 {isDiscount && value !== 0 && "-"}
                 {currency} {Math.abs(value).toFixed(2)}
             </span>
@@ -727,15 +727,15 @@ function PriceRow({ label, value, isDiscount, isTotal, currency = "USD" }) {
 
 function DetailSkeleton() {
     return (
-        <div className="min-h-screen bg-[#0a0a0a] py-8 px-4 sm:px-6 lg:px-8 mt-24">
+        <div className="min-h-screen bg-white py-8 px-4 sm:px-6 lg:px-8 mt-24">
             <div className="max-w-7xl mx-auto">
-                <div className="h-8 w-32 bg-gray-800 rounded mb-6 animate-pulse"></div>
-                <div className="bg-[#121212] border border-gray-800 rounded-2xl p-8 mb-6 animate-pulse">
-                    <div className="h-10 bg-gray-800 rounded w-1/3 mb-4"></div>
-                    <div className="h-6 bg-gray-800 rounded w-2/3 mb-6"></div>
+                <div className="h-8 w-32 bg-black/10 rounded mb-6 animate-pulse"></div>
+                <div className="bg-white border border-black/10 rounded-2xl p-8 mb-6 animate-pulse">
+                    <div className="h-10 bg-black/10 rounded w-1/3 mb-4"></div>
+                    <div className="h-6 bg-black/10 rounded w-2/3 mb-6"></div>
                     <div className="grid grid-cols-4 gap-4">
                         {[1, 2, 3, 4].map((i) => (
-                            <div key={i} className="h-24 bg-gray-800 rounded"></div>
+                            <div key={i} className="h-24 bg-black/10 rounded"></div>
                         ))}
                     </div>
                 </div>

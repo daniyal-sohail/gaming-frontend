@@ -55,29 +55,29 @@ const Benefits = () => {
     const getColorClasses = (color) => {
         const colorMap = {
             amber: {
-                bg: "bg-amber-500/20",
-                text: "text-amber-400",
-                border: "border-amber-500/30",
-                icon: "text-amber-400"
+                bg: "bg-cyan-500/20",
+                text: "text-cyan-500",
+                border: "border-cyan-500/30",
+                icon: "text-cyan-500"
             },
             orange: {
-                bg: "bg-orange-500/20",
-                text: "text-orange-400",
-                border: "border-orange-500/30",
-                icon: "text-orange-400"
+                bg: "bg-cyan-500/20",
+                text: "text-cyan-500",
+                border: "border-cyan-500/30",
+                icon: "text-cyan-500"
             },
             gold: {
-                bg: "bg-yellow-500/20",
-                text: "text-yellow-400",
-                border: "border-yellow-500/30",
-                icon: "text-yellow-400"
+                bg: "bg-cyan-500/20",
+                text: "text-cyan-500",
+                border: "border-cyan-500/30",
+                icon: "text-cyan-500"
             }
         };
         return colorMap[color] || colorMap.amber;
     };
 
     return (
-        <section className="bg-black text-white py-12 max-w-6xl mx-auto">
+        <section className="bg-white text-black py-12 max-w-6xl mx-auto">
             <div className="max-w-7xl mx-auto px-4">
                 {/* Header Section */}
                 <div className="text-center mb-16">
@@ -93,7 +93,7 @@ const Benefits = () => {
                         />
                     </div>
 
-                    <p className="text-white/70 text-lg leading-relaxed max-w-3xl mx-auto">
+                    <p className="text-black/70 text-lg leading-relaxed max-w-3xl mx-auto">
                         From game development to interactive design, we provide complete gaming solutions
                         tailored to bring your vision to life with cutting-edge technology.
                     </p>
@@ -108,17 +108,17 @@ const Benefits = () => {
                         return (
                             <div
                                 key={index}
-                                className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-8 hover:bg-white/10 hover:border-white/20 hover:shadow-[inset_0_1px_0_0_rgba(255,255,255,0.1),0_8px_32px_rgba(0,0,0,0.3)] transition-all duration-300 group"
+                                className="bg-black/5 backdrop-blur-xl border border-black/10 rounded-2xl p-8 hover:bg-black/10 hover:border-black/20 hover:shadow-[inset_0_1px_0_0_rgba(0,0,0,0.1),0_8px_32px_rgba(0,0,0,0.1)] transition-all duration-300 group"
                             >
                                 {/* Service Header */}
                                 <div className="mb-6">
                                     <div className={`w-16 h-16 rounded-2xl ${colors.bg} border ${colors.border} flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300`}>
                                         <IconComponent className={`w-8 h-8 ${colors.icon}`} />
                                     </div>
-                                    <h3 className="text-2xl font-bold text-white mb-3">
+                                    <h3 className="text-2xl font-bold text-black mb-3">
                                         {service.title}
                                     </h3>
-                                    <p className="text-white/70 text-base leading-relaxed mb-4">
+                                    <p className="text-black/70 text-base leading-relaxed mb-4">
                                         {service.description}
                                     </p>
                                     <div className={`inline-block px-3 py-1 rounded-full text-xs font-medium ${colors.bg} ${colors.text} border ${colors.border}`}>
@@ -131,7 +131,7 @@ const Benefits = () => {
                                     {service.features.map((feature, featureIndex) => (
                                         <div key={featureIndex} className="flex items-start space-x-3">
                                             <CheckCircle className={`w-5 h-5 ${colors.icon} flex-shrink-0 mt-0.5`} />
-                                            <span className="text-white/80 text-sm leading-relaxed">
+                                            <span className="text-black/80 text-sm leading-relaxed">
                                                 {feature}
                                             </span>
                                         </div>

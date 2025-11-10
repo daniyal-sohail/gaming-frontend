@@ -123,35 +123,35 @@ export default function ThreadForm() {
 
     if (loading && isEditing) {
         return (
-            <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center">
-                <Loader2 className="w-8 h-8 animate-spin text-primary" />
+            <div className="min-h-screen bg-white flex items-center justify-center">
+                <Loader2 className="w-8 h-8 animate-spin text-cyan-500" />
             </div>
         );
     }
 
     return (
-        <div className="min-h-screen bg-[#0a0a0a] py-8 px-4 sm:px-6 lg:px-8 mt-24">
+        <div className="min-h-screen bg-white py-8 px-4 sm:px-6 lg:px-8 mt-24">
             <div className="max-w-4xl mx-auto">
                 {/* Back Button */}
                 <button
                     onClick={() => router.back()}
-                    className="mb-6 flex items-center gap-2 text-gray-400 hover:text-white transition-colors"
+                    className="mb-6 flex items-center gap-2 text-gray-600 hover:text-black transition-colors"
                 >
                     <ArrowLeft className="w-5 h-5" />
                     Back
                 </button>
 
                 {/* Form Card */}
-                <div className="bg-[#121212] border border-gray-800 rounded-2xl overflow-hidden">
+                <div className="bg-white border border-black/10 rounded-2xl overflow-hidden">
                     <div className="p-8">
-                        <h1 className="text-3xl font-bold text-white mb-6">
+                        <h1 className="text-3xl font-bold text-black mb-6">
                             {isEditing ? "Edit Thread" : "Create New Thread"}
                         </h1>
 
                         <form onSubmit={handleSubmit} className="space-y-6">
                             {/* Title */}
                             <div>
-                                <label className="block text-sm font-medium text-gray-300 mb-2">
+                                <label className="block text-sm font-medium text-gray-700 mb-2">
                                     Title <span className="text-red-400">*</span>
                                 </label>
                                 <input
@@ -169,9 +169,9 @@ export default function ThreadForm() {
                                     }}
                                     placeholder="Enter thread title (3-200 characters)"
                                     maxLength={200}
-                                    className={`w-full bg-[#0d0d0d] border ${
-                                        validationErrors.title ? "border-red-500" : "border-gray-800"
-                                    } rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-primary transition-colors`}
+                                    className={`w-full bg-white border ${
+                                        validationErrors.title ? "border-red-500" : "border-black/20"
+                                    } rounded-lg px-4 py-3 text-black placeholder-gray-500 focus:outline-none focus:border-cyan-500 transition-colors`}
                                 />
                                 <div className="flex items-center justify-between mt-1">
                                     {validationErrors.title && (
@@ -188,7 +188,7 @@ export default function ThreadForm() {
 
                             {/* Content */}
                             <div>
-                                <label className="block text-sm font-medium text-gray-300 mb-2">
+                                <label className="block text-sm font-medium text-gray-700 mb-2">
                                     Content <span className="text-red-400">*</span>
                                 </label>
                                 <textarea
@@ -206,9 +206,9 @@ export default function ThreadForm() {
                                     placeholder="Write your thread content (10-10000 characters)..."
                                     rows={12}
                                     maxLength={10000}
-                                    className={`w-full bg-[#0d0d0d] border ${
-                                        validationErrors.content ? "border-red-500" : "border-gray-800"
-                                    } rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-primary transition-colors resize-none`}
+                                    className={`w-full bg-white border ${
+                                        validationErrors.content ? "border-red-500" : "border-black/20"
+                                    } rounded-lg px-4 py-3 text-black placeholder-gray-500 focus:outline-none focus:border-cyan-500 transition-colors resize-none`}
                                 />
                                 <div className="flex items-center justify-between mt-1">
                                     {validationErrors.content && (
@@ -225,7 +225,7 @@ export default function ThreadForm() {
 
                             {/* Tags */}
                             <div>
-                                <label className="block text-sm font-medium text-gray-300 mb-2">
+                                <label className="block text-sm font-medium text-gray-700 mb-2">
                                     Tags (Optional, max 10)
                                 </label>
                                 <div className="flex gap-2 mb-2">
@@ -240,13 +240,13 @@ export default function ThreadForm() {
                                             }
                                         }}
                                         placeholder="Add a tag and press Enter"
-                                        className="flex-1 bg-[#0d0d0d] border border-gray-800 rounded-lg px-4 py-2 text-white placeholder-gray-500 focus:outline-none focus:border-primary transition-colors"
+                                        className="flex-1 bg-white border border-black/20 rounded-lg px-4 py-2 text-black placeholder-gray-500 focus:outline-none focus:border-cyan-500 transition-colors"
                                     />
                                     <button
                                         type="button"
                                         onClick={handleAddTag}
                                         disabled={formData.tags.length >= 10}
-                                        className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                                        className="px-4 py-2 bg-cyan-500 text-white rounded-lg hover:bg-cyan-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                                     >
                                         Add
                                     </button>
@@ -256,13 +256,13 @@ export default function ThreadForm() {
                                         {formData.tags.map((tag, idx) => (
                                             <span
                                                 key={idx}
-                                                className="inline-flex items-center gap-2 px-3 py-1 bg-primary/10 text-primary text-sm rounded-lg border border-primary/20"
+                                                className="inline-flex items-center gap-2 px-3 py-1 bg-cyan-500/10 text-cyan-500 text-sm rounded-lg border border-cyan-500/20"
                                             >
                                                 #{tag}
                                                 <button
                                                     type="button"
                                                     onClick={() => handleRemoveTag(tag)}
-                                                    className="text-primary hover:text-red-400 transition-colors"
+                                                    className="text-cyan-500 hover:text-red-500 transition-colors"
                                                 >
                                                     <X className="w-3 h-3" />
                                                 </button>
@@ -283,14 +283,14 @@ export default function ThreadForm() {
                                 <button
                                     type="button"
                                     onClick={() => router.back()}
-                                    className="flex-1 px-6 py-3 bg-[#0d0d0d] border border-gray-800 text-white rounded-lg hover:border-gray-700 transition-colors"
+                                    className="flex-1 px-6 py-3 bg-black/10 border border-black/10 text-black rounded-lg hover:bg-black/20 transition-colors"
                                 >
                                     Cancel
                                 </button>
                                 <button
                                     type="submit"
                                     disabled={submitting}
-                                    className="flex-1 px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                                    className="flex-1 px-6 py-3 bg-cyan-500 text-white rounded-lg hover:bg-cyan-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                                 >
                                     {submitting ? (
                                         <>

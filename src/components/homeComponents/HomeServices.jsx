@@ -69,7 +69,7 @@ const HomeServices = () => {
     ];
 
     return (
-        <section className="bg-black text-white py-20 max-w-6xl mx-auto">
+        <section className="bg-white text-black py-20 max-w-6xl mx-auto">
             <div className="max-w-7xl mx-auto px-4">
                 {/* Header - Left Aligned */}
                 <div className="mb-16 text-left">
@@ -82,7 +82,7 @@ const HomeServices = () => {
                     <Heading headOne="Expert Solutions for" headTwo="Interactive Gaming" headThree="" align="left" />
 
                     {/* Description */}
-                    <p className="text-xl text-white/70 mt-4 max-w-2xl">
+                    <p className="text-xl text-black/70 mt-4 max-w-2xl">
                         From development to design, we provide comprehensive services to bring your gaming ideas to life.
                     </p>
                 </div>
@@ -92,20 +92,20 @@ const HomeServices = () => {
                     {services.map((service, index) => (
                         <div
                             key={index}
-                            className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-8 hover:bg-white/10 hover:border-white/20 transition-all duration-300 cursor-pointer group"
+                            className="bg-black/5 backdrop-blur-sm border border-black/10 rounded-2xl p-8 hover:bg-black/10 hover:border-black/20 transition-all duration-300 cursor-pointer group"
                         >
                             {/* Icon */}
-                            <div className="text-[#fc964c] mb-6 group-hover:scale-110 transition-transform duration-300">
+                            <div className="text-cyan-500 mb-6 group-hover:scale-110 transition-transform duration-300">
                                 {service.icon}
                             </div>
 
                             {/* Text */}
                             <div>
-                                <h3 className="text-xl font-semibold text-white leading-tight">
+                                <h3 className="text-xl font-semibold text-black leading-tight">
                                     {service.title}
                                 </h3>
                                 {service.subtitle && (
-                                    <h3 className="text-xl font-semibold text-white leading-tight">
+                                    <h3 className="text-xl font-semibold text-black leading-tight">
                                         {service.subtitle}
                                     </h3>
                                 )}

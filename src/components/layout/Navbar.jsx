@@ -47,7 +47,6 @@ const guestNavigation = [
 ];
 
 export default function Navbar() {
-    const [scrolled, setScrolled] = useState(false);
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [userDropdownOpen, setUserDropdownOpen] = useState(false);
     const { user, isAuthenticated, logout, loading, userType } = useAuth();
@@ -77,12 +76,6 @@ export default function Navbar() {
         }
         return false;
     });
-
-    useEffect(() => {
-        const onScroll = () => setScrolled(window.scrollY > 12);
-        window.addEventListener("scroll", onScroll);
-        return () => window.removeEventListener("scroll", onScroll);
-    }, []);
 
     // Update hasStoredUser when user changes
     useEffect(() => {
@@ -116,19 +109,15 @@ export default function Navbar() {
             {/* Glassy pill container */}
             <div
                 className={[
-                    "mx-auto mt-6 w-[95%] max-w-6xl",
+                    "w-full",
                     "backdrop-blur-2xl",
-                    scrolled || mobileMenuOpen
-                        ? "bg-black/20 border-white/20"
-                        : "bg-black/90 border-black/10",
-                    "rounded-2xl",
-                    "border",
-                    "shadow-[inset_0_1px_0_0_rgba(255,255,255,0.1),0_20px_60px_rgba(0,0,0,0.4)]",
-                    "transition-all duration-500 ease-in-out",
-                    "supports-[backdrop-filter]:bg-white/5",
+                    "bg-white/95 border-b border-black/20",
+                    "shadow-[inset_0_1px_0_0_rgba(0,0,0,0.1),0_4px_12px_rgba(0,0,0,0.1)]",
+                    "transition-all duration-300 ease-in-out",
+                    "supports-[backdrop-filter]:bg-white/95",
                 ].join(" ")}
             >
-                <div className="px-4 sm:px-6">
+                <div className="mx-auto max-w-7xl px-4 sm:px-6">
                     <div className="flex h-16 sm:h-18 items-center justify-between">
                         {/* Logo */}
                         <Link href="/" className="flex items-center gap-3">
@@ -140,7 +129,7 @@ export default function Navbar() {
                                 className="h-9 w-9 rounded-full"
                                 priority
                             />
-                            <span className="font-semibold text-white/90 tracking-tight">
+                            <span className="font-semibold text-black/90 tracking-tight">
                                 Interactive Gaming
                             </span>
                         </Link>
@@ -152,7 +141,7 @@ export default function Navbar() {
                                     <div key={item.name} className="relative group">
                                         <Link
                                             href={item.href}
-                                            className="relative z-10 flex items-center gap-1 px-4 py-2 rounded-lg text-white/85 hover:text-white transition"
+                                            className="relative z-10 flex items-center gap-1 px-4 py-2 rounded-lg text-black/85 hover:text-black transition"
                                         >
                                             {item.name}
                                             <ChevronDown className="h-4 w-4 group-hover:rotate-180 transition-transform" />
@@ -160,14 +149,14 @@ export default function Navbar() {
 
                                         {/* Dropdown */}
                                         <div className="absolute left-1/2 -translate-x-1/2 top-full pt-2 opacity-0 invisible pointer-events-none group-hover:opacity-100 group-hover:visible group-hover:pointer-events-auto transition">
-                                            <div className="w-64 rounded-xl bg-black border border-white/20 shadow-xl overflow-hidden">
+                                            <div className="w-64 rounded-xl bg-white border border-black/20 shadow-xl overflow-hidden">
                                                 {item.items.map((sub) => (
                                                     <Link
                                                         key={sub.name}
                                                         href={sub.href}
-                                                        className="flex items-center gap-3 px-4 py-3 text-white/85 hover:bg-white/5 hover:text-white transition"
+                                                        className="flex items-center gap-3 px-4 py-3 text-black/85 hover:bg-black/5 hover:text-black transition"
                                                     >
-                                                        <span className="h-1.5 w-1.5 rounded-full bg-white/30" />
+                                                        <span className="h-1.5 w-1.5 rounded-full bg-black/30" />
                                                         <span className="font-medium">{sub.name}</span>
                                                     </Link>
                                                 ))}
@@ -178,7 +167,7 @@ export default function Navbar() {
                                     <Link
                                         key={item.name}
                                         href={item.href}
-                                        className="px-4 py-2 rounded-lg text-white/85 hover:text-white hover:bg-white/5 transition"
+                                        className="px-4 py-2 rounded-lg text-black/85 hover:text-black hover:bg-black/5 transition"
                                     >
                                         {item.name}
                                     </Link>
@@ -191,18 +180,18 @@ export default function Navbar() {
                             {loading ? (
                                 /* Loading state - show skeleton for user profile */
                                 <div className="flex items-center gap-3 px-4 py-2">
-                                    <div className="h-8 w-8 rounded-full bg-white/10 animate-pulse"></div>
-                                    <div className="h-4 w-20 bg-white/10 animate-pulse rounded"></div>
+                                    <div className="h-8 w-8 rounded-full bg-black/10 animate-pulse"></div>
+                                    <div className="h-4 w-20 bg-black/10 animate-pulse rounded"></div>
                                 </div>
                             ) : isAuthenticated ? (
                                 /* User Profile Dropdown */
                                 <div className="relative" data-user-dropdown>
                                     <button
                                         onClick={() => setUserDropdownOpen(!userDropdownOpen)}
-                                        className="flex items-center gap-3 px-4 py-2 rounded-lg text-white/85 hover:text-white hover:bg-white/5 transition"
+                                        className="flex items-center gap-3 px-4 py-2 rounded-lg text-black/85 hover:text-black hover:bg-black/5 transition"
                                     >
                                         {/* User Avatar */}
-                                        <div className="h-8 w-8 rounded-full bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center text-white font-semibold text-sm">
+                                        <div className="h-8 w-8 rounded-full bg-gradient-to-br from-cyan-400 to-cyan-600 flex items-center justify-center text-white font-semibold text-sm">
                                             {user?.name ? user.name.charAt(0).toUpperCase() : 'U'}
                                         </div>
                                         {/* User Name */}
@@ -212,16 +201,16 @@ export default function Navbar() {
 
                                     {/* User Dropdown Menu */}
                                     {userDropdownOpen && (
-                                        <div className="absolute right-0 top-full mt-2 w-56 rounded-xl bg-black border border-white/20 shadow-xl overflow-hidden z-50">
+                                        <div className="absolute right-0 top-full mt-2 w-56 rounded-xl bg-white border border-black/20 shadow-xl overflow-hidden z-50">
                                             {/* User Info Header */}
-                                            <div className="px-4 py-3 border-b border-white/10">
+                                            <div className="px-4 py-3 border-b border-black/10">
                                                 <div className="flex items-center gap-3">
 
                                                     <div>
-                                                        <p className="font-medium text-white">{user?.name || 'User'}</p>
-                                                        <p className="text-sm text-white/60">{user?.email}</p>
+                                                        <p className="font-medium text-black">{user?.name || 'User'}</p>
+                                                        <p className="text-sm text-black/60">{user?.email}</p>
                                                         {userType && (
-                                                            <span className="inline-block px-2 py-1 text-xs font-medium bg-white/10 text-white/80 rounded-full mt-1">
+                                                            <span className="inline-block px-2 py-1 text-xs font-medium bg-black/10 text-black/80 rounded-full mt-1">
                                                                 {userType === 'consultant' ? 'Consultant' : userType === 'client' ? 'Client' : userType}
                                                             </span>
                                                         )}
@@ -233,7 +222,7 @@ export default function Navbar() {
                                             <div className="py-2">
                                                 <Link
                                                     href="/profile"
-                                                    className="flex items-center gap-3 px-4 py-3 text-white/85 hover:bg-white/5 hover:text-white transition"
+                                                    className="flex items-center gap-3 px-4 py-3 text-black/85 hover:bg-black/5 hover:text-black transition"
                                                     onClick={() => setUserDropdownOpen(false)}
                                                 >
                                                     <User className="h-4 w-4" />
@@ -241,7 +230,7 @@ export default function Navbar() {
                                                 </Link>
                                                 <Link
                                                     href="/account"
-                                                    className="flex items-center gap-3 px-4 py-3 text-white/85 hover:bg-white/5 hover:text-white transition"
+                                                    className="flex items-center gap-3 px-4 py-3 text-black/85 hover:bg-black/5 hover:text-black transition"
                                                     onClick={() => setUserDropdownOpen(false)}
                                                 >
                                                     <User className="h-4 w-4" />
@@ -264,13 +253,13 @@ export default function Navbar() {
                                 <>
                                     <Link
                                         href="/signin"
-                                        className="px-4 py-2 rounded-lg text-white/85 hover:text-white hover:bg-white/5 transition"
+                                        className="px-4 py-2 rounded-lg text-black/85 hover:text-black hover:bg-black/5 transition"
                                     >
                                         Login
                                     </Link>
                                     <Link
                                         href="/signup"
-                                        className="px-4 py-2 rounded-lg bg-black/80 text-white font-medium hover:from-amber-600 hover:to-amber-700 hover:shadow-lg hover:shadow-amber-500/25 hover:-translate-y-0.5 transition-all duration-200 text-sm"
+                                        className="px-4 py-2 rounded-lg bg-cyan-500 text-white font-medium hover:bg-cyan-600 hover:shadow-lg hover:shadow-cyan-500/25 hover:-translate-y-0.5 transition-all duration-200 text-sm"
                                     >
                                         Sign Up
                                     </Link>
@@ -280,7 +269,7 @@ export default function Navbar() {
 
                         {/* Mobile Toggle */}
                         <button
-                            className="lg:hidden p-2 rounded-lg text-white/90 hover:bg-white/5 transition cursor-pointer"
+                            className="lg:hidden p-2 rounded-lg text-black/90 hover:bg-black/5 transition cursor-pointer"
                             onClick={() => setMobileMenuOpen((v) => !v)}
                             aria-label="Toggle menu"
                         >
@@ -295,12 +284,12 @@ export default function Navbar() {
 
                 {/* Mobile Menu */}
                 {mobileMenuOpen && (
-                    <div className="lg:hidden border-t border-white/10">
+                    <div className="lg:hidden border-t border-black/10">
                         <div className="px-4 py-4 space-y-1">
                             {navigation.map((item) =>
                                 item.dropdown ? (
                                     <div key={item.name} className="rounded-xl overflow-hidden">
-                                        <div className="px-4 py-3 text-white/85 font-semibold">
+                                        <div className="px-4 py-3 text-black/85 font-semibold">
                                             {item.name}
                                         </div>
                                         <div className="pl-2">
@@ -308,7 +297,7 @@ export default function Navbar() {
                                                 <Link
                                                     key={sub.name}
                                                     href={sub.href}
-                                                    className="block px-4 py-2 rounded-lg text-white/80 hover:bg-white/5 hover:text-white transition"
+                                                    className="block px-4 py-2 rounded-lg text-black/80 hover:bg-black/5 hover:text-black transition"
                                                     onClick={() => setMobileMenuOpen(false)}
                                                 >
                                                     {sub.name}
@@ -332,12 +321,12 @@ export default function Navbar() {
                             <div className="mt-3 space-y-2 px-4">
                                 {loading ? (
                                     /* Mobile Loading state - show skeleton for user profile */
-                                    <div className="px-4 py-3 border-b border-white/10 mb-2">
+                                    <div className="px-4 py-3 border-b border-black/10 mb-2">
                                         <div className="flex items-center gap-3">
-                                            <div className="h-10 w-10 rounded-full bg-white/10 animate-pulse"></div>
+                                            <div className="h-10 w-10 rounded-full bg-black/10 animate-pulse"></div>
                                             <div>
-                                                <div className="h-4 w-24 bg-white/10 animate-pulse rounded mb-2"></div>
-                                                <div className="h-3 w-32 bg-white/10 animate-pulse rounded"></div>
+                                                <div className="h-4 w-24 bg-black/10 animate-pulse rounded mb-2"></div>
+                                                <div className="h-3 w-32 bg-black/10 animate-pulse rounded"></div>
                                             </div>
                                         </div>
                                     </div>
@@ -345,16 +334,16 @@ export default function Navbar() {
                                     /* Mobile User Profile */
                                     <>
                                         {/* User Info Header */}
-                                        <div className="px-4 py-3 border-b border-white/10 mb-2">
+                                        <div className="px-4 py-3 border-b border-black/10 mb-2">
                                             <div className="flex items-center gap-3">
-                                                <div className="h-10 w-10 rounded-full bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center text-white font-semibold">
+                                                <div className="h-10 w-10 rounded-full bg-gradient-to-br from-cyan-400 to-cyan-600 flex items-center justify-center text-white font-semibold">
                                                     {user?.name ? user.name.charAt(0).toUpperCase() : 'U'}
                                                 </div>
                                                 <div>
-                                                    <p className="font-medium text-white">{user?.name || 'User'}</p>
-                                                    <p className="text-sm text-white/60">{user?.email}</p>
+                                                    <p className="font-medium text-black">{user?.name || 'User'}</p>
+                                                    <p className="text-sm text-black/60">{user?.email}</p>
                                                     {userType && (
-                                                        <span className="inline-block px-2 py-1 text-xs font-medium bg-white/10 text-white/80 rounded-full mt-1">
+                                                        <span className="inline-block px-2 py-1 text-xs font-medium bg-black/10 text-black/80 rounded-full mt-1">
                                                             {userType === 'consultant' ? 'Consultant' : userType === 'client' ? 'Client' : userType}
                                                         </span>
                                                     )}
@@ -366,7 +355,7 @@ export default function Navbar() {
                                         <Link
                                             href="/profile"
                                             onClick={() => setMobileMenuOpen(false)}
-                                            className="flex items-center gap-3 px-4 py-3 rounded-lg text-white/85 hover:bg-white/5 hover:text-white transition"
+                                            className="flex items-center gap-3 px-4 py-3 rounded-lg text-black/85 hover:bg-black/5 hover:text-black transition"
                                         >
                                             <User className="h-4 w-4" />
                                             <span>Profile</span>
@@ -374,7 +363,7 @@ export default function Navbar() {
                                         <Link
                                             href="/settings"
                                             onClick={() => setMobileMenuOpen(false)}
-                                            className="flex items-center gap-3 px-4 py-3 rounded-lg text-white/85 hover:bg-white/5 hover:text-white transition"
+                                            className="flex items-center gap-3 px-4 py-3 rounded-lg text-black/85 hover:bg-black/5 hover:text-black transition"
                                         >
                                             <Settings className="h-4 w-4" />
                                             <span>Settings</span>
@@ -403,7 +392,7 @@ export default function Navbar() {
                                         <Link
                                             href="/signup"
                                             onClick={() => setMobileMenuOpen(false)}
-                                            className="block w-full px-4 py-3 rounded-lg bg-black/80 text-white font-medium text-center hover:from-amber-600 hover:to-amber-700 hover:shadow-lg hover:shadow-amber-500/25 transition-all duration-200"
+                                            className="block w-full px-4 py-3 rounded-lg bg-cyan-500 text-white font-medium text-center hover:bg-cyan-600 hover:shadow-lg hover:shadow-cyan-500/25 transition-all duration-200"
                                         >
                                             Sign Up
                                         </Link>

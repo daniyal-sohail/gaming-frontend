@@ -37,16 +37,16 @@ export default function ConsultantDetail() {
 
     if (error) {
         return (
-            <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center px-4">
+            <div className="min-h-screen bg-white flex items-center justify-center px-4">
                 <div className="text-center max-w-md">
                     <div className="w-20 h-20 bg-red-500/10 rounded-full flex items-center justify-center mx-auto mb-4">
                         <X className="w-10 h-10 text-red-400" />
                     </div>
-                    <h2 className="text-2xl font-bold text-white mb-2">Error Loading Consultant</h2>
-                    <p className="text-gray-400 mb-6">{error}</p>
+                    <h2 className="text-2xl font-bold text-black mb-2">Error Loading Consultant</h2>
+                    <p className="text-gray-600 mb-6">{error}</p>
                     <button
                         onClick={() => router.back()}
-                        className="px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary/90"
+                        className="px-6 py-3 bg-cyan-500 text-black rounded-lg hover:bg-cyan-500/90"
                     >
                         Go Back
                     </button>
@@ -57,8 +57,8 @@ export default function ConsultantDetail() {
 
     if (!selectedConsultant) {
         return (
-            <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center">
-                <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-primary"></div>
+            <div className="min-h-screen bg-white flex items-center justify-center">
+                <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-cyan-500"></div>
             </div>
         );
     }
@@ -71,24 +71,24 @@ export default function ConsultantDetail() {
     };
 
     return (
-        <div className="min-h-screen bg-[#0a0a0a] py-8 px-4 sm:px-6 lg:px-8 mt-24">
+        <div className="min-h-screen bg-white py-8 px-4 sm:px-6 lg:px-8 mt-24">
             <div className="max-w-6xl mx-auto">
                 {/* Back Button */}
                 <button
                     onClick={() => router.back()}
-                    className="mb-6 flex items-center gap-2 text-gray-400 hover:text-white transition-colors"
+                    className="mb-6 flex items-center gap-2 text-gray-600 hover:text-black transition-colors"
                 >
                     <ArrowLeft className="w-5 h-5" />
                     Back to Consultants
                 </button>
 
                 {/* Profile Header */}
-                <div className="bg-gradient-to-br from-[#1a1a1a] to-[#121212] border border-gray-800 rounded-2xl overflow-hidden mb-6 shadow-2xl">
-                    <div className="h-40 bg-gradient-to-r from-primary/20 via-purple-500/20 to-pink-500/20"></div>
+                <div className="bg-gradient-to-br from-white to-white border border-black/10 rounded-2xl overflow-hidden mb-6 shadow-2xl">
+                    <div className="h-40 bg-gradient-to-r from-cyan-500/20 via-purple-500/20 to-pink-500/20"></div>
                     <div className="px-8 pb-8">
                         <div className="flex flex-col md:flex-row md:items-end gap-6 -mt-20">
                             {/* Avatar */}
-                            <div className="w-40 h-40 rounded-2xl bg-gradient-to-br from-primary to-purple-600 flex items-center justify-center text-5xl font-bold text-white shadow-xl ring-4 ring-[#121212]">
+                            <div className="w-40 h-40 rounded-2xl bg-gradient-to-br from-cyan-500 to-cyan-600 flex items-center justify-center text-5xl font-bold text-white shadow-xl ring-4 ring-white">
                                 {getInitials(consultant.user?.name)}
                             </div>
 
@@ -96,10 +96,10 @@ export default function ConsultantDetail() {
                             <div className="flex-1 md:mb-4">
                                 <div className="flex items-start justify-between mb-4">
                                     <div>
-                                        <h1 className="text-4xl font-bold text-white mb-2">
+                                        <h1 className="text-4xl font-bold text-black mb-2">
                                             {consultant.user?.name || "Anonymous Consultant"}
                                         </h1>
-                                        <p className="text-xl text-gray-300 mb-2">{consultant.title || "Professional Consultant"}</p>
+                                        <p className="text-xl text-gray-700 mb-2">{consultant.title || "Professional Consultant"}</p>
                                         {consultant.user?.isVerified && (
                                             <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-green-500/10 text-green-400 rounded-full text-sm font-medium">
                                                 <Check className="w-4 h-4" />
@@ -107,7 +107,7 @@ export default function ConsultantDetail() {
                                             </div>
                                         )}
                                     </div>
-                                    <button className="px-6 py-3 bg-primary text-white rounded-xl hover:bg-primary/90 transition-all hover:scale-105 font-medium">
+                                    <button className="px-6 py-3 bg-cyan-500 text-black rounded-xl hover:bg-cyan-500/90 transition-all hover:scale-105 font-medium">
                                         Contact Consultant
                                     </button>
                                 </div>
@@ -154,7 +154,7 @@ export default function ConsultantDetail() {
                         {/* About */}
                         {consultant.bio && (
                             <Section title="About" icon={<Briefcase className="w-5 h-5" />}>
-                                <p className="text-gray-300 leading-relaxed">{consultant.bio}</p>
+                                <p className="text-gray-700 leading-relaxed">{consultant.bio}</p>
                             </Section>
                         )}
 
@@ -165,7 +165,7 @@ export default function ConsultantDetail() {
                                     {consultant.skills.map((skill, idx) => (
                                         <span
                                             key={idx}
-                                            className="px-4 py-2 bg-primary/10 text-primary rounded-xl font-medium hover:bg-primary/20 transition-colors"
+                                            className="px-4 py-2 bg-cyan-500/10 text-cyan-500 rounded-xl font-medium hover:bg-cyan-500/20 transition-colors"
                                         >
                                             {skill}
                                         </span>
@@ -181,17 +181,17 @@ export default function ConsultantDetail() {
                                     {consultant.certifications.map((cert, idx) => (
                                         <div
                                             key={idx}
-                                            className="p-4 bg-[#0d0d0d] rounded-xl border border-gray-800 hover:border-primary/50 transition-colors"
+                                            className="p-4 bg-black/5 rounded-xl border border-black/10 hover:border-cyan-500/50 transition-colors"
                                         >
                                             <div className="flex items-start justify-between">
                                                 <div>
-                                                    <h4 className="text-white font-semibold mb-1">{cert.name}</h4>
+                                                    <h4 className="text-black font-semibold mb-1">{cert.name}</h4>
                                                     {cert.issuer && (
-                                                        <p className="text-sm text-gray-400">{cert.issuer}</p>
+                                                        <p className="text-sm text-gray-600">{cert.issuer}</p>
                                                     )}
                                                 </div>
                                                 {cert.year && (
-                                                    <span className="px-3 py-1 bg-gray-800 text-gray-300 rounded-lg text-sm">
+                                                    <span className="px-3 py-1 bg-black/10 text-gray-700 rounded-lg text-sm">
                                                         {cert.year}
                                                     </span>
                                                 )}
@@ -209,14 +209,14 @@ export default function ConsultantDetail() {
                                     {consultant.education.map((edu, idx) => (
                                         <div
                                             key={idx}
-                                            className="p-4 bg-[#0d0d0d] rounded-xl border border-gray-800"
+                                            className="p-4 bg-black/5 rounded-xl border border-black/10"
                                         >
-                                            <h4 className="text-white font-semibold mb-1">{edu.degree}</h4>
+                                            <h4 className="text-black font-semibold mb-1">{edu.degree}</h4>
                                             {edu.institution && (
-                                                <p className="text-gray-400 text-sm mb-1">{edu.institution}</p>
+                                                <p className="text-gray-600 text-sm mb-1">{edu.institution}</p>
                                             )}
                                             {edu.year && (
-                                                <p className="text-gray-500 text-sm">{edu.year}</p>
+                                                <p className="text-gray-600 text-sm">{edu.year}</p>
                                             )}
                                         </div>
                                     ))}
@@ -301,7 +301,7 @@ export default function ConsultantDetail() {
                                     {consultant.languages.map((lang, idx) => (
                                         <span
                                             key={idx}
-                                            className="px-3 py-1 bg-gray-800 text-gray-300 rounded-lg text-sm"
+                                            className="px-3 py-1 bg-black/10 text-gray-700 rounded-lg text-sm"
                                         >
                                             {lang}
                                         </span>
@@ -340,12 +340,12 @@ export default function ConsultantDetail() {
 // Section Component
 function Section({ title, icon, children }) {
     return (
-        <div className="bg-[#121212] border border-gray-800 rounded-2xl overflow-hidden">
-            <div className="px-6 py-4 border-b border-gray-800 flex items-center gap-3 bg-gradient-to-r from-gray-900 to-[#121212]">
-                <div className="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center text-primary">
+        <div className="bg-white border border-black/10 rounded-2xl overflow-hidden">
+            <div className="px-6 py-4 border-b border-black/10 flex items-center gap-3 bg-gradient-to-r from-white to-white">
+                <div className="w-8 h-8 bg-cyan-500/10 rounded-lg flex items-center justify-center text-cyan-500">
                     {icon}
                 </div>
-                <h2 className="text-lg font-semibold text-white">{title}</h2>
+                <h2 className="text-lg font-semibold text-black">{title}</h2>
             </div>
             <div className="p-6">{children}</div>
         </div>
@@ -359,16 +359,16 @@ function StatCard({ icon, label, value, color = "primary" }) {
         yellow: "text-yellow-400 bg-yellow-500/10",
         purple: "text-purple-400 bg-purple-500/10",
         blue: "text-blue-400 bg-blue-500/10",
-        primary: "text-primary bg-primary/10"
+        primary: "text-cyan-500 bg-cyan-500/10"
     };
 
     return (
-        <div className="p-3 bg-[#0d0d0d] rounded-xl border border-gray-800">
+        <div className="p-3 bg-black/5 rounded-xl border border-black/10">
             <div className={`w-8 h-8 rounded-lg flex items-center justify-center mb-2 ${colorClasses[color]}`}>
                 {icon}
             </div>
-            <p className="text-xs text-gray-400 mb-1">{label}</p>
-            <p className="text-sm font-semibold text-white">{value}</p>
+            <p className="text-xs text-gray-600 mb-1">{label}</p>
+            <p className="text-sm font-semibold text-black">{value}</p>
         </div>
     );
 }
@@ -376,13 +376,13 @@ function StatCard({ icon, label, value, color = "primary" }) {
 // Info Row Component
 function InfoRow({ icon, label, value }) {
     return (
-        <div className="flex items-start gap-3 p-3 rounded-xl hover:bg-[#0d0d0d] transition-colors">
-            <div className="w-8 h-8 bg-gray-800/50 rounded-lg flex items-center justify-center flex-shrink-0 text-gray-400">
+        <div className="flex items-start gap-3 p-3 rounded-xl hover:bg-black/5 transition-colors">
+            <div className="w-8 h-8 bg-black/10/50 rounded-lg flex items-center justify-center flex-shrink-0 text-gray-600">
                 {icon}
             </div>
             <div className="flex-1 min-w-0">
-                <p className="text-sm text-gray-400 mb-0.5">{label}</p>
-                <div className="text-white font-medium">
+                <p className="text-sm text-gray-600 mb-0.5">{label}</p>
+                <div className="text-black font-medium">
                     {typeof value === "string" ? value : value}
                 </div>
             </div>
@@ -393,18 +393,18 @@ function InfoRow({ icon, label, value }) {
 // Detail Skeleton Loader
 function DetailSkeleton() {
     return (
-        <div className="min-h-screen bg-[#0a0a0a] py-8 px-4 sm:px-6 lg:px-8">
+        <div className="min-h-screen bg-white py-8 px-4 sm:px-6 lg:px-8">
             <div className="max-w-6xl mx-auto">
-                <div className="h-8 w-32 bg-gray-800 rounded mb-6 animate-pulse"></div>
+                <div className="h-8 w-32 bg-black/10 rounded mb-6 animate-pulse"></div>
 
-                <div className="bg-[#121212] border border-gray-800 rounded-2xl overflow-hidden mb-6">
-                    <div className="h-40 bg-gray-800 animate-pulse"></div>
+                <div className="bg-white border border-black/10 rounded-2xl overflow-hidden mb-6">
+                    <div className="h-40 bg-black/10 animate-pulse"></div>
                     <div className="px-8 pb-8 pt-14">
-                        <div className="h-10 bg-gray-800 rounded w-1/3 mb-4 animate-pulse"></div>
-                        <div className="h-6 bg-gray-800 rounded w-1/4 mb-4 animate-pulse"></div>
+                        <div className="h-10 bg-black/10 rounded w-1/3 mb-4 animate-pulse"></div>
+                        <div className="h-6 bg-black/10 rounded w-1/4 mb-4 animate-pulse"></div>
                         <div className="grid grid-cols-4 gap-4">
                             {[1, 2, 3, 4].map((i) => (
-                                <div key={i} className="h-20 bg-gray-800 rounded animate-pulse"></div>
+                                <div key={i} className="h-20 bg-black/10 rounded animate-pulse"></div>
                             ))}
                         </div>
                     </div>
@@ -413,22 +413,22 @@ function DetailSkeleton() {
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                     <div className="lg:col-span-2 space-y-6">
                         {[1, 2, 3].map((i) => (
-                            <div key={i} className="bg-[#121212] border border-gray-800 rounded-2xl p-6">
-                                <div className="h-6 bg-gray-800 rounded w-1/4 mb-4 animate-pulse"></div>
+                            <div key={i} className="bg-white border border-black/10 rounded-2xl p-6">
+                                <div className="h-6 bg-black/10 rounded w-1/4 mb-4 animate-pulse"></div>
                                 <div className="space-y-2">
-                                    <div className="h-4 bg-gray-800 rounded animate-pulse"></div>
-                                    <div className="h-4 bg-gray-800 rounded w-5/6 animate-pulse"></div>
+                                    <div className="h-4 bg-black/10 rounded animate-pulse"></div>
+                                    <div className="h-4 bg-black/10 rounded w-5/6 animate-pulse"></div>
                                 </div>
                             </div>
                         ))}
                     </div>
                     <div className="space-y-6">
                         {[1, 2, 3].map((i) => (
-                            <div key={i} className="bg-[#121212] border border-gray-800 rounded-2xl p-6">
-                                <div className="h-6 bg-gray-800 rounded w-1/2 mb-4 animate-pulse"></div>
+                            <div key={i} className="bg-white border border-black/10 rounded-2xl p-6">
+                                <div className="h-6 bg-black/10 rounded w-1/2 mb-4 animate-pulse"></div>
                                 <div className="space-y-2">
-                                    <div className="h-4 bg-gray-800 rounded animate-pulse"></div>
-                                    <div className="h-4 bg-gray-800 rounded animate-pulse"></div>
+                                    <div className="h-4 bg-black/10 rounded animate-pulse"></div>
+                                    <div className="h-4 bg-black/10 rounded animate-pulse"></div>
                                 </div>
                             </div>
                         ))}

@@ -238,10 +238,10 @@ export default function Setting() {
 
     if (loading && !profile) {
         return (
-            <div className="min-h-screen flex items-center justify-center bg-[#0a0a0a]">
+            <div className="min-h-screen flex items-center justify-center bg-white">
                 <div className="text-center">
-                    <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-primary mx-auto mb-4"></div>
-                    <p className="text-gray-400">Loading profile...</p>
+                    <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-cyan-500 mx-auto mb-4"></div>
+                    <p className="text-gray-600">Loading profile...</p>
                 </div>
             </div>
         );
@@ -258,13 +258,9 @@ export default function Setting() {
     };
 
     return (
-        <div className="min-h-screen bg-[#0a0a0a] py-8 px-4 sm:px-6 lg:px-8">
+        <div className="min-h-screen bg-white py-2 ">
             <div className="max-w-5xl mx-auto">
-                {/* Header */}
-                <div className="mb-8">
-                    <h1 className="text-4xl font-bold text-white mb-2">Account Settings</h1>
-                    <p className="text-gray-400">Manage your profile and account preferences</p>
-                </div>
+
 
                 {/* Global Error */}
                 {error && (
@@ -280,18 +276,18 @@ export default function Setting() {
                 )}
 
                 {/* Profile Header Card */}
-                <div className="bg-gradient-to-br from-[#1a1a1a] to-[#121212] border border-gray-800 rounded-2xl overflow-hidden mb-6 shadow-2xl">
-                    <div className="h-32 bg-gradient-to-r from-primary/20 via-purple-500/20 to-pink-500/20"></div>
+                <div className="bg-gradient-to-br from-white to-white border border-black/10 rounded-2xl overflow-hidden mb-6 shadow-2xl">
+                    <div className="h-32 bg-gradient-to-r from-cyan-500/20 via-purple-500/20 to-pink-500/20"></div>
                     <div className="px-8 pb-8">
                         <div className="flex items-end -mt-16 mb-6">
-                            <div className="w-32 h-32 rounded-2xl bg-gradient-to-br from-primary to-purple-600 flex items-center justify-center text-4xl font-bold text-white shadow-xl ring-4 ring-[#121212]">
+                            <div className="w-32 h-32 rounded-2xl bg-gradient-to-br from-cyan-500 to-cyan-600 flex items-center justify-center text-4xl font-bold text-white shadow-xl ring-4 ring-white">
                                 {getInitials(profile?.name || authUser?.name)}
                             </div>
                             <div className="ml-6 mb-4">
-                                <h2 className="text-3xl font-bold text-white mb-1">
+                                <h2 className="text-3xl font-bold text-black mb-1">
                                     {profile?.name || "User"}
                                 </h2>
-                                <p className="text-gray-400 flex items-center gap-2">
+                                <p className="text-gray-600 flex items-center gap-2">
                                     <Mail className="w-4 h-4" />
                                     {profile?.email || "No email"}
                                 </p>
@@ -308,17 +304,17 @@ export default function Setting() {
 
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                     {/* Personal Information Card */}
-                    <div className="bg-[#121212] border border-gray-800 rounded-2xl overflow-hidden shadow-xl">
-                        <div className="px-6 py-5 border-b border-gray-800 flex items-center justify-between bg-gradient-to-r from-gray-900 to-[#121212]">
+                    <div className="bg-white border border-black/10 rounded-2xl overflow-hidden shadow-xl">
+                        <div className="px-6 py-5 border-b border-black/10 flex items-center justify-between bg-gradient-to-r from-white to-white">
                             <div className="flex items-center gap-3">
-                                <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
+                                <div className="w-10 h-10 bg-cyan-500/10 rounded-lg flex items-center justify-center">
                                     <User className="w-5 h-5 text-primary" />
                                 </div>
-                                <h3 className="text-lg font-semibold text-white">Personal Information</h3>
+                                <h3 className="text-lg font-semibold text-black">Personal Information</h3>
                             </div>
                             <button
                                 onClick={() => openEditModal("profile")}
-                                className="px-4 py-2 text-sm font-medium text-white bg-primary rounded-lg hover:bg-primary/90 transition-all hover:scale-105 flex items-center gap-2"
+                                className="px-4 py-2 text-sm font-medium text-black bg-cyan-500 rounded-lg hover:bg-cyan-500/90 transition-all hover:scale-105 flex items-center gap-2"
                             >
                                 <Edit2 className="w-4 h-4" />
                                 Edit
@@ -331,18 +327,18 @@ export default function Setting() {
                     </div>
 
                     {/* Security Card */}
-                    <div className="bg-[#121212] border border-gray-800 rounded-2xl overflow-hidden shadow-xl">
-                        <div className="px-6 py-5 border-b border-gray-800 flex items-center justify-between bg-gradient-to-r from-gray-900 to-[#121212]">
+                    <div className="bg-white border border-black/10 rounded-2xl overflow-hidden shadow-xl">
+                        <div className="px-6 py-5 border-b border-black/10 flex items-center justify-between bg-gradient-to-r from-white to-white">
                             <div className="flex items-center gap-3">
                                 <div className="w-10 h-10 bg-purple-500/10 rounded-lg flex items-center justify-center">
                                     <Shield className="w-5 h-5 text-purple-400" />
                                 </div>
-                                <h3 className="text-lg font-semibold text-white">Security</h3>
+                                <h3 className="text-lg font-semibold text-black">Security</h3>
                             </div>
                             {profile?.oauthProvider === "local" && (
                                 <button
                                     onClick={() => openEditModal("password")}
-                                    className="px-4 py-2 text-sm font-medium text-white bg-purple-600 rounded-lg hover:bg-purple-500 transition-all hover:scale-105 flex items-center gap-2"
+                                    className="px-4 py-2 text-sm font-medium text-black bg-purple-600 rounded-lg hover:bg-purple-500 transition-all hover:scale-105 flex items-center gap-2"
                                 >
                                     <Edit2 className="w-4 h-4" />
                                     Change
@@ -374,25 +370,25 @@ export default function Setting() {
                 </div>
 
                 {/* Account Details Card */}
-                <div className="mt-6 bg-[#121212] border border-gray-800 rounded-2xl overflow-hidden shadow-xl">
-                    <div className="px-6 py-5 border-b border-gray-800 bg-gradient-to-r from-gray-900 to-[#121212]">
-                        <h3 className="text-lg font-semibold text-white">Account Details</h3>
+                <div className="mt-6 bg-white border border-black/10 rounded-2xl overflow-hidden shadow-xl">
+                    <div className="px-6 py-5 border-b border-black/10 bg-gradient-to-r from-white to-white">
+                        <h3 className="text-lg font-semibold text-black">Account Details</h3>
                     </div>
                     <div className="p-6">
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                            <div className="p-4 bg-[#0d0d0d] rounded-xl border border-gray-800">
-                                <p className="text-gray-400 text-sm mb-1">Account ID</p>
-                                <p className="text-white font-mono text-sm">{profile?.id || authUser?.id || "N/A"}</p>
+                            <div className="p-4 bg-white rounded-xl border border-black/10">
+                                <p className="text-gray-600 text-sm mb-1">Account ID</p>
+                                <p className="text-black font-mono text-sm">{profile?.id || authUser?.id || "N/A"}</p>
                             </div>
-                            <div className="p-4 bg-[#0d0d0d] rounded-xl border border-gray-800">
-                                <p className="text-gray-400 text-sm mb-1">Status</p>
+                            <div className="p-4 bg-white rounded-xl border border-black/10">
+                                <p className="text-gray-600 text-sm mb-1">Status</p>
                                 <span className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium bg-green-500/10 text-green-400 rounded-full">
                                     <span className="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse"></span>
                                     Active
                                 </span>
                             </div>
-                            <div className="p-4 bg-[#0d0d0d] rounded-xl border border-gray-800">
-                                <p className="text-gray-400 text-sm mb-1">Verification</p>
+                            <div className="p-4 bg-white rounded-xl border border-black/10">
+                                <p className="text-gray-600 text-sm mb-1">Verification</p>
                                 {profile?.isVerified ? (
                                     <span className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium bg-blue-500/10 text-blue-400 rounded-full">
                                         <Check className="w-3 h-3" />
@@ -416,20 +412,20 @@ export default function Setting() {
                     <div className="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
                         <div className="fixed inset-0 transition-opacity bg-black/80 backdrop-blur-sm" onClick={closeEditModal}></div>
 
-                        <div className="inline-block align-bottom bg-[#121212] rounded-2xl text-left overflow-hidden shadow-2xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full border border-gray-800 relative z-10">
-                            <div className="px-6 py-5 border-b border-gray-800 flex items-center justify-between bg-gradient-to-r from-gray-900 to-[#121212]">
-                                <h3 className="text-xl font-semibold text-white">
+                        <div className="inline-block align-bottom bg-white rounded-2xl text-left overflow-hidden shadow-2xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full border border-black/10 relative z-10">
+                            <div className="px-6 py-5 border-b border-black/10 flex items-center justify-between bg-gradient-to-r from-white to-white">
+                                <h3 className="text-xl font-semibold text-black">
                                     {editSection === "profile" ? "Edit Profile" : "Change Password"}
                                 </h3>
-                                <button onClick={closeEditModal} className="w-8 h-8 rounded-lg hover:bg-gray-800 flex items-center justify-center transition-colors">
-                                    <X className="w-5 h-5 text-gray-400" />
+                                <button onClick={closeEditModal} className="w-8 h-8 rounded-lg hover:bg-black/10 flex items-center justify-center transition-colors">
+                                    <X className="w-5 h-5 text-gray-600" />
                                 </button>
                             </div>
 
                             {editSection === "profile" ? (
                                 <form onSubmit={handleSaveProfile} className="p-6 space-y-5">
                                     <div>
-                                        <label className="block text-sm font-medium text-gray-300 mb-2">
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">
                                             Full Name <span className="text-red-400">*</span>
                                         </label>
                                         <input
@@ -437,8 +433,8 @@ export default function Setting() {
                                             name="name"
                                             value={formData.name}
                                             onChange={handleInputChange}
-                                            className={`w-full px-4 py-3 bg-[#0d0d0d] border ${validationErrors.name ? 'border-red-500' : 'border-gray-700'
-                                                } rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all`}
+                                            className={`w-full px-4 py-3 bg-white border ${validationErrors.name ? 'border-red-500' : 'border-black/20'
+                                                } rounded-xl text-black placeholder-gray-500 focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 transition-all`}
                                             placeholder="Enter your full name"
                                         />
                                         {validationErrors.name && (
@@ -450,7 +446,7 @@ export default function Setting() {
                                     </div>
 
                                     <div>
-                                        <label className="block text-sm font-medium text-gray-300 mb-2">
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">
                                             Email Address
                                         </label>
                                         <input
@@ -458,8 +454,8 @@ export default function Setting() {
                                             name="email"
                                             value={formData.email}
                                             onChange={handleInputChange}
-                                            className={`w-full px-4 py-3 bg-[#0d0d0d] border ${validationErrors.email ? 'border-red-500' : 'border-gray-700'
-                                                } rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all`}
+                                            className={`w-full px-4 py-3 bg-white border ${validationErrors.email ? 'border-red-500' : 'border-black/20'
+                                                } rounded-xl text-black placeholder-gray-500 focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 transition-all`}
                                             placeholder="Enter your email"
                                         />
                                         {validationErrors.email ? (
@@ -468,7 +464,7 @@ export default function Setting() {
                                                 {validationErrors.email}
                                             </p>
                                         ) : (
-                                            <p className="mt-2 text-xs text-gray-400 flex items-center gap-1">
+                                            <p className="mt-2 text-xs text-gray-600 flex items-center gap-1">
                                                 <Info className="w-3 h-3" />
                                                 Changing your email will require verification
                                             </p>
@@ -479,7 +475,7 @@ export default function Setting() {
                                         <button
                                             type="submit"
                                             disabled={saveLoading}
-                                            className="flex-1 px-6 py-3 text-sm font-medium text-white bg-primary rounded-xl hover:bg-primary/90 transition-all disabled:opacity-50 disabled:cursor-not-allowed hover:scale-[1.02] active:scale-[0.98]"
+                                            className="flex-1 px-6 py-3 text-sm font-medium text-black bg-cyan-500 rounded-xl hover:bg-cyan-500/90 transition-all disabled:opacity-50 disabled:cursor-not-allowed hover:scale-[1.02] active:scale-[0.98]"
                                         >
                                             {saveLoading ? "Saving..." : "Save Changes"}
                                         </button>
@@ -487,7 +483,7 @@ export default function Setting() {
                                             type="button"
                                             onClick={closeEditModal}
                                             disabled={saveLoading}
-                                            className="flex-1 px-6 py-3 text-sm font-medium text-gray-300 bg-gray-800 rounded-xl hover:bg-gray-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed hover:scale-[1.02] active:scale-[0.98]"
+                                            className="flex-1 px-6 py-3 text-sm font-medium text-gray-700 bg-black/10 rounded-xl hover:bg-black/20 transition-all disabled:opacity-50 disabled:cursor-not-allowed hover:scale-[1.02] active:scale-[0.98]"
                                         >
                                             Cancel
                                         </button>
@@ -496,7 +492,7 @@ export default function Setting() {
                             ) : (
                                 <form onSubmit={handleSavePassword} className="p-6 space-y-5">
                                     <div>
-                                        <label className="block text-sm font-medium text-gray-300 mb-2">
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">
                                             Current Password <span className="text-red-400">*</span>
                                         </label>
                                         <div className="relative">
@@ -505,14 +501,14 @@ export default function Setting() {
                                                 name="currentPassword"
                                                 value={passwordData.currentPassword}
                                                 onChange={handlePasswordChange}
-                                                className={`w-full px-4 py-3 pr-12 bg-[#0d0d0d] border ${validationErrors.currentPassword ? 'border-red-500' : 'border-gray-700'
-                                                    } rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 transition-all`}
+                                                className={`w-full px-4 py-3 pr-12 bg-white border ${validationErrors.currentPassword ? 'border-red-500' : 'border-black/20'
+                                                    } rounded-xl text-black placeholder-gray-500 focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 transition-all`}
                                                 placeholder="Enter current password"
                                             />
                                             <button
                                                 type="button"
                                                 onClick={() => togglePasswordVisibility('current')}
-                                                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white transition-colors"
+                                                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-600 hover:text-black transition-colors"
                                             >
                                                 {showPasswords.current ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                                             </button>
@@ -526,7 +522,7 @@ export default function Setting() {
                                     </div>
 
                                     <div>
-                                        <label className="block text-sm font-medium text-gray-300 mb-2">
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">
                                             New Password <span className="text-red-400">*</span>
                                         </label>
                                         <div className="relative">
@@ -535,14 +531,14 @@ export default function Setting() {
                                                 name="newPassword"
                                                 value={passwordData.newPassword}
                                                 onChange={handlePasswordChange}
-                                                className={`w-full px-4 py-3 pr-12 bg-[#0d0d0d] border ${validationErrors.newPassword ? 'border-red-500' : 'border-gray-700'
-                                                    } rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 transition-all`}
+                                                className={`w-full px-4 py-3 pr-12 bg-white border ${validationErrors.newPassword ? 'border-red-500' : 'border-black/20'
+                                                    } rounded-xl text-black placeholder-gray-500 focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 transition-all`}
                                                 placeholder="Enter new password"
                                             />
                                             <button
                                                 type="button"
                                                 onClick={() => togglePasswordVisibility('new')}
-                                                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white transition-colors"
+                                                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-600 hover:text-black transition-colors"
                                             >
                                                 {showPasswords.new ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                                             </button>
@@ -556,7 +552,7 @@ export default function Setting() {
                                     </div>
 
                                     <div>
-                                        <label className="block text-sm font-medium text-gray-300 mb-2">
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">
                                             Confirm New Password <span className="text-red-400">*</span>
                                         </label>
                                         <div className="relative">
@@ -565,14 +561,14 @@ export default function Setting() {
                                                 name="confirmPassword"
                                                 value={passwordData.confirmPassword}
                                                 onChange={handlePasswordChange}
-                                                className={`w-full px-4 py-3 pr-12 bg-[#0d0d0d] border ${validationErrors.confirmPassword ? 'border-red-500' : 'border-gray-700'
-                                                    } rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 transition-all`}
+                                                className={`w-full px-4 py-3 pr-12 bg-white border ${validationErrors.confirmPassword ? 'border-red-500' : 'border-black/20'
+                                                    } rounded-xl text-black placeholder-gray-500 focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 transition-all`}
                                                 placeholder="Confirm new password"
                                             />
                                             <button
                                                 type="button"
                                                 onClick={() => togglePasswordVisibility('confirm')}
-                                                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white transition-colors"
+                                                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-600 hover:text-black transition-colors"
                                             >
                                                 {showPasswords.confirm ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                                             </button>
@@ -589,7 +585,7 @@ export default function Setting() {
                                         <button
                                             type="submit"
                                             disabled={saveLoading}
-                                            className="flex-1 px-6 py-3 text-sm font-medium text-white bg-purple-600 rounded-xl hover:bg-purple-500 transition-all disabled:opacity-50 disabled:cursor-not-allowed hover:scale-[1.02] active:scale-[0.98]"
+                                            className="flex-1 px-6 py-3 text-sm font-medium text-black bg-purple-600 rounded-xl hover:bg-purple-500 transition-all disabled:opacity-50 disabled:cursor-not-allowed hover:scale-[1.02] active:scale-[0.98]"
                                         >
                                             {saveLoading ? "Changing..." : "Change Password"}
                                         </button>
@@ -597,7 +593,7 @@ export default function Setting() {
                                             type="button"
                                             onClick={closeEditModal}
                                             disabled={saveLoading}
-                                            className="flex-1 px-6 py-3 text-sm font-medium text-gray-300 bg-gray-800 rounded-xl hover:bg-gray-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed hover:scale-[1.02] active:scale-[0.98]"
+                                            className="flex-1 px-6 py-3 text-sm font-medium text-gray-700 bg-black/10 rounded-xl hover:bg-black/20 transition-all disabled:opacity-50 disabled:cursor-not-allowed hover:scale-[1.02] active:scale-[0.98]"
                                         >
                                             Cancel
                                         </button>
@@ -614,13 +610,13 @@ export default function Setting() {
 
 function InfoRow({ icon, label, value }) {
     return (
-        <div className="flex items-start gap-4 p-3 rounded-xl hover:bg-[#0d0d0d] transition-colors">
-            <div className="w-10 h-10 bg-gray-800/50 rounded-lg flex items-center justify-center flex-shrink-0 text-gray-400">
+        <div className="flex items-start gap-4 p-3 rounded-xl hover:bg-white transition-colors">
+            <div className="w-10 h-10 bg-black/10/50 rounded-lg flex items-center justify-center flex-shrink-0 text-gray-600">
                 {icon}
             </div>
             <div className="flex-1 min-w-0">
-                <p className="text-sm text-gray-400 mb-1">{label}</p>
-                <p className="text-white font-medium truncate">{value || "Not provided"}</p>
+                <p className="text-sm text-gray-600 mb-1">{label}</p>
+                <p className="text-black font-medium truncate">{value || "Not provided"}</p>
             </div>
         </div>
     );

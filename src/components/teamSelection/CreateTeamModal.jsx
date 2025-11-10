@@ -94,22 +94,22 @@ export default function CreateTeamModal({ isOpen, onClose }) {
     };
 
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
-            <div className="bg-[#121212] border border-gray-800 rounded-2xl w-full max-w-3xl max-h-[90vh] overflow-y-auto">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-white/90 backdrop-blur-sm">
+            <div className="bg-white border border-black/10 rounded-2xl w-full max-w-3xl max-h-[90vh] overflow-y-auto">
                 {/* Header */}
-                <div className="sticky top-0 bg-[#121212] border-b border-gray-800 px-6 py-4 flex items-center justify-between">
+                <div className="sticky top-0 bg-white border-b border-black/10 px-6 py-4 flex items-center justify-between">
                     <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center">
-                            <Users className="w-5 h-5 text-primary" />
+                        <div className="w-10 h-10 bg-cyan-500/10 rounded-xl flex items-center justify-center">
+                            <Users className="w-5 h-5 text-cyan-500" />
                         </div>
                         <div>
-                            <h2 className="text-xl font-bold text-white">Create New Team</h2>
-                            <p className="text-sm text-gray-400">Build your dream team of consultants</p>
+                            <h2 className="text-xl font-bold text-black">Create New Team</h2>
+                            <p className="text-sm text-gray-600">Build your dream team of consultants</p>
                         </div>
                     </div>
                     <button
                         onClick={onClose}
-                        className="text-gray-400 hover:text-white transition-colors"
+                        className="text-gray-600 hover:text-black transition-colors"
                     >
                         <X className="w-6 h-6" />
                     </button>
@@ -119,13 +119,13 @@ export default function CreateTeamModal({ isOpen, onClose }) {
                 <form onSubmit={handleSubmit} className="p-6 space-y-6">
                     {/* Basic Information */}
                     <div className="space-y-4">
-                        <div className="flex items-center gap-2 text-primary">
+                        <div className="flex items-center gap-2 text-cyan-500">
                             <FileText className="w-5 h-5" />
                             <h3 className="font-semibold">Basic Information</h3>
                         </div>
 
                         <div>
-                            <label className="block text-sm font-medium text-gray-300 mb-2">
+                            <label className="block text-sm font-medium text-gray-700 mb-2">
                                 Team Name <span className="text-red-400">*</span>
                             </label>
                             <input
@@ -135,12 +135,12 @@ export default function CreateTeamModal({ isOpen, onClose }) {
                                 value={formData.name}
                                 onChange={handleChange}
                                 placeholder="e.g., Frontend Development Team"
-                                className="w-full px-4 py-3 bg-[#0d0d0d] border border-gray-700 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
+                                className="w-full px-4 py-3 bg-white border border-black/20 rounded-xl text-black placeholder-gray-500 focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20"
                             />
                         </div>
 
                         <div>
-                            <label className="block text-sm font-medium text-gray-300 mb-2">
+                            <label className="block text-sm font-medium text-gray-700 mb-2">
                                 Description
                             </label>
                             <textarea
@@ -149,19 +149,19 @@ export default function CreateTeamModal({ isOpen, onClose }) {
                                 onChange={handleChange}
                                 rows={3}
                                 placeholder="Describe your team's goals and requirements..."
-                                className="w-full px-4 py-3 bg-[#0d0d0d] border border-gray-700 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 resize-none"
+                                className="w-full px-4 py-3 bg-white border border-black/20 rounded-xl text-black placeholder-gray-500 focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 resize-none"
                             />
                         </div>
 
                         <div>
-                            <label className="block text-sm font-medium text-gray-300 mb-2">
+                            <label className="block text-sm font-medium text-gray-700 mb-2">
                                 Billing Period
                             </label>
                             <select
                                 name="billingPeriod"
                                 value={formData.billingPeriod}
                                 onChange={handleChange}
-                                className="w-full px-4 py-3 bg-[#0d0d0d] border border-gray-700 rounded-xl text-white focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
+                                className="w-full px-4 py-3 bg-white border border-black/20 rounded-xl text-black focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20"
                             >
                                 <option value="hourly">Hourly</option>
                                 <option value="daily">Daily</option>
@@ -171,14 +171,14 @@ export default function CreateTeamModal({ isOpen, onClose }) {
                     </div>
 
                     {/* Requirements */}
-                    <div className="space-y-4 pt-4 border-t border-gray-800">
-                        <div className="flex items-center gap-2 text-primary">
+                    <div className="space-y-4 pt-4 border-t border-black/10">
+                        <div className="flex items-center gap-2 text-cyan-500">
                             <Settings className="w-5 h-5" />
                             <h3 className="font-semibold">Team Requirements (Optional)</h3>
                         </div>
 
                         <div>
-                            <label className="block text-sm font-medium text-gray-300 mb-2">
+                            <label className="block text-sm font-medium text-gray-700 mb-2">
                                 Required Skills
                             </label>
                             <div className="flex gap-2">
@@ -188,12 +188,12 @@ export default function CreateTeamModal({ isOpen, onClose }) {
                                     value={skillInput}
                                     onChange={(e) => setSkillInput(e.target.value)}
                                     onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addSkill())}
-                                    className="flex-1 px-4 py-2 bg-[#0d0d0d] border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-primary"
+                                    className="flex-1 px-4 py-2 bg-white border border-black/20 rounded-lg text-black placeholder-gray-500 focus:outline-none focus:border-cyan-500"
                                 />
                                 <button
                                     type="button"
                                     onClick={addSkill}
-                                    className="px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary/90"
+                                    className="px-6 py-2 bg-cyan-500 text-white rounded-lg hover:bg-cyan-600"
                                 >
                                     Add
                                 </button>
@@ -203,7 +203,7 @@ export default function CreateTeamModal({ isOpen, onClose }) {
                                     {formData.requirements.skills.map((skill) => (
                                         <span
                                             key={skill}
-                                            className="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm flex items-center gap-2"
+                                            className="px-3 py-1 bg-cyan-500/10 text-cyan-500 rounded-full text-sm flex items-center gap-2"
                                         >
                                             {skill}
                                             <button type="button" onClick={() => removeSkill(skill)}>
@@ -217,7 +217,7 @@ export default function CreateTeamModal({ isOpen, onClose }) {
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div>
-                                <label className="block text-sm font-medium text-gray-300 mb-2">
+                                <label className="block text-sm font-medium text-gray-700 mb-2">
                                     Min. Experience (years)
                                 </label>
                                 <input
@@ -226,12 +226,12 @@ export default function CreateTeamModal({ isOpen, onClose }) {
                                     placeholder="e.g., 5"
                                     value={formData.requirements.minExperience}
                                     onChange={(e) => handleRequirementChange("minExperience", e.target.value)}
-                                    className="w-full px-4 py-2 bg-[#0d0d0d] border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-primary"
+                                    className="w-full px-4 py-2 bg-white border border-black/20 rounded-lg text-black placeholder-gray-500 focus:outline-none focus:border-cyan-500"
                                 />
                             </div>
 
                             <div>
-                                <label className="block text-sm font-medium text-gray-300 mb-2">
+                                <label className="block text-sm font-medium text-gray-700 mb-2">
                                     Preferred Timezone
                                 </label>
                                 <input
@@ -239,12 +239,12 @@ export default function CreateTeamModal({ isOpen, onClose }) {
                                     placeholder="e.g., UTC, EST, PST"
                                     value={formData.requirements.preferredTimezone}
                                     onChange={(e) => handleRequirementChange("preferredTimezone", e.target.value)}
-                                    className="w-full px-4 py-2 bg-[#0d0d0d] border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-primary"
+                                    className="w-full px-4 py-2 bg-white border border-black/20 rounded-lg text-black placeholder-gray-500 focus:outline-none focus:border-cyan-500"
                                 />
                             </div>
 
                             <div>
-                                <label className="block text-sm font-medium text-gray-300 mb-2">
+                                <label className="block text-sm font-medium text-gray-700 mb-2">
                                     Max. Hourly Rate ($)
                                 </label>
                                 <input
@@ -253,18 +253,18 @@ export default function CreateTeamModal({ isOpen, onClose }) {
                                     placeholder="e.g., 100"
                                     value={formData.requirements.maxHourlyRate}
                                     onChange={(e) => handleRequirementChange("maxHourlyRate", e.target.value)}
-                                    className="w-full px-4 py-2 bg-[#0d0d0d] border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-primary"
+                                    className="w-full px-4 py-2 bg-white border border-black/20 rounded-lg text-black placeholder-gray-500 focus:outline-none focus:border-cyan-500"
                                 />
                             </div>
 
                             <div>
-                                <label className="block text-sm font-medium text-gray-300 mb-2">
+                                <label className="block text-sm font-medium text-gray-700 mb-2">
                                     Work Type
                                 </label>
                                 <select
                                     value={formData.requirements.remote}
                                     onChange={(e) => handleRequirementChange("remote", e.target.value)}
-                                    className="w-full px-4 py-2 bg-[#0d0d0d] border border-gray-700 rounded-lg text-white focus:outline-none focus:border-primary"
+                                    className="w-full px-4 py-2 bg-white border border-black/20 rounded-lg text-black focus:outline-none focus:border-cyan-500"
                                 >
                                     <option value="">Any</option>
                                     <option value="true">Remote</option>
@@ -275,18 +275,18 @@ export default function CreateTeamModal({ isOpen, onClose }) {
                     </div>
 
                     {/* Footer */}
-                    <div className="flex items-center justify-end gap-3 pt-4 border-t border-gray-800">
+                    <div className="flex items-center justify-end gap-3 pt-4 border-t border-black/10">
                         <button
                             type="button"
                             onClick={onClose}
-                            className="px-6 py-3 bg-gray-800 text-white rounded-xl hover:bg-gray-700 transition-colors"
+                            className="px-6 py-3 bg-black/10 text-black rounded-xl hover:bg-black/20 transition-colors"
                         >
                             Cancel
                         </button>
                         <button
                             type="submit"
                             disabled={loading || !formData.name}
-                            className="px-6 py-3 bg-primary text-white rounded-xl hover:bg-primary/90 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                            className="px-6 py-3 bg-cyan-500 text-white rounded-xl hover:bg-cyan-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
                         >
                             {loading ? (
                                 <>

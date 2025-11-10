@@ -110,22 +110,22 @@ const ClientProfileForm = ({ existingProfile, isEditing, onCancel, onSuccess }) 
     };
 
     return (
-        <div className="bg-[#0f0f0f] mt-32 border border-gray-800 rounded-xl p-8">
+        <div className="bg-white mt-32 border border-black/10 rounded-xl p-8">
             <div className="flex items-center justify-between mb-6">
-                <h1 className="text-3xl font-bold text-white">
+                <h1 className="text-3xl font-bold text-black">
                     {isEditing ? "Edit Profile" : "Complete Your Profile"}
                 </h1>
                 {isEditing && (
                     <button
                         onClick={onCancel}
-                        className="text-gray-400 hover:text-white transition-colors"
+                        className="text-gray-600 hover:text-black transition-colors"
                     >
                         <X className="w-6 h-6" />
                     </button>
                 )}
             </div>
 
-            <p className="text-gray-400 mb-8">
+            <p className="text-gray-600 mb-8">
                 {isEditing
                     ? "Update your company information"
                     : "Please provide your company details to get started"}
@@ -134,13 +134,13 @@ const ClientProfileForm = ({ existingProfile, isEditing, onCancel, onSuccess }) 
             <form onSubmit={handleSubmit} className="space-y-6">
                 {/* Company Information */}
                 <div className="space-y-4">
-                    <h3 className="text-lg font-semibold text-white border-b border-gray-800 pb-2">
+                    <h3 className="text-lg font-semibold text-black border-b border-black/10 pb-2">
                         Company Information
                     </h3>
 
                     <div>
-                        <label className="flex items-center gap-2 text-sm font-medium text-gray-300 mb-2">
-                            <Building2 className="w-4 h-4 text-primary" />
+                        <label className="flex items-center gap-2 text-sm font-medium text-gray-700 mb-2">
+                            <Building2 className="w-4 h-4 text-cyan-500" />
                             Company Name
                         </label>
                         <input
@@ -148,8 +148,8 @@ const ClientProfileForm = ({ existingProfile, isEditing, onCancel, onSuccess }) 
                             name="companyName"
                             value={formData.companyName}
                             onChange={handleChange}
-                            className={`w-full bg-[#1a1a1a] border ${validationErrors.companyName ? 'border-red-500' : 'border-gray-700'
-                                } rounded-lg px-4 py-3 text-white focus:outline-none focus:border-primary transition-colors`}
+                            className={`w-full bg-white border ${validationErrors.companyName ? 'border-red-500' : 'border-black/20'
+                                } rounded-lg px-4 py-3 text-black focus:outline-none focus:border-cyan-500 transition-colors`}
                             placeholder="Enter your company name"
                         />
                         {validationErrors.companyName && (
@@ -161,8 +161,8 @@ const ClientProfileForm = ({ existingProfile, isEditing, onCancel, onSuccess }) 
                     </div>
 
                     <div>
-                        <label className="flex items-center gap-2 text-sm font-medium text-gray-300 mb-2">
-                            <Globe className="w-4 h-4 text-primary" />
+                        <label className="flex items-center gap-2 text-sm font-medium text-gray-700 mb-2">
+                            <Globe className="w-4 h-4 text-cyan-500" />
                             Company Website
                         </label>
                         <input
@@ -170,8 +170,8 @@ const ClientProfileForm = ({ existingProfile, isEditing, onCancel, onSuccess }) 
                             name="companyWebsite"
                             value={formData.companyWebsite}
                             onChange={handleChange}
-                            className={`w-full bg-[#1a1a1a] border ${validationErrors.companyWebsite ? 'border-red-500' : 'border-gray-700'
-                                } rounded-lg px-4 py-3 text-white focus:outline-none focus:border-primary transition-colors`}
+                            className={`w-full bg-white border ${validationErrors.companyWebsite ? 'border-red-500' : 'border-black/20'
+                                } rounded-lg px-4 py-3 text-black focus:outline-none focus:border-cyan-500 transition-colors`}
                             placeholder="https://example.com"
                         />
                         {validationErrors.companyWebsite && (
@@ -185,14 +185,14 @@ const ClientProfileForm = ({ existingProfile, isEditing, onCancel, onSuccess }) 
 
                 {/* Billing Information */}
                 <div className="space-y-4">
-                    <h3 className="text-lg font-semibold text-white border-b border-gray-800 pb-2">
+                    <h3 className="text-lg font-semibold text-black border-b border-black/10 pb-2">
                         Billing Information
                     </h3>
 
                     <div className="grid md:grid-cols-2 gap-6">
                         <div>
-                            <label className="flex items-center gap-2 text-sm font-medium text-gray-300 mb-2">
-                                <User className="w-4 h-4 text-primary" />
+                            <label className="flex items-center gap-2 text-sm font-medium text-gray-700 mb-2">
+                                <User className="w-4 h-4 text-cyan-500" />
                                 Billing Contact Name
                             </label>
                             <input
@@ -200,14 +200,14 @@ const ClientProfileForm = ({ existingProfile, isEditing, onCancel, onSuccess }) 
                                 name="billingContactName"
                                 value={formData.billingContactName}
                                 onChange={handleChange}
-                                className="w-full bg-[#1a1a1a] border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-primary transition-colors"
+                                className="w-full bg-white border border-black/20 rounded-lg px-4 py-3 text-black focus:outline-none focus:border-cyan-500 transition-colors"
                                 placeholder="John Doe"
                             />
                         </div>
 
                         <div>
-                            <label className="flex items-center gap-2 text-sm font-medium text-gray-300 mb-2">
-                                <Mail className="w-4 h-4 text-primary" />
+                            <label className="flex items-center gap-2 text-sm font-medium text-gray-700 mb-2">
+                                <Mail className="w-4 h-4 text-cyan-500" />
                                 Billing Contact Email
                             </label>
                             <input
@@ -215,8 +215,8 @@ const ClientProfileForm = ({ existingProfile, isEditing, onCancel, onSuccess }) 
                                 name="billingContactEmail"
                                 value={formData.billingContactEmail}
                                 onChange={handleChange}
-                                className={`w-full bg-[#1a1a1a] border ${validationErrors.billingContactEmail ? 'border-red-500' : 'border-gray-700'
-                                    } rounded-lg px-4 py-3 text-white focus:outline-none focus:border-primary transition-colors`}
+                                className={`w-full bg-white border ${validationErrors.billingContactEmail ? 'border-red-500' : 'border-black/20'
+                                    } rounded-lg px-4 py-3 text-black focus:outline-none focus:border-cyan-500 transition-colors`}
                                 placeholder="billing@example.com"
                             />
                             {validationErrors.billingContactEmail && (
@@ -229,8 +229,8 @@ const ClientProfileForm = ({ existingProfile, isEditing, onCancel, onSuccess }) 
                     </div>
 
                     <div className="space-y-4">
-                        <label className="flex items-center gap-2 text-sm font-medium text-gray-300">
-                            <MapPin className="w-4 h-4 text-primary" />
+                        <label className="flex items-center gap-2 text-sm font-medium text-gray-700">
+                            <MapPin className="w-4 h-4 text-cyan-500" />
                             Billing Address
                         </label>
 
@@ -239,7 +239,7 @@ const ClientProfileForm = ({ existingProfile, isEditing, onCancel, onSuccess }) 
                             name="line1"
                             value={formData.billingAddress.line1}
                             onChange={handleAddressChange}
-                            className="w-full bg-[#1a1a1a] border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-primary transition-colors"
+                            className="w-full bg-white border border-black/20 rounded-lg px-4 py-3 text-black focus:outline-none focus:border-cyan-500 transition-colors"
                             placeholder="Address Line 1"
                         />
 
@@ -248,7 +248,7 @@ const ClientProfileForm = ({ existingProfile, isEditing, onCancel, onSuccess }) 
                             name="line2"
                             value={formData.billingAddress.line2}
                             onChange={handleAddressChange}
-                            className="w-full bg-[#1a1a1a] border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-primary transition-colors"
+                            className="w-full bg-white border border-black/20 rounded-lg px-4 py-3 text-black focus:outline-none focus:border-cyan-500 transition-colors"
                             placeholder="Address Line 2 (Optional)"
                         />
 
@@ -258,7 +258,7 @@ const ClientProfileForm = ({ existingProfile, isEditing, onCancel, onSuccess }) 
                                 name="city"
                                 value={formData.billingAddress.city}
                                 onChange={handleAddressChange}
-                                className="w-full bg-[#1a1a1a] border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-primary transition-colors"
+                                className="w-full bg-white border border-black/20 rounded-lg px-4 py-3 text-black focus:outline-none focus:border-cyan-500 transition-colors"
                                 placeholder="City"
                             />
 
@@ -267,7 +267,7 @@ const ClientProfileForm = ({ existingProfile, isEditing, onCancel, onSuccess }) 
                                 name="region"
                                 value={formData.billingAddress.region}
                                 onChange={handleAddressChange}
-                                className="w-full bg-[#1a1a1a] border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-primary transition-colors"
+                                className="w-full bg-white border border-black/20 rounded-lg px-4 py-3 text-black focus:outline-none focus:border-cyan-500 transition-colors"
                                 placeholder="State/Region"
                             />
                         </div>
@@ -278,7 +278,7 @@ const ClientProfileForm = ({ existingProfile, isEditing, onCancel, onSuccess }) 
                                 name="postalCode"
                                 value={formData.billingAddress.postalCode}
                                 onChange={handleAddressChange}
-                                className="w-full bg-[#1a1a1a] border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-primary transition-colors"
+                                className="w-full bg-white border border-black/20 rounded-lg px-4 py-3 text-black focus:outline-none focus:border-cyan-500 transition-colors"
                                 placeholder="Postal Code"
                             />
 
@@ -287,7 +287,7 @@ const ClientProfileForm = ({ existingProfile, isEditing, onCancel, onSuccess }) 
                                 name="country"
                                 value={formData.billingAddress.country}
                                 onChange={handleAddressChange}
-                                className="w-full bg-[#1a1a1a] border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-primary transition-colors"
+                                className="w-full bg-white border border-black/20 rounded-lg px-4 py-3 text-black focus:outline-none focus:border-cyan-500 transition-colors"
                                 placeholder="Country"
                             />
                         </div>
@@ -299,7 +299,7 @@ const ClientProfileForm = ({ existingProfile, isEditing, onCancel, onSuccess }) 
                         <button
                             type="button"
                             onClick={onCancel}
-                            className="flex-1 px-6 py-3 bg-[#1a1a1a] border border-gray-700 text-white rounded-lg hover:bg-[#242424] transition-colors font-medium"
+                            className="flex-1 px-6 py-3 bg-white border border-black/20 text-black rounded-lg hover:bg-black/10 transition-colors font-medium"
                         >
                             Cancel
                         </button>
@@ -307,7 +307,7 @@ const ClientProfileForm = ({ existingProfile, isEditing, onCancel, onSuccess }) 
                     <button
                         type="submit"
                         disabled={loading}
-                        className="flex-1 px-6 py-3 bg-primary text-white rounded-lg hover:bg-[#e88540] transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="flex-1 px-6 py-3 bg-cyan-500 text-black rounded-lg hover:bg-cyan-600 transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                         {loading ? "Saving..." : isEditing ? "Update Profile" : "Complete Profile"}
                     </button>

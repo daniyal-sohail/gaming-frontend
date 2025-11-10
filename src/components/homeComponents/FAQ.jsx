@@ -35,7 +35,7 @@ const FAQ = () => {
     };
 
     return (
-        <section className="bg-black text-white py-12 max-w-6xl mx-auto">
+        <section className="bg-white text-black py-12 max-w-6xl mx-auto">
             <div className="max-w-7xl mx-auto px-4">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
                     {/* Left Side - FAQ Header */}
@@ -52,7 +52,7 @@ const FAQ = () => {
                             </div>
 
                             {/* Description */}
-                            <p className="text-white/70 text-lg leading-relaxed">
+                            <p className="text-black/70 text-lg leading-relaxed">
                                 Everything you need to know about our freelancing platform, from getting started to project completion.
                                 Still have questions? We're here to help!
                             </p>
@@ -64,23 +64,23 @@ const FAQ = () => {
                         {faqData.map((item, index) => (
                             <div
                                 key={index}
-                                className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl overflow-hidden hover:bg-white/10 hover:border-white/20 hover:shadow-[inset_0_1px_0_0_rgba(255,255,255,0.1),0_8px_32px_rgba(0,0,0,0.3)] transition-all duration-300 group"
+                                className="bg-black/5 backdrop-blur-xl border border-black/10 rounded-2xl overflow-hidden hover:bg-black/10 hover:border-black/20 hover:shadow-[inset_0_1px_0_0_rgba(0,0,0,0.1),0_8px_32px_rgba(0,0,0,0.1)] transition-all duration-300 group"
                             >
                                 <button
                                     onClick={() => toggleExpanded(index)}
-                                    className="w-full px-8 py-6 flex items-center justify-between text-left hover:bg-white/5 transition-colors duration-200 cursor-pointer"
+                                    className="w-full px-8 py-6 flex items-center justify-between text-left hover:bg-black/5 transition-colors duration-200 cursor-pointer"
                                 >
                                     <div className="flex items-center space-x-4">
-                                        <ArrowUpRight className="w-5 h-5 text-amber-500 flex-shrink-0 group-hover:text-amber-400 transition-colors duration-200" />
-                                        <h3 className="text-xl font-semibold text-white">
+                                        <ArrowUpRight className="w-5 h-5 text-cyan-500 flex-shrink-0 group-hover:text-cyan-400 transition-colors duration-200" />
+                                        <h3 className="text-xl font-semibold text-black">
                                             {item.question}
                                         </h3>
                                     </div>
                                     <div className="flex-shrink-0 ml-4">
                                         {expandedItem === index ? (
-                                            <ChevronUp className="w-6 h-6 text-amber-500 group-hover:text-amber-400 transition-colors duration-200" />
+                                            <ChevronUp className="w-6 h-6 text-cyan-500 group-hover:text-cyan-400 transition-colors duration-200" />
                                         ) : (
-                                            <ChevronDown className="w-6 h-6 text-amber-500 group-hover:text-amber-400 transition-colors duration-200" />
+                                            <ChevronDown className="w-6 h-6 text-cyan-500 group-hover:text-cyan-400 transition-colors duration-200" />
                                         )}
                                     </div>
                                 </button>
@@ -94,7 +94,7 @@ const FAQ = () => {
                                 >
                                     <div className="px-8 pb-6">
                                         <div className="pl-9">
-                                            <p className="text-gray-300 text-base leading-relaxed">
+                                            <p className="text-gray-700 text-base leading-relaxed">
                                                 {item.answer}
                                             </p>
                                         </div>

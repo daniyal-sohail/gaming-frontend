@@ -17,7 +17,7 @@ const Pricing = () => {
                 "Access to community resources"
             ],
             buttonText: "Start for free",
-            buttonStyle: "bg-gradient-to-r from-amber-500 to-orange-600 text-white hover:from-amber-600 hover:to-orange-700 hover:shadow-lg hover:shadow-amber-500/25 hover:-translate-y-0.5",
+            buttonStyle: "bg-gradient-to-r from-cyan-500 to-cyan-600 text-white hover:from-cyan-600 hover:to-cyan-700 hover:shadow-lg hover:shadow-cyan-500/25 hover:-translate-y-0.5",
             popular: false
         },
         {
@@ -32,7 +32,7 @@ const Pricing = () => {
                 "Analytics and insights dashboard"
             ],
             buttonText: "Go Professional",
-            buttonStyle: "bg-gradient-to-r from-amber-500 to-orange-600 text-white hover:from-amber-600 hover:to-orange-700 hover:shadow-lg hover:shadow-amber-500/25 hover:-translate-y-0.5",
+            buttonStyle: "bg-gradient-to-r from-cyan-500 to-cyan-600 text-white hover:from-cyan-600 hover:to-cyan-700 hover:shadow-lg hover:shadow-cyan-500/25 hover:-translate-y-0.5",
             popular: true
         },
         {
@@ -47,13 +47,13 @@ const Pricing = () => {
                 "Custom integrations available"
             ],
             buttonText: "Contact sales",
-            buttonStyle: "bg-gradient-to-r from-amber-500 to-orange-600 text-white hover:from-amber-600 hover:to-orange-700 hover:shadow-lg hover:shadow-amber-500/25 hover:-translate-y-0.5",
+            buttonStyle: "bg-gradient-to-r from-cyan-500 to-cyan-600 text-white hover:from-cyan-600 hover:to-cyan-700 hover:shadow-lg hover:shadow-cyan-500/25 hover:-translate-y-0.5",
             popular: false
         }
     ];
 
     return (
-        <section className="bg-black text-white py-20 max-w-6xl mx-auto">
+        <section className="bg-white text-black py-20 max-w-6xl mx-auto">
             <div className="max-w-7xl mx-auto px-4">
                 {/* Header - Centered */}
                 <div className="text-center mb-16">
@@ -66,7 +66,7 @@ const Pricing = () => {
                     <Heading headOne="Choose Your" headTwo="Plan" headThree="" />
 
                     {/* Description */}
-                    <p className="text-xl text-white/70 mt-4 max-w-2xl mx-auto">
+                    <p className="text-xl text-black/70 mt-4 max-w-2xl mx-auto">
                         Choose the perfect plan for your freelancing career or team. Start free and upgrade as you grow.
                     </p>
                 </div>
@@ -76,13 +76,13 @@ const Pricing = () => {
                     {pricingTiers.map((tier, index) => (
                         <div
                             key={index}
-                            className={`relative bg-white/5 backdrop-blur-sm border rounded-2xl p-8 hover:bg-white/10 transition-all duration-300 ${tier.popular ? 'border-white/20' : 'border-white/10'
+                            className={`relative bg-black/5 backdrop-blur-sm border rounded-2xl p-8 hover:bg-black/10 transition-all duration-300 ${tier.popular ? 'border-black/20' : 'border-black/10'
                                 }`}
                         >
                             {/* Popular Badge */}
                             {tier.popular && (
                                 <div className="absolute top-6 right-6">
-                                    <span className="bg-gradient-to-r from-amber-500 to-orange-600 text-white text-sm font-medium px-4 py-2 rounded-full">
+                                    <span className="bg-gradient-to-r from-cyan-500 to-cyan-600 text-white text-sm font-medium px-4 py-2 rounded-full">
                                         Popular
                                     </span>
                                 </div>
@@ -90,16 +90,16 @@ const Pricing = () => {
 
                             {/* Tier Name */}
                             <div className="mb-6">
-                                <p className="text-gray-400 text-sm font-medium tracking-wider uppercase mb-2">
+                                <p className="text-gray-600 text-sm font-medium tracking-wider uppercase mb-2">
                                     {tier.name}
                                 </p>
-                                <h3 className="text-2xl font-bold text-white">
+                                <h3 className="text-2xl font-bold text-black">
                                     {tier.fee}
                                 </h3>
                             </div>
 
                             {/* Description */}
-                            <p className="text-gray-400 text-base leading-relaxed mb-8">
+                            <p className="text-gray-600 text-base leading-relaxed mb-8">
                                 {tier.description}
                             </p>
 
@@ -108,8 +108,8 @@ const Pricing = () => {
                                 <ul className="space-y-4">
                                     {tier.features.map((feature, featureIndex) => (
                                         <li key={featureIndex} className="flex items-start space-x-3">
-                                            <Check className="w-5 h-5 text-amber-500 mt-0.5 flex-shrink-0" />
-                                            <span className="text-gray-300 text-base leading-relaxed">
+                                            <Check className="w-5 h-5 text-cyan-500 mt-0.5 flex-shrink-0" />
+                                            <span className="text-gray-700 text-base leading-relaxed">
                                                 {feature}
                                             </span>
                                         </li>

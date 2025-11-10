@@ -154,17 +154,17 @@ export default function AllConsultant() {
     };
 
     return (
-        <section className="text-white py-20 max-w-6xl mx-auto mt-16">
+        <section className="text-black py-20 max-w-6xl mx-auto mt-16">
             <div className="max-w-7xl mx-auto px-4">
                 {/* Header with Create Team Button */}
                 <div className="mb-8 flex items-center justify-between">
                     <div>
-                        <h1 className="text-4xl font-bold text-white mb-2">Find Expert Consultants</h1>
-                        <p className="text-gray-400">Browse through our network of verified professionals</p>
+                        <h1 className="text-4xl font-bold text-black mb-2">Find Expert Consultants</h1>
+                        <p className="text-gray-600">Browse through our network of verified professionals</p>
                     </div>
                     <button
                         onClick={() => setShowCreateTeam(true)}
-                        className="px-6 py-3 bg-primary text-white rounded-xl hover:bg-primary/90 transition-all hover:scale-105 font-medium flex items-center gap-2"
+                        className="px-6 py-3 bg-cyan-500 text-black rounded-xl hover:bg-cyan-500/90 transition-all hover:scale-105 font-medium flex items-center gap-2"
                     >
                         <Users className="w-5 h-5" />
                         Create Team
@@ -180,22 +180,22 @@ export default function AllConsultant() {
                     </div>
                 )}
 
-                <div className="mb-6 bg-[#121212] border border-gray-800 rounded-2xl p-6">
+                <div className="mb-6 bg-white border border-black/10 rounded-2xl p-6">
                     <div className="flex flex-col lg:flex-row gap-4">
                         <div className="flex-1 relative">
-                            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-600" />
                             <input
                                 type="text"
                                 placeholder="Search by skills..."
                                 value={searchTerm}
                                 onChange={(e) => setSearchTerm(e.target.value)}
-                                className="w-full pl-12 pr-4 py-3 bg-[#0d0d0d] border border-gray-700 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
+                                className="w-full pl-12 pr-4 py-3 bg-white border border-black/20 rounded-xl text-black placeholder-gray-400 focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20"
                             />
                         </div>
 
                         <button
                             onClick={() => setShowFilters(!showFilters)}
-                            className={`px-6 py-3 rounded-xl font-medium transition-all flex items-center gap-2 ${showFilters ? "bg-primary text-white" : "bg-[#0d0d0d] text-gray-300 hover:bg-gray-800"}`}
+                            className={`px-6 py-3 rounded-xl font-medium transition-all flex items-center gap-2 ${showFilters ? "bg-cyan-500 text-black" : "bg-white text-gray-700 hover:bg-black/10"}`}
                         >
                             <Filter className="w-5 h-5" />
                             Filters
@@ -203,9 +203,9 @@ export default function AllConsultant() {
                     </div>
 
                     {showFilters && (
-                        <div className="mt-6 pt-6 border-t border-gray-800 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        <div className="mt-6 pt-6 border-t border-black/10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                             <div className="lg:col-span-3">
-                                <label className="block text-sm font-medium text-gray-300 mb-2">Skills</label>
+                                <label className="block text-sm font-medium text-gray-700 mb-2">Skills</label>
                                 <div className="flex gap-2">
                                     <input
                                         type="text"
@@ -213,16 +213,16 @@ export default function AllConsultant() {
                                         value={skillInput}
                                         onChange={(e) => setSkillInput(e.target.value)}
                                         onKeyPress={(e) => e.key === 'Enter' && addSkill()}
-                                        className="flex-1 px-4 py-2 bg-[#0d0d0d] border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-primary"
+                                        className="flex-1 px-4 py-2 bg-white border border-black/20 rounded-lg text-black placeholder-gray-400 focus:outline-none focus:border-cyan-500"
                                     />
-                                    <button onClick={addSkill} className="px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary/90">
+                                    <button onClick={addSkill} className="px-6 py-2 bg-cyan-500 text-black rounded-lg hover:bg-cyan-500/90">
                                         Add
                                     </button>
                                 </div>
                                 {filters.skills.length > 0 && (
                                     <div className="mt-3 flex flex-wrap gap-2">
                                         {filters.skills.map((skill) => (
-                                            <span key={skill} className="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm flex items-center gap-2">
+                                            <span key={skill} className="px-3 py-1 bg-cyan-500/10 text-cyan-500 rounded-full text-sm flex items-center gap-2">
                                                 {skill}
                                                 <button onClick={() => removeSkill(skill)}>
                                                     <X className="w-3 h-3" />
@@ -234,46 +234,46 @@ export default function AllConsultant() {
                             </div>
 
                             <div>
-                                <label className="block text-sm font-medium text-gray-300 mb-2">Min. Experience (years)</label>
+                                <label className="block text-sm font-medium text-gray-700 mb-2">Min. Experience (years)</label>
                                 <input
                                     type="number"
                                     min="0"
                                     placeholder="e.g., 5"
                                     value={filters.minExperience}
                                     onChange={(e) => handleFilterChange("minExperience", e.target.value)}
-                                    className="w-full px-4 py-2 bg-[#0d0d0d] border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-primary"
+                                    className="w-full px-4 py-2 bg-white border border-black/20 rounded-lg text-black placeholder-gray-400 focus:outline-none focus:border-cyan-500"
                                 />
                             </div>
 
                             <div>
-                                <label className="block text-sm font-medium text-gray-300 mb-2">Timezone</label>
+                                <label className="block text-sm font-medium text-gray-700 mb-2">Timezone</label>
                                 <input
                                     type="text"
                                     placeholder="e.g., UTC, EST, PST"
                                     value={filters.preferredTimezone}
                                     onChange={(e) => handleFilterChange("preferredTimezone", e.target.value)}
-                                    className="w-full px-4 py-2 bg-[#0d0d0d] border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-primary"
+                                    className="w-full px-4 py-2 bg-white border border-black/20 rounded-lg text-black placeholder-gray-400 focus:outline-none focus:border-cyan-500"
                                 />
                             </div>
 
                             <div>
-                                <label className="block text-sm font-medium text-gray-300 mb-2">Max. Hourly Rate ($)</label>
+                                <label className="block text-sm font-medium text-gray-700 mb-2">Max. Hourly Rate ($)</label>
                                 <input
                                     type="number"
                                     min="0"
                                     placeholder="e.g., 100"
                                     value={filters.maxHourlyRate}
                                     onChange={(e) => handleFilterChange("maxHourlyRate", e.target.value)}
-                                    className="w-full px-4 py-2 bg-[#0d0d0d] border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-primary"
+                                    className="w-full px-4 py-2 bg-white border border-black/20 rounded-lg text-black placeholder-gray-400 focus:outline-none focus:border-cyan-500"
                                 />
                             </div>
 
                             <div className="md:col-span-2 lg:col-span-3">
-                                <label className="block text-sm font-medium text-gray-300 mb-2">Work Type</label>
+                                <label className="block text-sm font-medium text-gray-700 mb-2">Work Type</label>
                                 <select
                                     value={filters.remote}
                                     onChange={(e) => handleFilterChange("remote", e.target.value)}
-                                    className="w-full px-4 py-2 bg-[#0d0d0d] border border-gray-700 rounded-lg text-white focus:outline-none focus:border-primary"
+                                    className="w-full px-4 py-2 bg-white border border-black/20 rounded-lg text-black focus:outline-none focus:border-cyan-500"
                                 >
                                     <option value="">All</option>
                                     <option value="true">Remote</option>
@@ -282,7 +282,7 @@ export default function AllConsultant() {
                             </div>
 
                             <div className="md:col-span-2 lg:col-span-3">
-                                <button onClick={clearAllFilters} className="w-full px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-gray-800 rounded-lg transition-colors">
+                                <button onClick={clearAllFilters} className="w-full px-4 py-2 text-sm text-gray-600 hover:text-black hover:bg-black/10 rounded-lg transition-colors">
                                     Clear All Filters
                                 </button>
                             </div>
@@ -291,8 +291,8 @@ export default function AllConsultant() {
                 </div>
 
                 {!loading && (
-                    <div className="mb-6 text-gray-400">
-                        Found <span className="text-white font-semibold">{pagination.total}</span> consultants
+                    <div className="mb-6 text-gray-600">
+                        Found <span className="text-black font-semibold">{pagination.total}</span> consultants
                     </div>
                 )}
 
@@ -318,12 +318,12 @@ export default function AllConsultant() {
                     </>
                 ) : (
                     <div className="text-center py-16">
-                        <div className="w-24 h-24 bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <div className="w-24 h-24 bg-black/10 rounded-full flex items-center justify-center mx-auto mb-4">
                             <Search className="w-12 h-12 text-gray-600" />
                         </div>
-                        <h3 className="text-xl font-semibold text-white mb-2">No consultants found</h3>
-                        <p className="text-gray-400 mb-6">Try adjusting your filters or search terms</p>
-                        <button onClick={clearAllFilters} className="px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary/90">
+                        <h3 className="text-xl font-semibold text-black mb-2">No consultants found</h3>
+                        <p className="text-gray-600 mb-6">Try adjusting your filters or search terms</p>
+                        <button onClick={clearAllFilters} className="px-6 py-3 bg-cyan-500 text-black rounded-lg hover:bg-cyan-500/90">
                             Clear Filters
                         </button>
                     </div>
@@ -362,10 +362,10 @@ function ConsultantCard({ consultant, consultantTeams, onClick, onAddToTeam }) {
     const isInTeam = consultantTeams && consultantTeams.length > 0;
 
     return (
-        <div className="bg-[#121212] border border-gray-800 rounded-2xl overflow-hidden hover:border-primary/50 transition-all group hover:shadow-2xl hover:shadow-primary/10">
-            <div className="relative h-24 bg-gradient-to-r from-primary/20 via-purple-500/20 to-pink-500/20">
+        <div className="bg-white border border-black/10 rounded-2xl overflow-hidden hover:border-cyan-500/50 transition-all group hover:shadow-2xl hover:shadow-cyan-500/10">
+            <div className="relative h-24 bg-gradient-to-r from-cyan-500/20 via-purple-500/20 to-pink-500/20">
                 <div className="absolute -bottom-10 left-6">
-                    <div className="w-20 h-20 rounded-xl bg-gradient-to-br from-primary to-purple-600 flex items-center justify-center text-2xl font-bold text-white ring-4 ring-[#121212] group-hover:ring-primary/20 transition-all">
+                    <div className="w-20 h-20 rounded-xl bg-gradient-to-br from-cyan-500 to-cyan-600 flex items-center justify-center text-2xl font-bold text-white ring-4 ring-white group-hover:ring-cyan-500/20 transition-all">
                         {getInitials(consultant.user?.name)}
                     </div>
                 </div>
@@ -373,10 +373,10 @@ function ConsultantCard({ consultant, consultantTeams, onClick, onAddToTeam }) {
 
             <div className="pt-14 px-6 pb-6">
                 <div className="mb-4">
-                    <h3 className="text-xl font-bold text-white mb-1 group-hover:text-primary transition-colors">
+                    <h3 className="text-xl font-bold text-black mb-1 group-hover:text-cyan-500 transition-colors">
                         {consultant.user?.name || "Anonymous"}
                     </h3>
-                    <p className="text-sm text-gray-400">{consultant.title || "Consultant"}</p>
+                    <p className="text-sm text-gray-600">{consultant.title || "Consultant"}</p>
                 </div>
 
                 {/* Show team badges if consultant is in teams */}
@@ -397,12 +397,12 @@ function ConsultantCard({ consultant, consultantTeams, onClick, onAddToTeam }) {
                 {consultant.skills && consultant.skills.length > 0 && (
                     <div className="mb-4 flex flex-wrap gap-2">
                         {consultant.skills.slice(0, 3).map((skill, idx) => (
-                            <span key={idx} className="px-2 py-1 bg-primary/10 text-primary text-xs rounded-lg">
+                            <span key={idx} className="px-2 py-1 bg-cyan-500/10 text-cyan-500 text-xs rounded-lg">
                                 {skill}
                             </span>
                         ))}
                         {consultant.skills.length > 3 && (
-                            <span className="px-2 py-1 bg-gray-800 text-gray-400 text-xs rounded-lg">
+                            <span className="px-2 py-1 bg-black/10 text-gray-600 text-xs rounded-lg">
                                 +{consultant.skills.length - 3}
                             </span>
                         )}
@@ -410,24 +410,24 @@ function ConsultantCard({ consultant, consultantTeams, onClick, onAddToTeam }) {
                 )}
 
                 <div className="space-y-2 mb-4">
-                    <div className="flex items-center gap-2 text-sm text-gray-400">
+                    <div className="flex items-center gap-2 text-sm text-gray-600">
                         <TrendingUp className="w-4 h-4 text-green-400" />
                         <span>{consultant.experienceYears || 0} years experience</span>
                     </div>
                     {consultant.baseRate?.hourly && (
-                        <div className="flex items-center gap-2 text-sm text-gray-400">
+                        <div className="flex items-center gap-2 text-sm text-gray-600">
                             <DollarSign className="w-4 h-4 text-yellow-400" />
                             <span>${consultant.baseRate.hourly}/hr</span>
                         </div>
                     )}
                     {consultant.availability?.timezone && (
-                        <div className="flex items-center gap-2 text-sm text-gray-400">
+                        <div className="flex items-center gap-2 text-sm text-gray-600">
                             <Clock className="w-4 h-4 text-blue-400" />
                             <span>{consultant.availability.timezone}</span>
                         </div>
                     )}
                     {consultant.availability?.remote !== undefined && (
-                        <div className="flex items-center gap-2 text-sm text-gray-400">
+                        <div className="flex items-center gap-2 text-sm text-gray-600">
                             <MapPin className="w-4 h-4 text-purple-400" />
                             <span>{consultant.availability.remote ? "Remote" : "On-site"}</span>
                         </div>
@@ -437,7 +437,7 @@ function ConsultantCard({ consultant, consultantTeams, onClick, onAddToTeam }) {
                 <div className="flex items-center gap-2">
                     <button
                         onClick={onClick}
-                        className="flex-1 px-4 py-2 bg-gray-800 text-white rounded-lg hover:bg-primary transition-colors group-hover:bg-primary"
+                        className="flex-1 px-4 py-2 bg-black/10 text-black rounded-lg hover:bg-cyan-500 transition-colors group-hover:bg-cyan-500"
                     >
                         View Profile
                     </button>
@@ -445,7 +445,7 @@ function ConsultantCard({ consultant, consultantTeams, onClick, onAddToTeam }) {
                         onClick={onAddToTeam}
                         className={`px-4 py-2 rounded-lg transition-all flex items-center gap-1 ${isInTeam
                             ? "bg-green-500/10 text-green-400 border border-green-500/20 cursor-default"
-                            : "bg-primary/10 text-primary hover:bg-primary hover:text-white"
+                            : "bg-cyan-500/10 text-cyan-500 hover:bg-cyan-500 hover:text-black"
                             }`}
                         title={isInTeam ? "Already in team" : "Add to Team"}
                     >
@@ -461,22 +461,22 @@ function ConsultantSkeleton() {
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {[1, 2, 3, 4, 5, 6].map((i) => (
-                <div key={i} className="bg-[#121212] border border-gray-800 rounded-2xl overflow-hidden">
-                    <div className="h-24 bg-gray-800 animate-pulse"></div>
+                <div key={i} className="bg-white border border-black/10 rounded-2xl overflow-hidden">
+                    <div className="h-24 bg-black/10 animate-pulse"></div>
                     <div className="pt-14 px-6 pb-6">
-                        <div className="h-6 bg-gray-800 rounded mb-2 animate-pulse"></div>
-                        <div className="h-4 bg-gray-800 rounded w-2/3 mb-4 animate-pulse"></div>
+                        <div className="h-6 bg-black/10 rounded mb-2 animate-pulse"></div>
+                        <div className="h-4 bg-black/10 rounded w-2/3 mb-4 animate-pulse"></div>
                         <div className="flex gap-2 mb-4">
-                            <div className="h-6 bg-gray-800 rounded w-16 animate-pulse"></div>
-                            <div className="h-6 bg-gray-800 rounded w-20 animate-pulse"></div>
+                            <div className="h-6 bg-black/10 rounded w-16 animate-pulse"></div>
+                            <div className="h-6 bg-black/10 rounded w-20 animate-pulse"></div>
                         </div>
                         <div className="space-y-2 mb-4">
-                            <div className="h-4 bg-gray-800 rounded animate-pulse"></div>
-                            <div className="h-4 bg-gray-800 rounded animate-pulse"></div>
+                            <div className="h-4 bg-black/10 rounded animate-pulse"></div>
+                            <div className="h-4 bg-black/10 rounded animate-pulse"></div>
                         </div>
                         <div className="flex gap-2">
-                            <div className="flex-1 h-10 bg-gray-800 rounded animate-pulse"></div>
-                            <div className="h-10 w-10 bg-gray-800 rounded animate-pulse"></div>
+                            <div className="flex-1 h-10 bg-black/10 rounded animate-pulse"></div>
+                            <div className="h-10 w-10 bg-black/10 rounded animate-pulse"></div>
                         </div>
                     </div>
                 </div>
@@ -507,7 +507,7 @@ function Pagination({ currentPage, totalPages, onPageChange }) {
             <button
                 onClick={() => onPageChange(currentPage - 1)}
                 disabled={currentPage === 1}
-                className="p-2 rounded-lg bg-[#121212] border border-gray-800 text-white disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-800 transition-colors"
+                className="p-2 rounded-lg bg-white border border-black/10 text-black disabled:opacity-50 disabled:cursor-not-allowed hover:bg-black/10 transition-colors"
             >
                 <ChevronLeft className="w-5 h-5" />
             </button>
@@ -516,7 +516,7 @@ function Pagination({ currentPage, totalPages, onPageChange }) {
                 <button
                     key={page}
                     onClick={() => onPageChange(page)}
-                    className={`px-4 py-2 rounded-lg font-medium transition-colors ${page === currentPage ? "bg-primary text-white" : "bg-[#121212] border border-gray-800 text-gray-400 hover:bg-gray-800"}`}
+                    className={`px-4 py-2 rounded-lg font-medium transition-colors ${page === currentPage ? "bg-cyan-500 text-black" : "bg-white border border-black/10 text-gray-600 hover:bg-black/10"}`}
                 >
                     {page}
                 </button>
@@ -525,7 +525,7 @@ function Pagination({ currentPage, totalPages, onPageChange }) {
             <button
                 onClick={() => onPageChange(currentPage + 1)}
                 disabled={currentPage === totalPages}
-                className="p-2 rounded-lg bg-[#121212] border border-gray-800 text-white disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-800 transition-colors"
+                className="p-2 rounded-lg bg-white border border-black/10 text-black disabled:opacity-50 disabled:cursor-not-allowed hover:bg-black/10 transition-colors"
             >
                 <ChevronRight className="w-5 h-5" />
             </button>

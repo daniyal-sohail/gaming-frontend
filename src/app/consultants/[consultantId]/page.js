@@ -3,9 +3,11 @@ import React from 'react'
 
 function page() {
     return (
-        <main className="min-h-screen antialiased  bg-grid-white/[0.02]">
-            <ConsultantDetail />
-        </main>
+        <div className="min-h-screen bg-white  mt-24">
+            <div className="max-w-6xl mx-auto">
+                <ConsultantDetail />
+            </div>
+        </div>
     )
 }
 

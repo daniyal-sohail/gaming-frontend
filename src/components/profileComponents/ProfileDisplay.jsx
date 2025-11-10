@@ -23,22 +23,22 @@ const ProfileDisplay = ({ profile, userType, onEdit }) => {
     return (
         <div className="space-y-6">
             {/* Header Card */}
-            <div className="bg-[#0f0f0f] border border-gray-800 rounded-xl overflow-hidden">
-                <div className="bg-gradient-to-r from-primary/20 to-primary/5 p-8 border-b border-gray-800">
+            <div className="bg-white border border-black/10 rounded-xl overflow-hidden">
+                <div className="bg-gradient-to-r from-primary/20 to-primary/5 p-8 border-b border-black/10">
                     <div className="flex flex-col sm:flex-row items-start justify-between gap-4">
                         <div className="flex-1">
-                            <h1 className="text-3xl sm:text-4xl font-bold text-white mb-2">
+                            <h1 className="text-3xl sm:text-4xl font-bold text-black mb-2">
                                 {userType === "client" ? profile.companyName || "Company Profile" : profile.headline || "Consultant Profile"}
                             </h1>
                             {userType === "consultant" && (
                                 <div className="flex flex-wrap items-center gap-2">
                                     {profile.level && (
-                                        <span className="px-3 py-1 bg-primary/20 border border-primary/30 text-primary rounded-full text-sm font-medium">
+                                        <span className="px-3 py-1 bg-cyan-500/20 border border-cyan-500/30 text-cyan-500 rounded-full text-sm font-medium">
                                             {profile.level}
                                         </span>
                                     )}
                                     {profile.experienceYears !== undefined && (
-                                        <span className="text-gray-300 text-sm">
+                                        <span className="text-gray-700 text-sm">
                                             {profile.experienceYears} years experience
                                         </span>
                                     )}
@@ -47,7 +47,7 @@ const ProfileDisplay = ({ profile, userType, onEdit }) => {
                         </div>
                         <button
                             onClick={onEdit}
-                            className="flex items-center gap-2 px-5 py-2.5 bg-primary text-white rounded-lg hover:bg-[#e88540] transition-all hover:scale-105 active:scale-95 font-medium shadow-lg shadow-primary/20"
+                            className="flex items-center gap-2 px-5 py-2.5 bg-cyan-500 text-black rounded-lg hover:bg-cyan-600 transition-all hover:scale-105 active:scale-95 font-medium shadow-lg shadow-cyan-500/20"
                         >
                             <Edit className="w-4 h-4" />
                             Edit Profile
@@ -76,9 +76,9 @@ const ClientProfileContent = ({ profile }) => {
     return (
         <>
             {/* Company Information */}
-            <div className="bg-[#0f0f0f] border border-gray-800 rounded-xl p-8 hover:border-gray-700 transition-colors">
-                <h2 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
-                    <Building2 className="w-5 h-5 text-primary" />
+            <div className="bg-white border border-black/10 rounded-xl p-8 hover:border-black/20 transition-colors">
+                <h2 className="text-xl font-bold text-black mb-6 flex items-center gap-2">
+                    <Building2 className="w-5 h-5 text-cyan-500" />
                     Company Information
                 </h2>
                 <div className="grid md:grid-cols-2 gap-6">
@@ -101,9 +101,9 @@ const ClientProfileContent = ({ profile }) => {
             </div>
 
             {/* Billing Information */}
-            <div className="bg-[#0f0f0f] border border-gray-800 rounded-xl p-8 hover:border-gray-700 transition-colors">
-                <h2 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
-                    <Mail className="w-5 h-5 text-primary" />
+            <div className="bg-white border border-black/10 rounded-xl p-8 hover:border-black/20 transition-colors">
+                <h2 className="text-xl font-bold text-black mb-6 flex items-center gap-2">
+                    <Mail className="w-5 h-5 text-cyan-500" />
                     Billing Information
                 </h2>
                 <div className="space-y-6">
@@ -125,12 +125,12 @@ const ClientProfileContent = ({ profile }) => {
                         )}
                     </div>
                     {hasAddress && (
-                        <div className="p-4 bg-[#1a1a1a] rounded-lg border border-gray-800">
+                        <div className="p-4 bg-black/5 rounded-lg border border-black/10">
                             <div className="flex items-center gap-2 mb-3">
-                                <MapPin className="w-4 h-4 text-primary" />
-                                <span className="text-sm text-gray-400 font-medium">Billing Address</span>
+                                <MapPin className="w-4 h-4 text-cyan-500" />
+                                <span className="text-sm text-gray-600 font-medium">Billing Address</span>
                             </div>
-                            <div className="text-white font-medium space-y-1">
+                            <div className="text-black font-medium space-y-1">
                                 {profile.billingAddress.line1 && <p>{profile.billingAddress.line1}</p>}
                                 {profile.billingAddress.line2 && <p>{profile.billingAddress.line2}</p>}
                                 <p>
@@ -163,9 +163,9 @@ const ConsultantProfileContent = ({ profile }) => {
     return (
         <>
             {/* Professional Overview */}
-            <div className="bg-[#0f0f0f] border border-gray-800 rounded-xl p-8 hover:border-gray-700 transition-colors">
-                <h2 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
-                    <Briefcase className="w-5 h-5 text-primary" />
+            <div className="bg-white border border-black/10 rounded-xl p-8 hover:border-black/20 transition-colors">
+                <h2 className="text-xl font-bold text-black mb-6 flex items-center gap-2">
+                    <Briefcase className="w-5 h-5 text-cyan-500" />
                     Professional Overview
                 </h2>
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -237,12 +237,12 @@ const ConsultantProfileContent = ({ profile }) => {
 
             {/* Bio */}
             {profile.bio && (
-                <div className="bg-[#0f0f0f] border border-gray-800 rounded-xl p-8 hover:border-gray-700 transition-colors">
-                    <h2 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
-                        <FileText className="w-5 h-5 text-primary" />
+                <div className="bg-white border border-black/10 rounded-xl p-8 hover:border-black/20 transition-colors">
+                    <h2 className="text-xl font-bold text-black mb-4 flex items-center gap-2">
+                        <FileText className="w-5 h-5 text-cyan-500" />
                         Professional Bio
                     </h2>
-                    <p className="text-gray-300 leading-relaxed whitespace-pre-line">
+                    <p className="text-gray-700 leading-relaxed whitespace-pre-line">
                         {profile.bio}
                     </p>
                 </div>
@@ -250,16 +250,16 @@ const ConsultantProfileContent = ({ profile }) => {
 
             {/* Roles */}
             {roles.length > 0 && (
-                <div className="bg-[#0f0f0f] border border-gray-800 rounded-xl p-8 hover:border-gray-700 transition-colors">
-                    <h2 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
-                        <Briefcase className="w-5 h-5 text-primary" />
+                <div className="bg-white border border-black/10 rounded-xl p-8 hover:border-black/20 transition-colors">
+                    <h2 className="text-xl font-bold text-black mb-4 flex items-center gap-2">
+                        <Briefcase className="w-5 h-5 text-cyan-500" />
                         Roles
                     </h2>
                     <div className="flex flex-wrap gap-3">
                         {roles.map((role, index) => (
                             <span
                                 key={index}
-                                className="px-4 py-2 bg-primary/10 border border-primary/30 text-primary rounded-lg text-sm font-medium hover:bg-primary/20 transition-colors"
+                                className="px-4 py-2 bg-cyan-500/10 border border-cyan-500/30 text-cyan-500 rounded-lg text-sm font-medium hover:bg-cyan-500/20 transition-colors"
                             >
                                 {role}
                             </span>
@@ -270,16 +270,16 @@ const ConsultantProfileContent = ({ profile }) => {
 
             {/* Skills */}
             {skills.length > 0 && (
-                <div className="bg-[#0f0f0f] border border-gray-800 rounded-xl p-8 hover:border-gray-700 transition-colors">
-                    <h2 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
-                        <FileText className="w-5 h-5 text-primary" />
+                <div className="bg-white border border-black/10 rounded-xl p-8 hover:border-black/20 transition-colors">
+                    <h2 className="text-xl font-bold text-black mb-4 flex items-center gap-2">
+                        <FileText className="w-5 h-5 text-cyan-500" />
                         Skills & Expertise
                     </h2>
                     <div className="flex flex-wrap gap-3">
                         {skills.map((skill, index) => (
                             <span
                                 key={index}
-                                className="px-4 py-2 bg-[#1a1a1a] border border-gray-700 text-gray-300 rounded-lg text-sm font-medium hover:border-primary hover:text-primary transition-colors"
+                                className="px-4 py-2 bg-black/5 border border-black/20 text-gray-700 rounded-lg text-sm font-medium hover:border-cyan-500 hover:text-cyan-500 transition-colors"
                             >
                                 {skill}
                             </span>
@@ -290,9 +290,9 @@ const ConsultantProfileContent = ({ profile }) => {
 
             {/* Badges & Certifications */}
             {badges.length > 0 && (
-                <div className="bg-[#0f0f0f] border border-gray-800 rounded-xl p-8 hover:border-gray-700 transition-colors">
-                    <h2 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
-                        <Award className="w-5 h-5 text-primary" />
+                <div className="bg-white border border-black/10 rounded-xl p-8 hover:border-black/20 transition-colors">
+                    <h2 className="text-xl font-bold text-black mb-4 flex items-center gap-2">
+                        <Award className="w-5 h-5 text-cyan-500" />
                         Certifications & Badges
                     </h2>
                     <div className="flex flex-wrap gap-3">
@@ -310,9 +310,9 @@ const ConsultantProfileContent = ({ profile }) => {
 
             {/* Locations */}
             {locations.length > 0 && (
-                <div className="bg-[#0f0f0f] border border-gray-800 rounded-xl p-8 hover:border-gray-700 transition-colors">
-                    <h2 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
-                        <MapPin className="w-5 h-5 text-primary" />
+                <div className="bg-white border border-black/10 rounded-xl p-8 hover:border-black/20 transition-colors">
+                    <h2 className="text-xl font-bold text-black mb-4 flex items-center gap-2">
+                        <MapPin className="w-5 h-5 text-cyan-500" />
                         Available Locations
                     </h2>
                     <div className="flex flex-wrap gap-3">
@@ -330,9 +330,9 @@ const ConsultantProfileContent = ({ profile }) => {
 
             {/* Portfolio Links */}
             {portfolioLinks.length > 0 && (
-                <div className="bg-[#0f0f0f] border border-gray-800 rounded-xl p-8 hover:border-gray-700 transition-colors">
-                    <h2 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
-                        <LinkIcon className="w-5 h-5 text-primary" />
+                <div className="bg-white border border-black/10 rounded-xl p-8 hover:border-black/20 transition-colors">
+                    <h2 className="text-xl font-bold text-black mb-4 flex items-center gap-2">
+                        <LinkIcon className="w-5 h-5 text-cyan-500" />
                         Portfolio & Links
                     </h2>
                     <div className="space-y-2">
@@ -342,7 +342,7 @@ const ConsultantProfileContent = ({ profile }) => {
                                 href={link}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="flex items-center gap-2 text-primary hover:text-[#e88540] transition-colors break-all"
+                                className="flex items-center gap-2 text-cyan-500 hover:text-cyan-600 transition-colors break-all"
                             >
                                 <LinkIcon className="w-4 h-4 flex-shrink-0" />
                                 {link}
@@ -354,16 +354,16 @@ const ConsultantProfileContent = ({ profile }) => {
 
             {/* CV/Resume */}
             {profile.cv && (
-                <div className="bg-[#0f0f0f] border border-gray-800 rounded-xl p-8 hover:border-gray-700 transition-colors">
-                    <h2 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
-                        <FileText className="w-5 h-5 text-primary" />
+                <div className="bg-white border border-black/10 rounded-xl p-8 hover:border-black/20 transition-colors">
+                    <h2 className="text-xl font-bold text-black mb-4 flex items-center gap-2">
+                        <FileText className="w-5 h-5 text-cyan-500" />
                         CV / Resume
                     </h2>
                     <a
                         href={profile.cv}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-2 px-5 py-3 bg-primary text-white rounded-lg hover:bg-[#e88540] transition-all hover:scale-105 active:scale-95 font-medium shadow-lg shadow-primary/20"
+                        className="inline-flex items-center gap-2 px-5 py-3 bg-cyan-500 text-black rounded-lg hover:bg-cyan-600 transition-all hover:scale-105 active:scale-95 font-medium shadow-lg shadow-cyan-500/20"
                     >
                         <Download className="w-5 h-5" />
                         Download CV
@@ -378,27 +378,27 @@ const InfoItem = ({ icon: Icon, label, value, isLink, isEmail }) => {
     return (
         <div className="space-y-2">
             <div className="flex items-center gap-2">
-                <Icon className="w-4 h-4 text-primary" />
-                <span className="text-sm text-gray-400 font-medium">{label}</span>
+                <Icon className="w-4 h-4 text-cyan-500" />
+                <span className="text-sm text-gray-600 font-medium">{label}</span>
             </div>
             {isLink ? (
                 <a
                     href={value}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-white hover:text-primary transition-colors font-medium block truncate"
+                    className="text-black hover:text-cyan-500 transition-colors font-medium block truncate"
                 >
                     {value}
                 </a>
             ) : isEmail ? (
                 <a
                     href={`mailto:${value}`}
-                    className="text-white hover:text-primary transition-colors font-medium block truncate"
+                    className="text-black hover:text-cyan-500 transition-colors font-medium block truncate"
                 >
                     {value}
                 </a>
             ) : (
-                <p className="text-white font-medium">{value || "Not provided"}</p>
+                <p className="text-black font-medium">{value || "Not provided"}</p>
             )}
         </div>
     );

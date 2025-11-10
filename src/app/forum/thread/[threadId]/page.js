@@ -3,9 +3,11 @@ import React from 'react'
 
 export default function ThreadDetailPage() {
     return (
-        <main className="min-h-screen antialiased bg-grid-white/[0.02]">
-            <ThreadDetail />
-        </main>
+        <div className="min-h-screen bg-white  mt-24">
+            <div className="max-w-6xl mx-auto">
+                <ThreadDetail />
+            </div>
+        </div>
     )
 }
 

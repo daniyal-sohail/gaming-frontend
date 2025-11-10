@@ -3,9 +3,11 @@ import React from 'react'
 
 export default function EditThreadPage() {
     return (
-        <main className="min-h-screen antialiased bg-grid-white/[0.02]">
-            <ThreadForm />
-        </main>
+        <div className="min-h-screen bg-white  mt-24">
+            <div className="max-w-6xl mx-auto">
+                <ThreadForm />
+            </div>
+        </div>
     )
 }
 

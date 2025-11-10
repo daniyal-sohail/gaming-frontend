@@ -10,35 +10,35 @@ export function UserTypePopup({ isOpen, onClose, onSelect }) {
     if (!isOpen) return null;
 
     return (
-        <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4">
-            <div className="bg-[#0f0f0f] rounded-2xl max-w-md w-full p-8 relative border border-[#1a1a1a]">
+        <div className="fixed inset-0 bg-white/90 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+            <div className="bg-white rounded-2xl max-w-md w-full p-8 relative border border-black/10 shadow-lg">
                 <button
                     onClick={onClose}
-                    className="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors"
+                    className="absolute top-4 right-4 text-gray-600 hover:text-black transition-colors"
                 >
                     ✕
                 </button>
 
-                <h2 className="text-2xl font-bold mb-2">Sign Up</h2>
-                <p className="text-gray-400 mb-8">Choose your account type</p>
+                <h2 className="text-2xl font-bold mb-2 text-black">Sign Up</h2>
+                <p className="text-gray-600 mb-8">Choose your account type</p>
 
                 <div className="space-y-4">
                     <button
                         onClick={() => onSelect('consultant')}
-                        className="w-full bg-[#1a1a1a] hover:bg-[#252525] border border-[#2a2a2a] hover:border-[#fc964c] rounded-xl p-6 transition-all group"
+                        className="w-full bg-white hover:bg-black/5 border border-black/20 hover:border-cyan-500 rounded-xl p-6 transition-all group"
                     >
                         <div className="text-4xl mb-2">👔</div>
-                        <h3 className="text-xl font-semibold mb-1 group-hover:text-[#fc964c] transition-colors">Consultant</h3>
-                        <p className="text-sm text-gray-400">Offer your expertise and services</p>
+                        <h3 className="text-xl font-semibold mb-1 text-black group-hover:text-cyan-500 transition-colors">Consultant</h3>
+                        <p className="text-sm text-gray-600">Offer your expertise and services</p>
                     </button>
 
                     <button
                         onClick={() => onSelect('client')}
-                        className="w-full bg-[#1a1a1a] hover:bg-[#252525] border border-[#2a2a2a] hover:border-[#fc964c] rounded-xl p-6 transition-all group"
+                        className="w-full bg-white hover:bg-black/5 border border-black/20 hover:border-cyan-500 rounded-xl p-6 transition-all group"
                     >
                         <div className="text-4xl mb-2">🎯</div>
-                        <h3 className="text-xl font-semibold mb-1 group-hover:text-[#fc964c] transition-colors">Client</h3>
-                        <p className="text-sm text-gray-400">Find and hire consultants</p>
+                        <h3 className="text-xl font-semibold mb-1 text-black group-hover:text-cyan-500 transition-colors">Client</h3>
+                        <p className="text-sm text-gray-600">Find and hire consultants</p>
                     </button>
                 </div>
             </div>
@@ -79,30 +79,30 @@ export function SignupForm({ userType, onSignInClick, onBackClick }) {
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center p-4">
+        <div className="min-h-screen flex items-center justify-center p-4 bg-white">
             <div className="max-w-md w-full">
                 <div className="text-center mb-8">
                     <button
                         onClick={onBackClick}
                         disabled={isLoading}
-                        className="mb-4 text-gray-400 hover:text-white transition-colors flex items-center gap-2 mx-auto disabled:opacity-50"
+                        className="mb-4 text-gray-600 hover:text-black transition-colors flex items-center gap-2 mx-auto disabled:opacity-50"
                     >
                         ← Back to account type selection
                     </button>
-                    <h2 className="text-3xl font-bold mb-2">
+                    <h2 className="text-3xl font-bold mb-2 text-black">
                         Sign Up as {userType === 'consultant' ? 'Consultant' : 'Client'}
                     </h2>
-                    <p className="text-gray-400">Create your account</p>
+                    <p className="text-gray-600">Create your account</p>
                 </div>
 
-                <div className="bg-[#0f0f0f] rounded-2xl p-8 border border-[#1a1a1a]">
+                <div className="bg-white rounded-2xl p-8 border border-black/10 shadow-lg">
                     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
                         <div>
-                            <label className="block text-sm font-medium mb-2">Name</label>
+                            <label className="block text-sm font-medium mb-2 text-black">Name</label>
                             <input
                                 {...registerField('name', { required: 'Name is required' })}
                                 disabled={isLoading}
-                                className="w-full bg-[#1a1a1a] border border-[#2a2a2a] rounded-lg px-4 py-3 focus:outline-none focus:border-[#fc964c] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                                className="w-full bg-white border border-black/20 rounded-lg px-4 py-3 text-black focus:outline-none focus:border-cyan-500 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                                 placeholder="Enter your name"
                             />
                             {errors.name && (
@@ -111,7 +111,7 @@ export function SignupForm({ userType, onSignInClick, onBackClick }) {
                         </div>
 
                         <div>
-                            <label className="block text-sm font-medium mb-2">Email</label>
+                            <label className="block text-sm font-medium mb-2 text-black">Email</label>
                             <input
                                 {...registerField('email', {
                                     required: 'Email is required',
@@ -122,7 +122,7 @@ export function SignupForm({ userType, onSignInClick, onBackClick }) {
                                 })}
                                 type="email"
                                 disabled={isLoading}
-                                className="w-full bg-[#1a1a1a] border border-[#2a2a2a] rounded-lg px-4 py-3 focus:outline-none focus:border-[#fc964c] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                                className="w-full bg-white border border-black/20 rounded-lg px-4 py-3 text-black focus:outline-none focus:border-cyan-500 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                                 placeholder="Enter your email"
                             />
                             {errors.email && (
@@ -131,7 +131,7 @@ export function SignupForm({ userType, onSignInClick, onBackClick }) {
                         </div>
 
                         <div>
-                            <label className="block text-sm font-medium mb-2">Password</label>
+                            <label className="block text-sm font-medium mb-2 text-black">Password</label>
                             <input
                                 {...registerField('password', {
                                     required: 'Password is required',
@@ -142,7 +142,7 @@ export function SignupForm({ userType, onSignInClick, onBackClick }) {
                                 })}
                                 type="password"
                                 disabled={isLoading}
-                                className="w-full bg-[#1a1a1a] border border-[#2a2a2a] rounded-lg px-4 py-3 focus:outline-none focus:border-[#fc964c] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                                className="w-full bg-white border border-black/20 rounded-lg px-4 py-3 text-black focus:outline-none focus:border-cyan-500 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                                 placeholder="Create a password"
                             />
                             {errors.password && (
@@ -153,7 +153,7 @@ export function SignupForm({ userType, onSignInClick, onBackClick }) {
                         <button
                             type="submit"
                             disabled={isLoading}
-                            className="w-full bg-[#fc964c] hover:bg-[#fd8a35] text-white font-semibold py-3 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                            className="w-full bg-cyan-500 hover:bg-cyan-600 text-white font-semibold py-3 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                         >
                             {isLoading ? (
                                 <>
@@ -169,12 +169,12 @@ export function SignupForm({ userType, onSignInClick, onBackClick }) {
                         </button>
                     </form>
 
-                    <p className="text-center text-sm text-gray-400 mt-6">
+                    <p className="text-center text-sm text-gray-600 mt-6">
                         Already have an account?{' '}
                         <button
                             onClick={onSignInClick}
                             disabled={isLoading}
-                            className="text-[#fc964c] hover:underline disabled:opacity-50"
+                            className="text-cyan-500 hover:underline disabled:opacity-50"
                         >
                             Login
                         </button>

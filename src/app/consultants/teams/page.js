@@ -3,9 +3,12 @@ import React from 'react'
 
 export default function ConsultantTeamsPage() {
     return (
-        <main className="min-h-screen antialiased bg-grid-white/[0.02]">
-            <MyTeams />
-        </main>
+
+        <div className="min-h-screen bg-white  mt-24">
+            <div className="max-w-6xl mx-auto">
+                <MyTeams />
+            </div>
+        </div>
     )
 }
 

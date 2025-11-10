@@ -55,24 +55,24 @@ export default function MyTeamDetail() {
 
     if (loading) {
         return (
-            <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center">
-                <Loader2 className="w-8 h-8 animate-spin text-primary" />
+            <div className="min-h-screen bg-white flex items-center justify-center">
+                <Loader2 className="w-8 h-8 animate-spin text-cyan-500" />
             </div>
         );
     }
 
     if (error) {
         return (
-            <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center px-4">
+            <div className="min-h-screen bg-white flex items-center justify-center px-4">
                 <div className="text-center max-w-md">
                     <div className="w-20 h-20 bg-red-500/10 rounded-full flex items-center justify-center mx-auto mb-4">
                         <AlertCircle className="w-10 h-10 text-red-400" />
                     </div>
-                    <h2 className="text-2xl font-bold text-white mb-2">Error Loading Team</h2>
-                    <p className="text-gray-400 mb-6">{error}</p>
+                    <h2 className="text-2xl font-bold text-black mb-2">Error Loading Team</h2>
+                    <p className="text-gray-600 mb-6">{error}</p>
                     <button
                         onClick={() => router.back()}
-                        className="px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors"
+                        className="px-6 py-3 bg-cyan-500 text-black rounded-lg hover:bg-cyan-500/90 transition-colors"
                     >
                         Go Back
                     </button>
@@ -83,8 +83,8 @@ export default function MyTeamDetail() {
 
     if (!currentTeam) {
         return (
-            <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center">
-                <Loader2 className="w-8 h-8 animate-spin text-primary" />
+            <div className="min-h-screen bg-white flex items-center justify-center">
+                <Loader2 className="w-8 h-8 animate-spin text-cyan-500" />
             </div>
         );
     }
@@ -102,28 +102,28 @@ export default function MyTeamDetail() {
     };
 
     return (
-        <div className="min-h-screen bg-[#0a0a0a] py-8 px-4 sm:px-6 lg:px-8 mt-24">
+        <div className="min-h-screen bg-white py-8 px-4 sm:px-6 lg:px-8 mt-24">
             <div className="max-w-6xl mx-auto">
                 {/* Back Button */}
                 <button
                     onClick={() => router.back()}
-                    className="mb-6 flex items-center gap-2 text-gray-400 hover:text-white transition-colors"
+                    className="mb-6 flex items-center gap-2 text-gray-600 hover:text-black transition-colors"
                 >
                     <ArrowLeft className="w-5 h-5" />
                     Back to My Teams
                 </button>
 
                 {/* Team Header */}
-                <div className="bg-gradient-to-br from-[#1a1a1a] to-[#121212] border border-gray-800 rounded-2xl overflow-hidden mb-6 shadow-2xl">
-                    <div className="h-32 bg-gradient-to-r from-primary/20 via-purple-500/20 to-pink-500/20"></div>
+                <div className="bg-gradient-to-br from-white to-white border border-black/10 rounded-2xl overflow-hidden mb-6 shadow-2xl">
+                    <div className="h-32 bg-gradient-to-r from-cyan-500/20 via-purple-500/20 to-pink-500/20"></div>
                     <div className="px-8 pb-8">
                         <div className="flex flex-col md:flex-row md:items-end gap-6 -mt-16">
                             <div className="flex-1">
-                                <h1 className="text-4xl font-bold text-white mb-2">
+                                <h1 className="text-4xl font-bold text-black mb-2">
                                     {currentTeam.name}
                                 </h1>
                                 {currentTeam.description && (
-                                    <p className="text-gray-400 text-lg">
+                                    <p className="text-gray-600 text-lg">
                                         {currentTeam.description}
                                     </p>
                                 )}
@@ -168,9 +168,9 @@ export default function MyTeamDetail() {
                     {/* Left Column - My Information & Project Details */}
                     <div className="lg:col-span-2 space-y-6">
                         {/* My Role & Information */}
-                        <div className="bg-[#121212] border border-gray-800 rounded-2xl p-6">
-                            <h2 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
-                                <Briefcase className="w-5 h-5 text-primary" />
+                        <div className="bg-white border border-black/10 rounded-2xl p-6">
+                            <h2 className="text-xl font-bold text-black mb-4 flex items-center gap-2">
+                                <Briefcase className="w-5 h-5 text-cyan-500" />
                                 My Assignment
                             </h2>
                             <div className="space-y-4">
@@ -203,9 +203,9 @@ export default function MyTeamDetail() {
 
                         {/* Project Duration */}
                         {currentTeam.projectDuration && (
-                            <div className="bg-[#121212] border border-gray-800 rounded-2xl p-6">
-                                <h2 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
-                                    <Calendar className="w-5 h-5 text-primary" />
+                            <div className="bg-white border border-black/10 rounded-2xl p-6">
+                                <h2 className="text-xl font-bold text-black mb-4 flex items-center gap-2">
+                                    <Calendar className="w-5 h-5 text-cyan-500" />
                                     Project Duration
                                 </h2>
                                 <div className="space-y-4">
@@ -243,9 +243,9 @@ export default function MyTeamDetail() {
 
                         {/* Client Information */}
                         {currentTeam.client && (
-                            <div className="bg-[#121212] border border-gray-800 rounded-2xl p-6">
-                                <h2 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
-                                    <Building2 className="w-5 h-5 text-primary" />
+                            <div className="bg-white border border-black/10 rounded-2xl p-6">
+                                <h2 className="text-xl font-bold text-black mb-4 flex items-center gap-2">
+                                    <Building2 className="w-5 h-5 text-cyan-500" />
                                     Client Information
                                 </h2>
                                 <div className="space-y-4">
@@ -274,9 +274,9 @@ export default function MyTeamDetail() {
 
                         {/* Team Members */}
                         {currentTeam.members && currentTeam.members.length > 0 && (
-                            <div className="bg-[#121212] border border-gray-800 rounded-2xl p-6">
-                                <h2 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
-                                    <Users className="w-5 h-5 text-primary" />
+                            <div className="bg-white border border-black/10 rounded-2xl p-6">
+                                <h2 className="text-xl font-bold text-black mb-4 flex items-center gap-2">
+                                    <Users className="w-5 h-5 text-cyan-500" />
                                     Team Members ({currentTeam.members.length})
                                 </h2>
                                 <div className="space-y-3">
@@ -303,14 +303,14 @@ export default function MyTeamDetail() {
                     <div className="space-y-6">
                         {/* Pricing Information */}
                         {currentTeam.totalBudget && (
-                            <div className="bg-[#121212] border border-gray-800 rounded-2xl p-6">
-                                <h2 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
-                                    <DollarSign className="w-5 h-5 text-primary" />
+                            <div className="bg-white border border-black/10 rounded-2xl p-6">
+                                <h2 className="text-xl font-bold text-black mb-4 flex items-center gap-2">
+                                    <DollarSign className="w-5 h-5 text-cyan-500" />
                                     Team Budget
                                 </h2>
                                 <div className="space-y-3">
                                     <div className="p-4 bg-gradient-to-br from-green-500/10 to-emerald-500/10 rounded-xl border border-green-500/20">
-                                        <p className="text-sm text-gray-400 mb-1">Total Budget</p>
+                                        <p className="text-sm text-gray-600 mb-1">Total Budget</p>
                                         <p className="text-2xl font-bold text-green-400">
                                             {formatCurrency(
                                                 currentTeam.totalBudget.amount,
@@ -321,9 +321,9 @@ export default function MyTeamDetail() {
                                     {currentTeam.pricingSnapshot && (
                                         <div className="space-y-2 text-sm">
                                             {Object.entries(currentTeam.pricingSnapshot).map(([key, value]) => (
-                                                <div key={key} className="flex justify-between text-gray-400">
+                                                <div key={key} className="flex justify-between text-gray-600">
                                                     <span className="capitalize">{key.replace(/([A-Z])/g, ' $1').trim()}:</span>
-                                                    <span className="text-white">
+                                                    <span className="text-black">
                                                         {typeof value === 'number'
                                                             ? formatCurrency(value, currentTeam.totalBudget.currency)
                                                             : value}
@@ -338,20 +338,20 @@ export default function MyTeamDetail() {
 
                         {/* Requirements */}
                         {currentTeam.requirements && Object.keys(currentTeam.requirements).length > 0 && (
-                            <div className="bg-[#121212] border border-gray-800 rounded-2xl p-6">
-                                <h2 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
-                                    <FileText className="w-5 h-5 text-primary" />
+                            <div className="bg-white border border-black/10 rounded-2xl p-6">
+                                <h2 className="text-xl font-bold text-black mb-4 flex items-center gap-2">
+                                    <FileText className="w-5 h-5 text-cyan-500" />
                                     Requirements
                                 </h2>
                                 <div className="space-y-3">
                                     {currentTeam.requirements.skills && currentTeam.requirements.skills.length > 0 && (
                                         <div>
-                                            <p className="text-sm text-gray-400 mb-2">Skills Required</p>
+                                            <p className="text-sm text-gray-600 mb-2">Skills Required</p>
                                             <div className="flex flex-wrap gap-2">
                                                 {currentTeam.requirements.skills.map((skill, idx) => (
                                                     <span
                                                         key={idx}
-                                                        className="px-3 py-1 bg-primary/10 text-primary text-xs rounded-lg border border-primary/20"
+                                                        className="px-3 py-1 bg-cyan-500/10 text-cyan-500 text-xs rounded-lg border border-cyan-500/20"
                                                     >
                                                         {skill}
                                                     </span>
@@ -389,29 +389,29 @@ function StatCard({ icon, label, value, color = "primary" }) {
         yellow: "text-yellow-400 bg-yellow-500/10",
         purple: "text-purple-400 bg-purple-500/10",
         blue: "text-blue-400 bg-blue-500/10",
-        primary: "text-primary bg-primary/10"
+        primary: "text-cyan-500 bg-cyan-500/10"
     };
 
     return (
-        <div className="p-4 bg-[#121212] rounded-xl border border-gray-800">
+        <div className="p-4 bg-white rounded-xl border border-black/10">
             <div className={`w-10 h-10 rounded-lg flex items-center justify-center mb-3 ${colorClasses[color]}`}>
                 {icon}
             </div>
-            <p className="text-xs text-gray-400 mb-1">{label}</p>
-            <p className="text-lg font-bold text-white capitalize">{value}</p>
+            <p className="text-xs text-gray-600 mb-1">{label}</p>
+            <p className="text-lg font-bold text-black capitalize">{value}</p>
         </div>
     );
 }
 
 function InfoRow({ icon, label, value }) {
     return (
-        <div className="flex items-start gap-3 p-3 rounded-xl hover:bg-[#0d0d0d] transition-colors">
-            <div className="w-8 h-8 bg-gray-800/50 rounded-lg flex items-center justify-center flex-shrink-0 text-gray-400">
+        <div className="flex items-start gap-3 p-3 rounded-xl hover:bg-black/5 transition-colors">
+            <div className="w-8 h-8 bg-black/10 rounded-lg flex items-center justify-center flex-shrink-0 text-gray-600">
                 {icon}
             </div>
             <div className="flex-1 min-w-0">
-                <p className="text-sm text-gray-400 mb-0.5">{label}</p>
-                <p className="text-white font-medium">{value}</p>
+                <p className="text-sm text-gray-600 mb-0.5">{label}</p>
+                <p className="text-black font-medium">{value}</p>
             </div>
         </div>
     );
@@ -421,24 +421,24 @@ function MemberCard({ member, consultant, isMe, getInitials, formatCurrency }) {
     if (!consultant) return null;
 
     return (
-        <div className={`p-4 bg-[#0d0d0d] rounded-xl border ${isMe ? 'border-primary/50 bg-primary/5' : 'border-gray-800'} transition-all`}>
+        <div className={`p-4 bg-black/5 rounded-xl border ${isMe ? 'border-cyan-500/50 bg-cyan-500/5' : 'border-black/10'} transition-all`}>
             <div className="flex items-start gap-4">
-                <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-primary to-purple-600 flex items-center justify-center text-lg font-bold text-white flex-shrink-0">
+                <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-cyan-500 to-cyan-600 flex items-center justify-center text-lg font-bold text-white flex-shrink-0">
                     {getInitials(consultant.user?.name)}
                 </div>
                 <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-1">
-                        <h4 className="text-white font-semibold">
+                        <h4 className="text-black font-semibold">
                             {consultant.user?.name || "Anonymous"}
                         </h4>
                         {isMe && (
-                            <span className="px-2 py-0.5 bg-primary/20 text-primary text-xs rounded border border-primary/30">
+                            <span className="px-2 py-0.5 bg-cyan-500/20 text-cyan-500 text-xs rounded border border-cyan-500/30">
                                 You
                             </span>
                         )}
                     </div>
-                    <p className="text-sm text-gray-400 mb-2">{member.role || consultant.headline || "Team Member"}</p>
-                    <div className="flex flex-wrap gap-3 text-xs text-gray-400">
+                    <p className="text-sm text-gray-600 mb-2">{member.role || consultant.headline || "Team Member"}</p>
+                    <div className="flex flex-wrap gap-3 text-xs text-gray-600">
                         {consultant.baseRate?.hourly && (
                             <span className="flex items-center gap-1">
                                 <DollarSign className="w-3 h-3" />
